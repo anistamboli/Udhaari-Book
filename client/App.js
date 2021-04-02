@@ -5,6 +5,7 @@ import * as React from 'react';
 import { Constants } from 'expo';
 import Vendor_register from './components/Vendor_register';
 import Launching_page from './components/Launching_page';
+import Dashboard from './components/Dashboard';
 
 // // You can import from local files
 // import AssetExample from './components/AssetExample';
@@ -19,6 +20,7 @@ export default class App extends React.Component {
       <View style={styles.container}>
         <Launching_page/>
         <Vendor_register/>
+        <Dashboard/>
           
         
       </View>
