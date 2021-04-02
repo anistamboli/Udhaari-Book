@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import * as React from 'react';
 import { Constants } from 'expo';
 import Vendor_register from './components/Vendor_register';
+import launching_page from './components/launching_page';
 
 // // You can import from local files
 // import AssetExample from './components/AssetExample';
@@ -16,9 +17,9 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        
+        <launching_page/>
+       
           
-          <Vendor_register/>
         
       </View>
     );
