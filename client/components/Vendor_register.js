@@ -1,21 +1,16 @@
 import * as React from 'react';  
 
-import {   
- Text,   
- View,   
- StyleSheet,    
- TextInput,  
- TouchableOpacity   
- } from 'react-native'; 
+import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native'; 
 
 
  export default class Vendor_register extends React.Component {  
   render() {  
-   return (  
+    return (  
     <View style={styles.Wrapper}>  
      <View style={styles.headerWrapper}> 
-          <Text style={styles.heading}> Registration </Text> 
+          <Text style={styles.heading}> WELCOME</Text> 
       </View>
+
       <TextInput style = {styles.textinput}
       underlineColorAndroid = "transparent"
       placeholder = "Enter Your Name"
@@ -24,18 +19,39 @@ import {
 
       <TextInput style = {styles.textinput}
       underlineColorAndroid = "transparent"
-      placeholder = "Enter Your Email"
+      placeholder = "Enter Your Contact Number"
       placeholderTextColor = "#9a73ef"
       autoCapitalize = "none"
-      onChangeText = {this.handleEmail}/>
+      onChangeText = {this.handleRmn}/>
+
+      <TextInput style = {styles.textinput}
+      underlineColorAndroid = "transparent"
+      placeholder = "Enter Your Shop Name"
+      placeholderTextColor = "#9a73ef"
+      autoCapitalize = "none"
+      onChangeText = {this.handleShopname}/>
+
+      <TextInput style = {styles.textinput}
+      underlineColorAndroid = "transparent"
+      placeholder = "Enter Your Address"
+      placeholderTextColor = "#9a73ef"
+      autoCapitalize = "none"
+      secureTextEntry = {true}
+      onChangeText = {this.handleAddress}/>
 
       <TextInput style = {styles.textinput}
       underlineColorAndroid = "transparent"
       placeholder = "Enter Your Password"
       placeholderTextColor = "#9a73ef"
       autoCapitalize = "none"
-      secureTextEntry = {true}
       onChangeText = {this.handlePassword}/>
+
+    <TextInput style = {styles.textinput}
+      underlineColorAndroid = "transparent"
+      placeholder = "Re-enter Your Password"
+      placeholderTextColor = "#9a73ef"
+      autoCapitalize = "none"
+      onChangeText = {this.handleEmailConfirmpassword}/>
 
       <TouchableOpacity style = {styles.ButtonStyle}>
         <Text style={styles.TextStyle}> Create Account </Text>
@@ -51,7 +67,7 @@ import {
  const styles = StyleSheet.create({  
   
       Wrapper: {
-      backgroundColor: 'yellow',
+      backgroundColor: 'rgb(88, 149, 164)',
       padding: 50
       },
       textinput: {
