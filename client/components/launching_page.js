@@ -3,7 +3,7 @@ import { Image,  ImageBackground,  StyleSheet, Text, View, Button } from 'react-
 import udhaari from '../assets/udhaari.png'; 
 import login from '../assets/login.png';
 
-export default class launching_page extends React.Component{
+export default class Launching_page extends React.Component{
     render() {
   return (
     <View style = {styles.container}>
