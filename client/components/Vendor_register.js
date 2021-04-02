@@ -56,7 +56,7 @@ import {
       },
       textinput: {
         fontSize: 18,
-        // alignSelf: 'self',
+        alignSelf: 'self',
         color: 'black',
         marginBottom: 30,
         borderBottomColor: 'grey',
