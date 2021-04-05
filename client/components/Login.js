@@ -1,35 +1,27 @@
 
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  Button,
-  TouchableOpacity,
-} from "react-native";
+import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Image, TextInput, Button, TouchableOpacity, } from 'react-native';
 
 export default function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [contact, setContact] = useState('');
+    const [password, setPassword] = useState('');
    
     return (
       <View style={styles.container}>
         <Text style={{color: '#888', fontSize: 25 , paddingBottom:30}}> 
             Vendor Login
         </Text>
-        <Image style={styles.image} source={require("../assets/sk.jpg")} />
+        <Image style={styles.image} source={require('../assets/sk.jpg')} />
 
-        <StatusBar style="auto" />
+        <StatusBar style='auto' />
         <View style={styles.inputView}>
           <TextInput
             style={styles.TextInput}
-            placeholder="Registered Mobile Number"
-            placeholderTextColor="#003f5c"
-            keyboardType="numeric"
-            textAlign="center"
+            placeholder='Registered Mobile Number'
+            placeholderTextColor='#003f5c'
+            keyboardType='numeric'
+            textAlign='center'
             maxLength={10}
             onChangeText={(contact) => setContact(contact)}
           />
@@ -38,10 +30,10 @@ export default function Login() {
         <View style={styles.inputView}>
           <TextInput
             style={styles.TextInput}
-            placeholder="Password"
-            placeholderTextColor="#003f5c"
+            placeholder='Password'
+            placeholderTextColor='#003f5c'
             secureTextEntry={true}
-            textAlign="center"
+            textAlign='center'
             onChangeText={(password) => setPassword(password)}
           />
         </View>
@@ -60,9 +52,9 @@ export default function Login() {
   const styles = StyleSheet.create({
     container: {
       flex: 0,
-      backgroundColor: "#FFF",
-      alignItems: "center",
-      justifyContent: "center",
+      backgroundColor: '#FFF',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
    
     image: {
@@ -70,13 +62,13 @@ export default function Login() {
     },
    
     inputView: {
-      backgroundColor: "#FFC0CB",
+      backgroundColor: '#FFC0CB',
       borderRadius: 30,
       width: 280,
       height: 45,
       marginBottom: 20,
-      justifyContent: "center",
-      alignItems: "center",
+      justifyContent: 'center',
+      alignItems: 'center',
     },
    
     TextInput: {
@@ -93,9 +85,9 @@ export default function Login() {
       width: 150,
       borderRadius: 25,
       height: 45,
-      alignItems: "center",
-      justifyContent: "center",
+      alignItems: 'center',
+      justifyContent: 'center',
       marginTop: 40,
-      backgroundColor: "skyblue",
+      backgroundColor: 'skyblue',
     },
   });
