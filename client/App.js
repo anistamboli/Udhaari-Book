@@ -6,6 +6,7 @@ import { Constants } from 'expo';
 import Vendor_register from './components/Vendor_register';
 import Launching_page from './components/Launching_page';
 import Dashboard from './components/Dashboard';
+import Login from './components/Login';
 
 // // You can import from local files
 // import AssetExample from './components/AssetExample';
@@ -18,11 +19,11 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Launching_page/>
+        {/* <Launching_page/>
         <Vendor_register/>
         <Dashboard/>
-          
-        
+           */}
+        <Login/>
       </View>
     );
   }
