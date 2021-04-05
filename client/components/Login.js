@@ -28,6 +28,9 @@ export default function Login() {
             style={styles.TextInput}
             placeholder="Registered Mobile Number"
             placeholderTextColor="#003f5c"
+            keyboardType="numeric"
+            textAlign="center"
+            maxLength={10}
             onChangeText={(contact) => setContact(contact)}
           />
         </View>
@@ -38,6 +41,7 @@ export default function Login() {
             placeholder="Password"
             placeholderTextColor="#003f5c"
             secureTextEntry={true}
+            textAlign="center"
             onChangeText={(password) => setPassword(password)}
           />
         </View>
