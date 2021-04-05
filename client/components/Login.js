@@ -6,6 +6,14 @@ import { StyleSheet, Text, View, Image, TextInput, Button, TouchableOpacity, } f
 export default function Login() {
     const [contact, setContact] = useState('');
     const [password, setPassword] = useState('');
+
+    const OnPressLogin = () => {
+        alert('Login Successful')
+    };
+
+    const OnPressForgotPassword = () => {
+        alert('Forgot Password?')
+    };
    
     return (
       <View style={styles.container}>
@@ -39,10 +47,10 @@ export default function Login() {
         </View>
    
         <TouchableOpacity>
-          <Text style={styles.forgot_button}>Forgot Password?</Text>
+          <Text style={styles.forgot_button} onPress={OnPressForgotPassword}>Forgot Password?</Text>
         </TouchableOpacity>
    
-        <TouchableOpacity style={styles.loginBtn}>
+        <TouchableOpacity style={styles.loginBtn} onPress={OnPressLogin}>
           <Text style={styles.loginText}>LOGIN</Text>
         </TouchableOpacity>
       </View>
