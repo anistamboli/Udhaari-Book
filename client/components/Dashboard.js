@@ -17,7 +17,7 @@ const SampleFunction=()=>{
     return (
     
       <View style = {styles.container}>
-        <SearchBar
+        <SearchBar backgroundColor = {'white'}
           placeholder="Enter Consumer's RMN....."
           onChange={setUser}
           value={user}
@@ -40,10 +40,10 @@ const SampleFunction=()=>{
   const styles = StyleSheet.create({
  
     MainContainer: {
-      flex: 25,
+      flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor : '#F5F5F5'
+      backgroundColor : '#EDFFEF'
     },
    
     TouchableOpacityStyle:{
@@ -53,18 +53,23 @@ const SampleFunction=()=>{
       height: 50,
       alignItems: 'center',
       justifyContent: 'center',
-      right: 30,
-      top: 300,
+      right: '10%',
+      bottom: '8%',
     },
    
     FloatingButtonStyle: {
    
       resizeMode: 'contain',
-      width: 50,
-      height: 50,
+      width: 70,
+      height: 70,
     },
-    container:{
-      width : '80%'
+
+    container: {
+      marginTop: '0%',
+      width : '100%',
+      height: '100%',
+      flex: 1,
+      
     }
   });
 export default App;
