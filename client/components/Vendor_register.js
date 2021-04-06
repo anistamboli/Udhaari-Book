@@ -1,101 +1,143 @@
 import * as React from 'react';  
+import { Alert } from 'react-native';
 
 import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native'; 
 
 
- export default class Vendor_register extends React.Component {  
-  render() {  
-    return (  
+const Vendor_register = () => {  
+  const[vendorName, setVendorName] = React.useState('');
+  const[rmn, setRmn] = React.useState('');
+  const[shopName, setShopName] = React.useState('');
+  const[shopAddress, setShopAddress] = React.useState('');
+  const[password, setPassword] = React.useState('');
+  
+
+  const display = () => {
+    Alert.alert(vendorName+rmn+shopName+shopAddress+password);    
+  }
+
+  // const handleVendorName = (event) => {
+  //    event.persist();
+	//   setValues((values) => ({
+  //     ...values,
+  //     vendorName: event.target.value,
+	//   }));
+  // }
+
+  // React.useEffect(async() => {
+  //   try{      
+  //     const body = {rmn, vendorName, shopName, shopAddress, password};
+  //     const response = await fetch('http://localhost:5000/Vendor_register', {
+  //       method: 'POST',
+  //       headers: {'Content-Type': 'application/JSON'},
+  //       body: JSON.stringify(body)      
+  //     });
+  //     console.log(response);
+  //   }
+  //   catch(err){
+  //     console.error(err.message);
+  //   }
+  // })
+
+  
+
+
+  return (  
     <View style={styles.Wrapper}>  
      <View style={styles.headerWrapper}> 
           <Text style={styles.heading}> WELCOME</Text> 
       </View>
 
-      <TextInput style = {styles.textinput}
+      <TextInput style = {styles.textinputfields}
       underlineColorAndroid = "transparent"
-      placeholder = "Enter Your Name"
-      placeholderTextColor = "#9a73ef"
-      onChangeText = {this.handleName}/>
+      placeholder = 'Name' required
+      placeholderTextColor = "white"
+      value = {vendorName}
+      onChangeText = {setVendorName}/>
 
-      <TextInput style = {styles.textinput}
+      <TextInput style = {styles.textinputfields}
       underlineColorAndroid = "transparent"
-      placeholder = "Enter Your Contact Number"
-      placeholderTextColor = "#9a73ef"
-      autoCapitalize = "none"
-      onChangeText = {this.handleRmn}/>
+      placeholder = "Contact Number" required
+      placeholderTextColor = "white"
+      value = {rmn}
+      onChangeText = {setRmn}/>
 
-      <TextInput style = {styles.textinput}
+      <TextInput style = {styles.textinputfields}
       underlineColorAndroid = "transparent"
-      placeholder = "Enter Your Shop Name"
-      placeholderTextColor = "#9a73ef"
-      autoCapitalize = "none"
-      onChangeText = {this.handleShopname}/>
+      placeholder = "Shop Name" required
+      placeholderTextColor = "white"
+      value = {shopName}
+      onChangeText = {setShopName}/>
 
-      <TextInput style = {styles.textinput}
+      <TextInput style = {styles.textinputfields}
       underlineColorAndroid = "transparent"
-      placeholder = "Enter Your Address"
-      placeholderTextColor = "#9a73ef"
-      autoCapitalize = "none"
+      placeholder = "Shop Address" required
+      placeholderTextColor = "white"
+      value = {shopAddress}     
+      onChangeText = {setShopAddress}/>
+
+      <TextInput style = {styles.textinputfields}
+      underlineColorAndroid = "transparent"
+      placeholder = "Password" required
+      placeholderTextColor = "white"
       secureTextEntry = {true}
-      onChangeText = {this.handleAddress}/>
+      value = {password}
+      onChangeText = {setPassword}/>
 
-      <TextInput style = {styles.textinput}
+    {/* <TextInput style = {styles.textinputfields}
       underlineColorAndroid = "transparent"
-      placeholder = "Enter Your Password"
-      placeholderTextColor = "#9a73ef"
+      placeholder = "Re-enter Your Password" required
+      placeholderTextColor = "white"
       autoCapitalize = "none"
-      onChangeText = {this.handlePassword}/>
+      onChangeText = {this.handleEmailConfirmpassword}/> */}
 
-    <TextInput style = {styles.textinput}
-      underlineColorAndroid = "transparent"
-      placeholder = "Re-enter Your Password"
-      placeholderTextColor = "#9a73ef"
-      autoCapitalize = "none"
-      onChangeText = {this.handleEmailConfirmpassword}/>
-
-      <TouchableOpacity style = {styles.ButtonStyle}>
-        <Text style={styles.TextStyle}> Create Account </Text>
+      <TouchableOpacity style = {styles.buttonstyle} onPress={()=>display()}>
+        <Text style={styles.textstyle}> Create Account </Text>
       </TouchableOpacity>
+    </View>
+  );  
+}
 
-    </View>  
+const styles = StyleSheet.create({    
+  Wrapper: {
+    backgroundColor: 'rgb(88, 149, 164)',
+    padding: 80,
+    width: '100%',
+    height: '100%'
+  },
 
-   );  
-  }  
- } 
+  textinputfields: {
+    fontSize: 15,
+    color: 'black',
+    marginBottom: 30,
+    borderBottomColor: 'grey',
+    borderBottomWidth: 2
+  },
 
+  headerWrapper: {
+    borderBottomColor: '#ff9933',
+    borderBottomWidth: 2,
+    marginBottom: 30, 
+  },
 
- const styles = StyleSheet.create({  
-  
-      Wrapper: {
-      backgroundColor: 'rgb(88, 149, 164)',
-      padding: 50
-      },
-      textinput: {
-        fontSize: 18,
-        // alignSelf: 'self',
-        color: 'black',
-        marginBottom: 30,
-        borderBottomColor: 'grey',
-        borderBottomWidth: 2
-      },
-      headerWrapper: {
-        borderBottomColor: 'red',
-        borderBottomWidth: 2,
-        marginBottom: 30, 
-      },
-      heading: {
-        fontSize: 28
-      },
-      TextStyle: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign:'center',
-        fontSize: 28
-      },
-      ButtonStyle: {
-       padding: 10,
-       borderRadius:5,
-       width: '100%',
-       backgroundColor: 'grey'
-     }
+  heading: {
+    fontSize: 28,
+    fontWeight: 'bold'
+  },
+
+  textstyle: {
+    color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 15
+  },
+
+  buttonstyle: {
+    padding: 10,
+    borderRadius: 5,
+    width: '80%',
+    backgroundColor: '#ff9933'
+  }
 }); 
+
+export default Vendor_register;

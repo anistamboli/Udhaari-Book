@@ -6,6 +6,7 @@ import { Constants } from 'expo';
 import Vendor_register from './components/Vendor_register';
 import Launching_page from './components/Launching_page';
 import Dashboard from './components/Dashboard';
+import Add_consumer from './components/Add_consumer';
 
 // // You can import from local files
 // import AssetExample from './components/AssetExample';
@@ -14,18 +15,16 @@ import Dashboard from './components/Dashboard';
 // import { Card } from 'react-native-elements'; 
 // // Version can be specified in package.json
 
-export default class App extends React.Component {
-  render() {
+const App = () => {
     return (
       <View style={styles.container}>
-        <Launching_page/>
+        {/* <Launching_page/> */}
         <Vendor_register/>
-        <Dashboard/>
+        {/* <Dashboard/> 
           
-        
+        <Add_consumer/> */}
       </View>
     );
-  }
 }
 
 const styles = StyleSheet.create({
@@ -36,3 +35,5 @@ const styles = StyleSheet.create({
     // paddingTop: Constants.statusBarHeight,
   }
 });
+ 
+export default App;
