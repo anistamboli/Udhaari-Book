@@ -59,45 +59,45 @@ export default function Login() {
    
   const styles = StyleSheet.create({
     container: {
-      width: '100%',
-      height: '100%',
-      flex: 0,
-      backgroundColor: 'cyan',
-      alignItems: 'center',
-      justifyContent: 'center',
+        width: '100%',
+        height: '100%',
+        flex: 0,
+        backgroundColor: '#EDFFEF',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
    
-    image: {
-      marginBottom: 20,
+    image: { 
+        marginBottom: 20,
     },
    
     inputView: {
-      backgroundColor: '#FFC0CB',
-      borderRadius: 30,
-      width: 280,
-      height: 45,
-      marginBottom: 20,
-      justifyContent: 'center',
-      alignItems: 'center',
+        backgroundColor: '#FFC0CB',
+        borderRadius: 30,
+        width: 280,
+        height: 45,
+        marginBottom: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
    
     TextInput: {
-      height: 50,
-      flex: 1,
-      padding: 10,
+        height: 50,
+        flex: 1,
+        padding: 10,
     },
    
     forgot_button: {
-      height: 30,
+         height: 30,
     },
    
     loginBtn: {
-      width: 150,
-      borderRadius: 25,
-      height: 45,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginTop: 15,
-      backgroundColor: 'skyblue',
+        width: 150,
+        borderRadius: 25,
+        height: 45,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 15,
+        backgroundColor: 'skyblue',
     },
   });
