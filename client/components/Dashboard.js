@@ -14,7 +14,7 @@ export default class Dashboard extends Component {
 
   SampleFunction=()=>{
 
-      Alert.alert("Floating Button Clicked");
+      Alert.alert('Floating Button Clicked');
 
   }
   
@@ -31,7 +31,7 @@ export default class Dashboard extends Component {
       
       <View style={styles.MainContainer}>
         
-        <TouchableOpacity activeOpacity={0.5} onPress={this.SampleFunction} style={styles.TouchableOpacityStyle} >
+        <TouchableOpacity activeOpacity={0.5} onPress={()=>this.SampleFunction()} style={styles.TouchableOpacityStyle} >
 
           <Image source={{uri : 'https://reactnativecode.com/wp-content/uploads/2017/11/Floating_Button.png'}} 
           
