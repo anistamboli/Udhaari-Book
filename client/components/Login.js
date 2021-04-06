@@ -17,7 +17,7 @@ export default function Login() {
    
     return (
       <View style={styles.container}>
-        <Text style={{color: '#888', fontSize: 25 , paddingBottom:30}}> 
+        <Text style={{color: '#888', fontSize: 23 , paddingBottom:10}}> 
             Vendor Login
         </Text>
         <Image style={styles.image} source={require('../assets/sk.jpg')} />
@@ -27,7 +27,7 @@ export default function Login() {
           <TextInput
             style={styles.TextInput}
             placeholder='Registered Mobile Number'
-            placeholderTextColor='#003f5c'
+            placeholderTextColor='#000'
             keyboardType='numeric'
             textAlign='center'
             maxLength={10}
@@ -39,16 +39,16 @@ export default function Login() {
           <TextInput
             style={styles.TextInput}
             placeholder='Password'
-            placeholderTextColor='#003f5c'
+            placeholderTextColor='#000'
             secureTextEntry={true}
             textAlign='center'
             onChangeText={(password) => setPassword(password)}
           />
         </View>
    
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Text style={styles.forgot_button} onPress={OnPressForgotPassword}>Forgot Password?</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
    
         <TouchableOpacity style={styles.loginBtn} onPress={OnPressLogin}>
           <Text style={styles.loginText}>LOGIN</Text>
@@ -59,14 +59,16 @@ export default function Login() {
    
   const styles = StyleSheet.create({
     container: {
+      width: '100%',
+      height: '100%',
       flex: 0,
-      backgroundColor: '#FFF',
+      backgroundColor: 'cyan',
       alignItems: 'center',
       justifyContent: 'center',
     },
    
     image: {
-      marginBottom: 25,
+      marginBottom: 20,
     },
    
     inputView: {
@@ -95,7 +97,7 @@ export default function Login() {
       height: 45,
       alignItems: 'center',
       justifyContent: 'center',
-      marginTop: 40,
+      marginTop: 15,
       backgroundColor: 'skyblue',
     },
   });
