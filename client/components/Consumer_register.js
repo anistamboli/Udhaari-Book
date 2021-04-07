@@ -2,17 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native'; 
 
 
-const Vendor_register = () => {  
-  const[vendorName, setVendorName] = useState('');
+const Consumer_register = () => {  
+  const[consumerName, setConsumerName] = useState('');
   const[rmn, setRmn] = useState('');
-  const[shopName, setShopName] = useState('');
-  const[shopAddress, setShopAddress] = useState('');
+  const[address, setAddress] = useState('');
   const[password, setPassword] = useState('');
   const[confirmpassword, setConfirmPassword] = useState('');
-  
+
 
   const onSubmit = async () => { 
-    if(!vendorName.trim()){
+    if(!consumerName.trim()){
       alert('Please Enter Your Name');
       return;
     }
@@ -24,11 +23,7 @@ const Vendor_register = () => {
       alert("Required 10 Digit Contact Number");
       return;
     }
-    if(!shopName.trim()){
-      alert('Please Enter Your Shop Name');
-      return;
-    }
-    if(!shopAddress.trim()){
+    if(!address.trim()){
       alert('Please Enter Your Shop Address');
       return;
     }
@@ -42,8 +37,8 @@ const Vendor_register = () => {
     }
     else{
       try{      
-        const body = {contact:rmn, name:vendorName, shop_name:shopName, shop_address:shopAddress, password:password};
-        const response = await fetch('http://localhost:5000/Vendor_register', {
+        const body = {contact:rmn, name:consumerName, address:address, password:password};
+        const response = await fetch('http://localhost:5000/Consumer_register', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -58,7 +53,7 @@ const Vendor_register = () => {
         console.error(err.message);
       }
     }
-  }
+  }  
 
 
   return (  
@@ -70,7 +65,7 @@ const Vendor_register = () => {
       <TextInput style = {styles.textinputfields}      
       placeholder = 'Name' required
       placeholderTextColor = "white"
-      onChangeText = {vendorName => setVendorName(vendorName)}/>
+      onChangeText = {consumerName => setConsumerName(consumerName)}/>
 
       <TextInput style = {styles.textinputfields}      
       placeholder = "Contact Number" required
@@ -79,17 +74,12 @@ const Vendor_register = () => {
       keyboardType='numeric'
       onChangeText = {rmn => setRmn(rmn)}/>
 
-      <TextInput style = {styles.textinputfields}      
-      placeholder = "Shop Name" required
-      placeholderTextColor = "white"
-      onChangeText = {shopName => setShopName(shopName)}/>
-
       <TextInput style = {styles.textinputfields}     
-      placeholder = "Shop Address" required
+      placeholder = "Address" required
       placeholderTextColor = "white"
-      onChangeText = {shopAddress => setShopAddress(shopAddress)}/>
+      onChangeText = {address => setAddress(address)}/>
 
-      <TextInput style = {styles.textinputfields}      
+      <TextInput style = {styles.textinputfields}
       placeholder = "Password" required
       placeholderTextColor = "white"
       secureTextEntry = {true}
@@ -100,13 +90,14 @@ const Vendor_register = () => {
       placeholderTextColor = "white"
       secureTextEntry = {true}
       onChangeText = {confirmpassword => setConfirmPassword(confirmpassword)}/>
-
+    
       <TouchableOpacity style = {styles.buttonstyle} onPress={()=>onSubmit()}>
         <Text style={styles.textstyle}> Create Account </Text>
       </TouchableOpacity>
     </View>
   );  
 }
+
 
 const styles = StyleSheet.create({    
   Wrapper: {
@@ -150,4 +141,4 @@ const styles = StyleSheet.create({
   }
 }); 
 
-export default Vendor_register;
+export default Consumer_register;
