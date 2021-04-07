@@ -14,18 +14,10 @@ app.post('/Vendor_register', async(req,res) => {
         const {contact, name, shop_name, shop_address, password} = req.body;
         await pool.query('INSERT INTO vendor (contact, name, shop_name, shop_address, password) VALUES ($1, $2, $3, $4, $5) RETURNING *', 
         [contact, name, shop_name, shop_address, password]);
-        if(err){            
-            res.json('Contact Number Already Registered');  //Not Working
-            res.status(500).send();
-                return done();          
-        }
-        else{
-            res.json('Registration Successful');
-        }
+        res.json('Registration Successful');
     }
     catch(err) {
-        // console.log(err.message);
-        res.json('Contact Number Already Registered'); 
+        console.log(err.message);
     }
 })
 
@@ -37,12 +29,7 @@ app.post('/Consumer_register', async(req,res) => {
 
         await pool.query('INSERT INTO consumer (contact, name, address, password) VALUES ($1, $2, $3, $4) RETURNING *', 
         [contact, name, address, password]);
-        if(err){            
-            res.status(500).send('Contact Number Already Registered');          //Not working  
-        }
-        else{
-            res.json('Registration Successful');
-        }
+        res.json('Registration Successful');
     }
     catch(err) {
         console.log(err.message);
