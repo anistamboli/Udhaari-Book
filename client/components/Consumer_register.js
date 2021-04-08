@@ -37,7 +37,7 @@ const Consumer_register = () => {
     }
     else{
       try{      
-        const body = {contact:rmn, name:consumerName, address:address, password:password};
+        const body = {contact:Number(rmn), name:consumerName, address:address, password:password};
         const response = await fetch('http://localhost:5000/Consumer_register', {
           method: 'POST',
           headers: {
@@ -47,7 +47,7 @@ const Consumer_register = () => {
         });
         var result = await response.json();
         console.log(result);
-        alert(result);
+        alert(result.message);
       }
       catch(err){
         console.error(err.message);
