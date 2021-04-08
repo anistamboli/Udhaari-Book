@@ -42,7 +42,8 @@ const Vendor_register = () => {
     }
     else{
       try{      
-        const body = {contact:rmn, name:vendorName, shop_name:shopName, shop_address:shopAddress, password:password};
+
+        const body = {contact:Number(rmn), name:vendorName, shop_name:shopName, shop_address:shopAddress, password:password};
         const response = await fetch('http://localhost:5000/Vendor_register', {
           method: 'POST',
           headers: {
@@ -50,9 +51,10 @@ const Vendor_register = () => {
             'Content-Type': 'application/JSON'},
             body: JSON.stringify(body)      
         });
-        var result = await response.json();
-        console.log(result);
-        alert(result);
+        const result = await response.json();
+        // JSON.stringify(result);
+        // console.log(result);
+        alert(result.message);
       }
       catch(err){
         console.error(err.message);

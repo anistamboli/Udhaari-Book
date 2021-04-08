@@ -19,8 +19,7 @@ const SampleFunction=()=>{
       <View style = {styles.container}>
         <SearchBar backgroundColor = {'white'}
           placeholder="Enter Consumer's RMN....."
-          onChange={setUser}
-          value={user}
+          onChangeText={user => setUser(user)}
         />
         <View style={styles.MainContainer}>
         
