@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { SearchBar } from 'react-native-elements';
 import { StyleSheet, View, Image, TouchableOpacity, Alert } from 'react-native';
-function App() {
+function Dashboard() {
   const [user, setUser] = useState('');
 //const {search } = user;
 /*const onInputChange = e => {
@@ -19,7 +19,7 @@ const SampleFunction=()=>{
       <View style = {styles.container}>
         <SearchBar backgroundColor = {'white'}
           placeholder="Enter Consumer's RMN....."
-          onChange={setUser}
+          onChangeText={setUser}
           value={user}
         />
         <View style={styles.MainContainer}>
@@ -72,4 +72,4 @@ const SampleFunction=()=>{
       
     }
   });
-export default App;
+export default Dashboard;
