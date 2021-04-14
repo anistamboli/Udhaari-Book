@@ -6,10 +6,10 @@ import Make_payment from './components/Make_payment';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-
+import { createStackNavigator } from '@react-navigation/stack';
 
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, View, Platform } from 'react-native';
 
 
 import * as React from 'react';
@@ -19,40 +19,50 @@ import Consumer_register from './components/Consumer_register';
 import Launching_page from './components/Launching_page';
 import Dashboard from './components/Dashboard';
 import Add_consumer from './components/Add_consumer';
+import Login from './components/Login';
 
-// const App = () => {
-//   return (
-//     <View style={styles.container}>
-//       <Vendor_register/>
-//       {/* <Consumer_register/> */}
-//     </View>
-//   );
-// }
 
 // const styles = StyleSheet.create({
 //   container: {
 //     flex: 1,
+//     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 //     alignItems: 'center',
-//     marginTop: 100,
+//     // marginTop: 100,
 //   }
 // });
 
-// export default App;
-
 
 const Tab = createMaterialTopTabNavigator();
+const Stack = createStackNavigator();
 
-export default function App() {
+function navTab() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Account Details" component={Account_details} />
+    <Tab.Navigator style={{marginTop:'11%'}}>
+        <Tab.Screen name="Account Details" component={Account_details}  />
         <Tab.Screen name="Add Products" component={Add_products} />
-        
         <Tab.Screen name="Udhaari Records" component={Udhaari_records} />
         <Tab.Screen name="Make Payment" component={Make_payment} />
-
-      </Tab.Navigator>
-    </NavigationContainer>
+    </Tab.Navigator>
   );
 }
+
+function NavStack(){
+  return(
+    <NavigationContainer>
+    <Stack.Navigator initialRouteName='Login'>
+      <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+      <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }}/>
+      <Stack.Screen name="Launching Page" component={Launching_page} options={{ headerShown: false }} />
+      <Stack.Screen name="Vendor Registration" component={Vendor_register} options={{ headerShown: false }}/>
+      <Stack.Screen name="navTab" component={navTab} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  </NavigationContainer>
+  );
+}
+
+function App() {
+  return (
+      <NavStack/>
+  );
+}
+export default App;
