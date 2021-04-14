@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, Button, TouchableOpacity, } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-import axios from 'axios';
+// import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
 
