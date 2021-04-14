@@ -9,7 +9,7 @@ import My_account from './components/My_account';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-// import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, SafeAreaView, Text, View, Platform } from 'react-native';
@@ -40,7 +40,7 @@ import Add_consumer from './components/Add_consumer';
 
 
 const Tab = createMaterialTopTabNavigator();
-// const Stack = createStackNavigator();
+const Stack = createStackNavigator();
 
 function navTab() {
   return (
