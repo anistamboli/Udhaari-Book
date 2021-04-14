@@ -60,7 +60,8 @@ export default function Login() {
           }
           if(password===validPassword){
             // alert('welcome...');
-            navigation.navigate('navTab')
+            // navigation.navigate('navTab')
+            navigation.navigate('Vendor_dashboard');
             return;
           }
           if(password!==validPassword){

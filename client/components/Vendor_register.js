@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'; 
 import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native'; 
+import { useNavigation } from '@react-navigation/native';
 
 
 const Vendor_register = () => {  
@@ -10,6 +11,7 @@ const Vendor_register = () => {
   const[password, setPassword] = useState('');
   const[confirmpassword, setConfirmPassword] = useState('');
   
+  const navigation = useNavigation();
 
   const onSubmit = async () => { 
     if(!vendorName.trim()){
@@ -55,6 +57,7 @@ const Vendor_register = () => {
         // JSON.stringify(result);
         // console.log(result);
         alert(result.message);
+        navigation.navigate('Login');
       }
       catch(err){
         console.error(err.message);

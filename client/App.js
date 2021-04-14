@@ -58,7 +58,8 @@ function NavStack(){
     <NavigationContainer>
     <Stack.Navigator initialRouteName='Login'>
       <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-      <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }}/>
+      {/* <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }}/>       */}
+      <Stack.Screen name="Vendor Dashboard" component={Vendor_dashboard} options={{ headerShown: false }}/>
       <Stack.Screen name="Launching Page" component={Launching_page} options={{ headerShown: false }} />
       <Stack.Screen name="Vendor Registration" component={Vendor_register} options={{ headerShown: false }}/>
       <Stack.Screen name="navTab" component={navTab} options={{ headerShown: false }} />
