@@ -2,9 +2,21 @@ import React from 'react';
 import { Image,  ImageBackground,  StyleSheet, Text, View, Button } from 'react-native';
 import udhaari from '../assets/udhaari.png'; 
 import login from '../assets/login.png';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
-export default class Launching_page extends React.Component{
-    render() {
+export default function Launching_page() {
+    
+  const navigation = useNavigation();
+
+    const OnPressRegister = () => {
+      navigation.navigate('Login');
+    }
+
+
+
   return (
     <View style = {styles.container}>
       <View>
@@ -12,7 +24,7 @@ export default class Launching_page extends React.Component{
       </View>
       <View style = {{flexDirection: 'row'}}>
           <ImageBackground source={login} style={{ width: 130, height: 130 }} >
-          <Text style={{color: '#888', fontSize: 18 , paddingTop:150, paddingLeft:40}}> 
+          <Text style={{color: '#888', fontSize: 18 , paddingTop:150, paddingLeft:40}} onPress = {() => {OnPressRegister()}}> 
            Vendor
          </Text>
          </ImageBackground>
@@ -25,7 +37,7 @@ export default class Launching_page extends React.Component{
     </View>
   );
 }
-}
+
 
 const styles = StyleSheet.create({
   container: {
