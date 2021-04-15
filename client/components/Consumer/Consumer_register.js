@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from 'react'; 
+//React Native Imports
+import React, { useState }                                     from 'react'; 
 import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native'; 
+
+//React Native Navigation Imports
+import { useNavigation } from '@react-navigation/native';
 
 
 const Consumer_register = () => {  

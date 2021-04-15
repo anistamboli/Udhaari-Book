@@ -34,6 +34,37 @@ app.post('/Vendor_register', async(req,res) => {
 })
 
 
+app.get( '/Vendor_login', async (req,res) => {
+    try{
+        const contact = req.query.contact;
+        // console.log(contact);
+        // console.log(typeof(contact))
+
+        const password = await pool.query('SELECT password FROM vendor WHERE contact = $1', [contact]);
+        res.json(password.rows[0]);
+        console.log(password.rows[0]);
+    }
+    catch(err){
+        console.error(err.message);
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.post('/Consumer_register', async(req,res) => {
     try{
         // console.log(req.body);

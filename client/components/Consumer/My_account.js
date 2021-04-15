@@ -1,9 +1,10 @@
+//React Native Imports
 import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
 import { FlatList,Text, View, Alert } from 'react-native';
 
 
-const My_account = () => {  
+const My_account = () => {      
   const [isLoading, setLoading] = useState(true);
   const [vendorContact, setVendorContact]=('9196191919');
   const [consumerContact, setConsumerContact]=('9021390130');

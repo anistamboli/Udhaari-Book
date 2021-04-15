@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react'; 
+//React Native Imports
+import React, { useState }                                     from 'react'; 
 import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native'; 
+
+//React Native Navigation Imports
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -57,7 +60,7 @@ const Vendor_register = () => {
         // JSON.stringify(result);
         // console.log(result);
         alert(result.message);
-        navigation.navigate('Login');
+        navigation.navigate('Vendor Login');
       }
       catch(err){
         console.error(err.message);

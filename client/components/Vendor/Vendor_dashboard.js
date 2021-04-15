@@ -1,9 +1,16 @@
-import React, {useState , useEffect} from 'react'
-import { SearchBar } from 'react-native-elements';
+//React Native Imports
+import React, {useState , useEffect}                                                      from 'react'
+import { SearchBar }                                                                      from 'react-native-elements';
 import { SafeAreaView, StyleSheet, View, Image, TouchableOpacity, Alert , FlatList, Text} from 'react-native';
 
+//React Native Navigation Imports
+import { useNavigation } from '@react-navigation/native';
 
-const Vendor_dashboard = () =>{
+
+const Vendor_dashboard = ({route}) =>{
+
+  const vRMN = route.params.vRMN;  
+  const navigation = useNavigation();
   const [search, setSearch] = useState('');
   const [consumers , setConsumers] = useState([]);
   const [filteredConsumers, setFilteredConsumers] = useState([]);
@@ -15,7 +22,8 @@ const Vendor_dashboard = () =>{
     
 
   useEffect(() => {
-    var vRMN = 9196191919;
+    // var vRMN = val;
+    console.log(vRMN);
     fetch('http://localhost:5000/Vendor_dashboard/'+vRMN)
     .then((response) => response.json())
     .then((result) => {
@@ -76,8 +84,18 @@ const Vendor_dashboard = () =>{
           renderItem = {({ item }) => {
             return(
               <View style = {styles.listWrapper}>
-                <Text style = {styles.row}>{item.consumer_name} </Text>
-                <Text style = {styles.row}>{item.consumer_contact}</Text>
+                <Text style = {styles.row} 
+                onPress = {() => { 
+                  navigation.navigate('Vendor_navTab', {screen : 'Account Details', params: {vRMN: vRMN, cRMN:item.consumer_contact}})
+                }}>
+                  {item.consumer_name} 
+                </Text>
+                <Text style = {styles.row}
+                onPress = {() => { 
+                  navigation.navigate('Vendor_navTab', {screen : 'Account Details', params: {vRMN: vRMN, cRMN:item.consumer_contact}})
+                }}>
+                  {item.consumer_contact}
+                </Text>
               </View>
             )
           }}/>
@@ -144,4 +162,5 @@ const Vendor_dashboard = () =>{
       paddingVertical : 15
     }
   });
+
 export default Vendor_dashboard;

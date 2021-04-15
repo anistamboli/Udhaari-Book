@@ -1,15 +1,18 @@
+//React Native Imports
+import React, { useState }                                            from 'react';
+import { SafeAreaView }                                               from 'react-native-safe-area-context';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 
+//React Native Navigation Imports
+import { useNavigation } from '@react-navigation/native';
+
+//Expo Imports
 import { StatusBar } from 'expo-status-bar';
-// import { response } from 'express';
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, Button, TouchableOpacity, } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
-import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
 
-export default function Login() {
+
+export default function Vendor_login() {
     const [contact, setContact] = useState('0');
     const [password, setPassword] = useState('');
     // const [validPassword, setValidPassword] = useState ('');
@@ -41,7 +44,7 @@ export default function Login() {
         // console.log(typeof(contact))
 
         console.log(contact)
-        const response = await axios.get('http://localhost:5000/Login', {params:{
+        const response = await axios.get('http://localhost:5000/Vendor_login', {params:{
           contact }})
           .then((response)=> {
             const validPassword = response.data.password
@@ -59,9 +62,12 @@ export default function Login() {
             return;
           }
           if(password===validPassword){
-            // alert('welcome...');
+            alert('welcome...');
             // navigation.navigate('navTab')
-            navigation.navigate('Vendor_dashboard');
+            // navigation.navigate('Vendor Dashboard');            
+            console.log(contact);
+            navigation.navigate('Vendor Dashboard',{vRMN: contact})
+
             return;
           }
           if(password!==validPassword){
@@ -81,7 +87,7 @@ export default function Login() {
         <Text style={{color: '#888', fontSize: 23 , paddingBottom:'4%'}}> 
             Vendor Login
         </Text>
-        <Image style={styles.image} source={require('../assets/sk.jpg')} />
+        <Image style={styles.image} source={require('D:/Project Udhaari Book/Udhaari-Book/client/assets/sk.jpg')} />
 
         <StatusBar style='auto' />
         <View style={styles.inputView}>

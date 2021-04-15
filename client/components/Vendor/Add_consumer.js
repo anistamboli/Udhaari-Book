@@ -1,8 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+//React Native Imports
+import React, { useState }                                                                from 'react';
 import { StyleSheet, Text, View, Image, TextInput, Button, TouchableOpacity, ScrollView } from 'react-native';
-import { SearchBar } from 'react-native-elements';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { SearchBar }                                                                      from 'react-native-elements';
+import DateTimePickerModal                                                                from "react-native-modal-datetime-picker";
+
+//ExpoImports
+import { StatusBar } from 'expo-status-bar';
+
 
 export default function Add_consumer() {
     const [search,setSearch] = useState('');

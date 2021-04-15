@@ -1,9 +1,16 @@
+//React Native Imports
 import 'react-native-gesture-handler';
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect}                                           from 'react';
 import { FlatList,StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native';
+
+//Expo Imports
 import { Entypo } from '@expo/vector-icons';
 
-const Account_details = () => {  
+
+const Account_details = ({route}) => {  
+
+  const vRMN = route.params.vRMN; 
+  const cRMN = route.params.cRMN; 
   const [isLoading, setLoading] = useState(true);
   const [vendorContact, setVendorContact]=('9196191919');
   const [consumerContact, setConsumerContact]=('9021390130');
@@ -17,8 +24,8 @@ const Account_details = () => {
     // alert(consumerContact)
     // var vRMN=Number(vendorContact);
     // var cRMN=Number(consumerContact)
-    var vRMN =9196191919;
-    var cRMN =9021390130;
+    // var vRMN =9196191919;
+    // var cRMN =9021390130;
     alert(vendorContact)
     alert(consumerContact)
     fetch('http://localhost:5000/Account_details/'+vRMN+'/'+cRMN)
@@ -38,8 +45,8 @@ const Account_details = () => {
 
 
   const DeleteAccount = () =>{
-    var vRMN =432424234;
-    var cRMN =7678697696;
+    // var vRMN =432424234;
+    // var cRMN =7678697696;
     alert(vendorContact);
     alert("DELETE");
     Alert.alert(
@@ -70,8 +77,8 @@ const Account_details = () => {
     // alert("EDIT VALUE"+editValue);//1
     // setName(editValue);
     // alert(typeof(name));
-    var vRMN =9196191919;
-    var cRMN =9021390130;
+    // var vRMN =9196191919;
+    // var cRMN =9021390130;
     alert(name);//3 //3
     alert(threshold);
     alert(typeof(name));

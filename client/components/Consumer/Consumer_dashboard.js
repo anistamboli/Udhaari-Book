@@ -1,16 +1,24 @@
-import React, {useState , useEffect} from 'react'
-import { SearchBar } from 'react-native-elements';
-import { SafeAreaView, StyleSheet, View, Alert , FlatList, Text } from 'react-native';
+//React Native Imports
+import React, {useState , useEffect}                                                      from 'react'
+import { SearchBar }                                                                      from 'react-native-elements';
+import { SafeAreaView, StyleSheet, View, Image, TouchableOpacity, Alert , FlatList, Text} from 'react-native';
 
+//React Native Navigation Imports
+import { useNavigation } from '@react-navigation/native';
 
-const Consumer_dashboard = () =>{
+const Consumer_dashboard = ({route}) =>{
+
+  const cRMN = route.params.cRMN; 
+  const navigation = useNavigation();
   const [search, setSearch] = useState('');
   const [vendors , setVendors] = useState([]);
   const [filteredVendors, setFilteredVendors] = useState([]);
    
 
   useEffect(() => {
-    var cRMN = 7678697696;
+    // var cRMN = 7678697696;
+    // console.log(val);
+    // var cRMN = val;
     fetch('http://localhost:5000/Consumer_dashboard/'+cRMN)
     .then((response) => response.json())
     .then((result) => {
@@ -71,8 +79,18 @@ const Consumer_dashboard = () =>{
           renderItem = {({ item }) => {
             return(
               <View style = {styles.listWrapper}>
-                <Text style = {styles.row}>{item.name} </Text>
-                <Text style = {styles.row}>{item.contact}</Text>
+                <Text style = {styles.row}
+                onPress = {() => { 
+                  navigation.navigate('Consumer_navTab', {screen : 'My Udhaari', params: {cRMN: cRMN, vRMN:item.contact}})
+                }}>
+                  {item.name} 
+                </Text>
+                <Text style = {styles.row}
+                onPress = {() => { 
+                  navigation.navigate('Consumer_navTab', {screen : 'My Udhaari', params: {cRMN: cRMN, vRMN:item.contact}})
+                }}>
+                  {item.contact}
+                </Text>
               </View>
             )
           }}/>
