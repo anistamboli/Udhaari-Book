@@ -5,6 +5,8 @@ import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-nativ
 //React Native Navigation Imports
 import { useNavigation } from '@react-navigation/native';
 
+import back_button from '../../assets/back_button.png'; 
+
 
 const Consumer_register = () => {  
   const[consumerName, setConsumerName] = useState('');

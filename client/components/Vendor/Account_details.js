@@ -46,7 +46,7 @@ const Account_details = ({route}) => {
 
   const DeleteAccount = () =>{
     // var vRMN =432424234;
-    // var cRMN =7678697696;
+    var cRMN =3333333444;
     alert(vendorContact);
     alert("DELETE");
     Alert.alert(
@@ -62,6 +62,7 @@ const Account_details = ({route}) => {
             const response = await fetch('http://localhost:5000/Account_details/'+vRMN+'/'+cRMN, { method: 'DELETE' });
             const result = await response.json();
             alert(result.message);
+            // navigation.navigate('NavStack', {screen : 'Vendor_dashboard'})
           }
         },
         {

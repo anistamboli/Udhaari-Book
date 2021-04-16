@@ -1,9 +1,14 @@
 //React Native Imports
 import React, { useState }                                     from 'react'; 
-import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native'; 
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, ImageBackground } from 'react-native'; 
 
 //React Native Navigation Imports
 import { useNavigation } from '@react-navigation/native';
+import { NavigationContext, NavigationEvents } from 'react-navigation';
+
+import { Ionicons } from '@expo/vector-icons';
+
+import back_button from '../../assets/back_button.png'; 
 
 
 const Vendor_register = () => {  
@@ -13,6 +18,7 @@ const Vendor_register = () => {
   const[shopAddress, setShopAddress] = useState('');
   const[password, setPassword] = useState('');
   const[confirmpassword, setConfirmPassword] = useState('');
+  // const[refreshPage, setRefreshPage] = useState('');
   
   const navigation = useNavigation();
 
@@ -60,7 +66,10 @@ const Vendor_register = () => {
         // JSON.stringify(result);
         // console.log(result);
         alert(result.message);
-        navigation.navigate('Vendor Login');
+        // window.location.reload();
+        // setRefreshPage("refresh");
+        alert('dsd');
+        
       }
       catch(err){
         console.error(err.message);
@@ -71,10 +80,13 @@ const Vendor_register = () => {
 
   return (  
     <View style={styles.Wrapper}>  
-     <View style={styles.headerWrapper}> 
+      <View style={styles.headerWrapper}> 
         <Text style={styles.heading}> WELCOME</Text> 
+        <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Login');}}> 
+          <Ionicons name="arrow-back-circle-sharp" size={24} color="black" />
+        </TouchableOpacity>
       </View>
-
+     
       <TextInput style = {styles.textinputfields}      
       placeholder = 'Name' required
       placeholderTextColor = "white"
@@ -111,7 +123,8 @@ const Vendor_register = () => {
 
       <TouchableOpacity style = {styles.buttonstyle} onPress={()=>onSubmit()}>
         <Text style={styles.textstyle}> Create Account </Text>
-      </TouchableOpacity>
+      </TouchableOpacity>      
+      
     </View>
   );  
 }
@@ -155,7 +168,24 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: '80%',
     backgroundColor: '#ff9933'
+  },
+
+  back_button: {
+    width: 40, 
+    height: 40,     
+    top:0,
+    paddingTop:0,
+    position: 'absolute',
+    // zIndex: 99,
+    // bottom: 5,
+    // shadowColor: 'black',
+    // shadowOpacity: 0.15,
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowRadius: 8,     
+    alignSelf:'flex-start'
+    
   }
+
 }); 
 
 export default Vendor_register;
