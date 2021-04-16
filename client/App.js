@@ -71,16 +71,19 @@ const Vendor_navTab = () => {
 
 
 const Consumer_navTab = () => {
+  const navigation = useNavigation();
   return (
     <>    
-      <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Consumer Dashboard');}}> 
-        <Image source={back_button} style={styles.back_button} />
-      </TouchableOpacity>
-      <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Consumer Login');}}> 
-        <Image source={logout_button} style={styles.logout_button} />
-      </TouchableOpacity>
-      <Text style={{textAlign:'center', fontWeight:'bold', fontSize:30, top:25, color:'rgb(88, 149, 164)'}}>अब उधारी ले, विश्वास से!</Text> 
-      <Tab.Navigator style={{marginTop:'17%'}}>
+      <View style={{widht:'100%', flexDirection:'row', alignItems:'center', marginTop:'5%'}}>
+        <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Consumer Dashboard');}} style={{width:'15%', alignItems:'flex-start'}}> 
+          <Image source={back_button} style={styles.back_button} />
+        </TouchableOpacity>        
+        <Text style={{textAlign:'center', fontWeight:'bold', fontSize:25, color:'rgb(88, 149, 164)', width:'70%'}}>अब उधारी ले, विश्वास से!</Text> 
+        <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Consumer Login');}} style={{width:'15%', alignItems:'flex-end'}}> 
+          <Image source={logout_button} style={styles.logout_button} />
+        </TouchableOpacity>   
+      </View>
+      <Tab.Navigator>
         <Tab.Screen name="My Udhaari" component={My_udhaari}  />
         <Tab.Screen name="My Account" component={My_account} />
       </Tab.Navigator>

@@ -5,7 +5,7 @@ import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-nativ
 //React Native Navigation Imports
 import { useNavigation } from '@react-navigation/native';
 
-import back_button from '../../assets/back_button.png'; 
+import { Ionicons } from '@expo/vector-icons'; 
 
 
 const Consumer_register = () => {  
@@ -15,6 +15,7 @@ const Consumer_register = () => {
   const[password, setPassword] = useState('');
   const[confirmpassword, setConfirmPassword] = useState('');
 
+  const navigation = useNavigation();
 
   const onSubmit = async () => { 
     if(!consumerName.trim()){
@@ -66,6 +67,9 @@ const Consumer_register = () => {
     <View style={styles.Wrapper}>  
      <View style={styles.headerWrapper}> 
         <Text style={styles.heading}> WELCOME</Text> 
+        <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Consumer Login');}}> 
+          <Ionicons name="arrow-back-circle-sharp" size={24} color="black" />
+        </TouchableOpacity>
       </View>
 
       <TextInput style = {styles.textinputfields}      

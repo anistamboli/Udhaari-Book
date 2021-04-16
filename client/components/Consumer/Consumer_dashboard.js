@@ -6,8 +6,11 @@ import { SafeAreaView, StyleSheet, View, Image, TouchableOpacity, Alert , FlatLi
 //React Native Navigation Imports
 import { useNavigation } from '@react-navigation/native';
 
-const Consumer_dashboard = ({route}) =>{
 
+import logout_button from '../../assets/logout_button.png'; 
+
+
+const Consumer_dashboard = ({route}) =>{
   const cRMN = route.params.cRMN; 
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
@@ -61,14 +64,21 @@ const Consumer_dashboard = ({route}) =>{
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style = {styles.container}>
-        <SearchBar 
-        backgroundColor = {'white'}
-        placeholderTextColor = 'green'
-        placeholder="Enter Consumer's Name or Contact Number....."
-        onChangeText={(text) => searchFilterFunction(text)}
-        onClear={(text) => searchFilterFunction('')}
-        value={search}          
-        />              
+        <View style={{widht:'100%', flexDirection:'row', alignItems:'center', marginTop:'5%'}}>
+          <SearchBar 
+          inputStyle={{width:'85%'}}
+          containerStyle={{width:'85%'}}
+          backgroundColor = {'white'}
+          placeholderTextColor = 'green'
+          placeholder="Enter Consumer's Name or Contact Number....."
+          onChangeText={(text) => searchFilterFunction(text)}
+          onClear={(text) => searchFilterFunction('')}
+          value={search}          
+          />       
+          <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Consumer Login');}} style={{width:'15%'}}> 
+            <Image source={logout_button} style={{ width: 60, height: 60, alignSelf:'flex-end', top:0, paddingTop:0}} />
+          </TouchableOpacity>
+        </View>       
         <View style = {styles.body}>
           <View style = {styles.listWrapper}>
               <Text style = {styles.row}>Name </Text>
