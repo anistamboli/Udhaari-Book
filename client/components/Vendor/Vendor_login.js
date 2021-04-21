@@ -1,16 +1,13 @@
-//React Native Imports
-import React, { useState }                                            from 'react';
-import { SafeAreaView }                                               from 'react-native-safe-area-context';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 
-//React Native Navigation Imports
-import { useNavigation } from '@react-navigation/native';
-
-//Expo Imports
 import { StatusBar } from 'expo-status-bar';
+// import { response } from 'express';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Image, TextInput, Button, TouchableOpacity, } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import axios from 'axios';
-
+import { useNavigation } from '@react-navigation/native';
+import * as SecureStore from 'expo-secure-store';
 
 export default function Vendor_login() {
     const [contact, setContact] = useState('0');
@@ -18,6 +15,10 @@ export default function Vendor_login() {
     // const [validPassword, setValidPassword] = useState ('');
 
     const navigation = useNavigation();
+
+    async function SaveVendorContact(value) {
+      await SecureStore.setItemAsync('vendorContact', value);
+    }
 
     const OnPressRegister = () => {
       navigation.navigate('Vendor Registration');
@@ -40,10 +41,7 @@ export default function Vendor_login() {
 
 
       else{
-        // const contact=JSON.stringify((contact))
-        // console.log(typeof(contact))
-
-        console.log(contact)
+        // console.log(contact)
         const response = await axios.get('http://localhost:5000/Vendor_login', {params:{
           contact }})
           .then((response)=> {
@@ -55,19 +53,16 @@ export default function Vendor_login() {
           console.log(error)
           })
 
-
+          
         function Check(validPassword){
           if(validPassword==undefined){
             alert('user not found');
             return;
           }
           if(password===validPassword){
-            alert('welcome...');
-            // navigation.navigate('navTab')
-            // navigation.navigate('Vendor Dashboard');            
-            console.log(contact);
-            navigation.navigate('Vendor Dashboard',{vRMN: contact})
-
+            // alert('welcome...');
+            SaveVendorContact(contact)
+            navigation.navigate('Vendor_navTab')
             return;
           }
           if(password!==validPassword){
@@ -87,7 +82,7 @@ export default function Vendor_login() {
         <Text style={{color: '#888', fontSize: 23 , paddingBottom:'4%'}}> 
             Vendor Login
         </Text>
-        <Image style={styles.image} source={require('D:/Project Udhaari Book/Udhaari-Book/client/assets/sk.jpg')} />
+        <Image style={styles.image} source={require('../../assets/sk.jpg')} />
 
         <StatusBar style='auto' />
         <View style={styles.inputView}>
