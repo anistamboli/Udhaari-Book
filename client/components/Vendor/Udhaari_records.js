@@ -16,8 +16,7 @@ export default function Udhaari_records() {
   // console.log(val);
 
   const [vRMN, setvRMN] = useState();
-  // console.log(vRMN);
-  const [cRMN, setcRMN] = useState(12);
+  const [cRMN, setcRMN] = useState();
 
   const [allPaymentRec, setAllPaymentRec] = useState([]);
   const [allPurchaseRec, setAllPurchaseRec] = useState([]);
@@ -34,12 +33,12 @@ export default function Udhaari_records() {
 
   async function getValueFor() {
     let vRMN = await SecureStore.getItemAsync('vendorContact');
-    // let cRMN = await SecureStore.getItemAsync('consumerContact');
+    let cRMN = await SecureStore.getItemAsync('consumerContact');
     setvRMN(vRMN);
-    // setcRMN(cRMN);
+    setcRMN(cRMN);
     
     // console.log(vRMN,cRMN)
-    const cRMN=12;
+    // const cRMN=12;
     // console.log(result,cc)
     const response = await axios.get('http://localhost:5000/Purchase_history', {params:{
       vRMN, cRMN }})
@@ -278,7 +277,7 @@ export default function Udhaari_records() {
             </View> 
           </View> 
           <View style={{width:'100%', height:'100%', marginTop:'1%'}}>
-            <View style= {{width:'100%', flexDirection:'row', height:'7%', backgroundColor:'grey',justifyContent: 'center', alignItems:'center', borderWidth:1}}>
+            <View style= {{width:'100%', flexDirection:'row', height:'7%', backgroundColor:'skyblue',justifyContent: 'center', alignItems:'center', borderWidth:1}}>
               <View style= {{width:'30%', justifyContent: 'center', alignItems:'flex-start', paddingLeft: '1%'}}>
                 <Text>Date</Text>
               </View>
@@ -346,7 +345,7 @@ export default function Udhaari_records() {
       width: '100%',
       // height: '100%',
       flex: 1,
-      // backgroundColor: '#EDFFEF',
+      backgroundColor: '#EAF2F4',
       alignItems: 'center',
       justifyContent: 'flex-start',
       

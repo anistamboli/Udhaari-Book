@@ -15,6 +15,7 @@ import { StatusBar } from 'expo-status-bar';
 import Launching_page from './components/Launching_page';
 import back_button from './assets/back_button.png'; 
 import logout_button from './assets/logout_button.png'; 
+import { AntDesign } from '@expo/vector-icons';
 
 //Vendor Imports
 import Vendor_register  from './components/Vendor/Vendor_register';
@@ -43,16 +44,18 @@ const Vendor_navTab = () => {
   const navigation = useNavigation();
   return (
     <>
-      <View style={{widht:'100%', flexDirection:'row', alignItems:'center', marginTop:'5%'}}>
-        <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Dashboard');}} style={{width:'15%', alignItems:'flex-start'}}> 
-          <Image source={back_button} style={styles.back_button} />
+      <View style={{widht:'100%', flexDirection:'row', alignItems:'center', marginTop:'11%'}}>
+        <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Dashboard');}} style={{width:'15%', paddingLeft:'2%', alignItems:'flex-start'}}> 
+          {/* <Image source={back_button} style={styles.back_button} /> */}
+          <AntDesign name="home" size={40} color="black" />
         </TouchableOpacity>        
         <Text style={{textAlign:'center', fontWeight:'bold', fontSize:25, color:'rgb(88, 149, 164)', width:'70%'}}>अब उधारी ले, विश्वास से!</Text> 
-        <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Login');}} style={{width:'15%', alignItems:'flex-end'}}> 
-          <Image source={logout_button} style={styles.logout_button} />
+        <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Login');}} style={{width:'15%',paddingRight:'2%', alignItems:'flex-end'}}> 
+          {/* <Image source={logout_button} style={styles.logout_button} /> */}
+          <AntDesign name="logout" size={34} color="black" />
         </TouchableOpacity>   
       </View>
-      <Tab.Navigator >
+      <Tab.Navigator style={{marginTop:'1%'}}>
         {/* // labeled={false}
         // shifting={true}
         // color={green}

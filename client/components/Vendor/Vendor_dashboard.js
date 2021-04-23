@@ -5,28 +5,38 @@ import { SafeAreaView, StyleSheet, View, Image, TouchableOpacity, Alert , FlatLi
 
 //React Native Navigation Imports
 import { useNavigation } from '@react-navigation/native';
+import * as SecureStore from 'expo-secure-store';
 
 import logout_button from '../../assets/logout_button.png'; 
 
 
 
-const Vendor_dashboard = ({route}) =>{
-
-  const vRMN = route.params.vRMN;  
+const Vendor_dashboard = () =>{
+ 
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
   const [consumers , setConsumers] = useState([]);
   const [filteredConsumers, setFilteredConsumers] = useState([]);
 
+  const [vRMN, setvRMN] = useState();
+  // const [cRMN, setcRMN] = useState(12);
 
   const SampleFunction=()=>{
     Alert.alert("Floating Button Clicked");
   }
-    
 
-  useEffect(() => {
-    // var vRMN = val;
-    console.log(vRMN);
+  async function SaveConsumerContact(value) {
+    await SecureStore.setItemAsync('consumerContact', value);
+  }
+  
+  async function getValueFor() {
+    let vRMN = await SecureStore.getItemAsync('vendorContact');
+    // let cRMN = await SecureStore.getItemAsync('consumerContact');
+    setvRMN(vRMN);
+    // setcRMN(cRMN);
+    
+    // const cRMN=12;
+
     fetch('http://localhost:5000/Vendor_dashboard/'+vRMN)
     .then((response) => response.json())
     .then((result) => {
@@ -36,7 +46,27 @@ const Vendor_dashboard = ({route}) =>{
       .catch((error) => {
         console.error(error);
       }); 
-  },[]);
+     
+  }
+
+  useEffect(() => { 
+    getValueFor();  
+    },[]);  
+
+
+  // useEffect(() => {
+  //   // var vRMN = val;
+  //   // console.log(vRMN);
+  //   // fetch('http://localhost:5000/Vendor_dashboard/'+vRMN)
+  //   // .then((response) => response.json())
+  //   // .then((result) => {
+  //   //     setConsumers(result);
+  //   //     setFilteredConsumers(result);
+  //   //   })
+  //   //   .catch((error) => {
+  //   //     console.error(error);
+  //   //   }); 
+  // },[]);
 
 
   const searchFilterFunction = (text) => {
@@ -67,15 +97,15 @@ const Vendor_dashboard = ({route}) =>{
 
     
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style = {styles.container}>
-        <View style={{widht:'100%', flexDirection:'row', alignItems:'center', marginTop:'5%'}}>
+    <SafeAreaView style={{ flex: 1 , marginTop:'13%', height:'100%', width:'100%'}}>
+        <View style={{widht:'100%', flexDirection:'row', alignItems:'center'}}>
           <SearchBar 
           inputStyle={{width:'85%'}}
           containerStyle={{width:'85%'}}
           backgroundColor = {'white'}
           placeholderTextColor = 'green'
-          placeholder="Enter Consumer's Name or Contact Number....."
+          fontSize= {15}
+          placeholder="   Consumer Name or Number....."
           onChangeText={(text) => searchFilterFunction(text)}
           onClear={(text) => searchFilterFunction('')}
           value={search}          
@@ -88,7 +118,7 @@ const Vendor_dashboard = ({route}) =>{
           <View style = {styles.listWrapper}>
               <Text style = {styles.row}>Name </Text>
               <Text style = {styles.row}>Consumer Contact Number</Text>
-            </View>
+          </View>
           <FlatList 
           data = {filteredConsumers}
           renderItem = {({ item }) => {
@@ -96,13 +126,15 @@ const Vendor_dashboard = ({route}) =>{
               <View style = {styles.listWrapper}>
                 <Text style = {styles.row} 
                 onPress = {() => { 
-                  navigation.navigate('Vendor_navTab', {screen : 'Account Details', params: {vRMN: vRMN, cRMN:item.consumer_contact}})
+                  SaveConsumerContact(item.consumer_contact) 
+                  navigation.navigate('Vendor_navTab', {screen : 'Account Details'})
                 }}>
                   {item.consumer_name} 
                 </Text>
                 <Text style = {styles.row}
-                onPress = {() => { 
-                  navigation.navigate('Vendor_navTab', {screen : 'Account Details', params: {vRMN: vRMN, cRMN:item.consumer_contact}})
+                onPress = {() => {
+                  SaveConsumerContact(item.consumer_contact) 
+                  navigation.navigate('Vendor_navTab', {screen : 'Account Details'})
                 }}>
                   {item.consumer_contact}
                 </Text>
@@ -115,7 +147,6 @@ const Vendor_dashboard = ({route}) =>{
             <Image source={{uri : 'https://reactnativecode.com/wp-content/uploads/2017/11/Floating_Button.png'}} style={styles.FloatingButtonStyle}/>
           </TouchableOpacity>
         </View>
-      </View>
     </SafeAreaView>
   );
 }
@@ -124,14 +155,20 @@ const Vendor_dashboard = ({route}) =>{
   const styles = StyleSheet.create({
  
     MainContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+      position:'absolute',
+      // flex: 1,
+      // backgroundColor:'red',
+      // width: '100%',
+      // height:'100%',
+      // justifyContent: 'flex-end',
+      // alignItems: 'stretch',
+      marginTop:'160%',
+      marginLeft:'75%'
     },
    
     TouchableOpacityStyle:{
    
-      position: 'absolute',
+      // position: 'absolute',
       width: 50,
       height: 50,
       alignItems: 'center',
@@ -148,21 +185,20 @@ const Vendor_dashboard = ({route}) =>{
       height: 70,
     },
 
-    container: {
-      marginTop: '0%',
-      width : '100%',
-      height: '100%',
-      flex: 1,
-      
-    },
     body: {
       backgroundColor : '#fff',
-      flex : 7
+      flex : 1,
+      // marginTop: '5%',
+      height: '100%',
+      width: '100%'
     },
     listWrapper : {
       flexDirection : 'row',
+      justifyContent: 'center',
+      alignItems:'center',
       flexWrap : 'wrap',
-      borderBottomWidth : 1
+      borderBottomWidth : 1,
+
     },
     row: {
       //backgroundColor : '#fff',

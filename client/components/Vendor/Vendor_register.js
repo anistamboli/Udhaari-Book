@@ -22,6 +22,10 @@ const Vendor_register = () => {
   
   const navigation = useNavigation();
 
+  const OnPressLogin = () => {
+    navigation.navigate('Vendor Login');
+  }
+
   const onSubmit = async () => { 
     if(!vendorName.trim()){
       alert('Please Enter Your Name');
@@ -83,7 +87,7 @@ const Vendor_register = () => {
       <View style={styles.headerWrapper}> 
         <Text style={styles.heading}> WELCOME</Text> 
         <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Login');}}> 
-          <Ionicons name="arrow-back-circle-sharp" size={24} color="black" />
+          {/* <Ionicons name="arrow-back-circle-sharp" size={24} color="black" /> */}
         </TouchableOpacity>
       </View>
      
@@ -123,7 +127,11 @@ const Vendor_register = () => {
 
       <TouchableOpacity style = {styles.buttonstyle} onPress={()=>onSubmit()}>
         <Text style={styles.textstyle}> Create Account </Text>
-      </TouchableOpacity>      
+      </TouchableOpacity>  
+
+      <TouchableOpacity style={{ marginTop:'6%'}}>
+          <Text  style={styles.textstyle} onPress={()=>{OnPressLogin()}}>Already User? Login...</Text>
+      </TouchableOpacity>    
       
     </View>
   );  
@@ -132,15 +140,17 @@ const Vendor_register = () => {
 const styles = StyleSheet.create({    
   Wrapper: {
     backgroundColor: 'rgb(88, 149, 164)',
-    padding: 80,
+    // padding: 80,
     width: '100%',
     height: '100%',
+    paddingTop:'30%',
+    paddingHorizontal:'14%'
   },
 
   textinputfields: {
     fontSize: 15,
     color: 'black',
-    marginBottom: 30,
+    marginBottom: '12%',
     borderBottomColor: 'grey',
     borderBottomWidth: 2
   },
@@ -148,12 +158,14 @@ const styles = StyleSheet.create({
   headerWrapper: {
     borderBottomColor: '#ff9933',
     borderBottomWidth: 2,
-    marginBottom: 30, 
+    marginBottom: '10%', 
   },
 
   heading: {
     fontSize: 28,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    // alignSelf:'center',
+    marginBottom:'3%'
   },
 
   textstyle: {
@@ -164,9 +176,10 @@ const styles = StyleSheet.create({
   },
 
   buttonstyle: {
-    padding: 10,
+    padding: '4%',
+    marginTop:'3%',
     borderRadius: 5,
-    width: '80%',
+    width: '100%',
     backgroundColor: '#ff9933'
   },
 
