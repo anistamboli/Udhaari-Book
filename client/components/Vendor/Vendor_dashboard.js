@@ -1,19 +1,20 @@
 //React Native Imports
-import React, {useState , useEffect}                                                      from 'react'
+import React, {useState , useEffect, useCallback}                                                      from 'react'
 import { SearchBar }                                                                      from 'react-native-elements';
 import { SafeAreaView, StyleSheet, View, Image, TouchableOpacity, Alert , FlatList, Text} from 'react-native';
 
 //React Native Navigation Imports
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused, useFocusEffect } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 
-import logout_button from '../../assets/logout_button.png'; 
-
+// import logout_button from '../../assets/logout_button.png'; 
+import { AntDesign } from '@expo/vector-icons';
 
 
 const Vendor_dashboard = () =>{
  
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const [search, setSearch] = useState('');
   const [consumers , setConsumers] = useState([]);
   const [filteredConsumers, setFilteredConsumers] = useState([]);
@@ -22,7 +23,7 @@ const Vendor_dashboard = () =>{
   // const [cRMN, setcRMN] = useState(12);
 
   const SampleFunction=()=>{
-    Alert.alert("Floating Button Clicked");
+    navigation.navigate('Add Consumer');
   }
 
   async function SaveConsumerContact(value) {
@@ -31,10 +32,7 @@ const Vendor_dashboard = () =>{
   
   async function getValueFor() {
     let vRMN = await SecureStore.getItemAsync('vendorContact');
-    // let cRMN = await SecureStore.getItemAsync('consumerContact');
-    setvRMN(vRMN);
-    // setcRMN(cRMN);
-    
+    setvRMN(vRMN);   
     // const cRMN=12;
 
     fetch('http://localhost:5000/Vendor_dashboard/'+vRMN)
@@ -49,24 +47,22 @@ const Vendor_dashboard = () =>{
      
   }
 
-  useEffect(() => { 
-    getValueFor();  
-    },[]);  
+  // useEffect(() => { 
+  //   getValueFor();  
+  //   },[]);  
 
-
-  // useEffect(() => {
-  //   // var vRMN = val;
-  //   // console.log(vRMN);
-  //   // fetch('http://localhost:5000/Vendor_dashboard/'+vRMN)
-  //   // .then((response) => response.json())
-  //   // .then((result) => {
-  //   //     setConsumers(result);
-  //   //     setFilteredConsumers(result);
-  //   //   })
-  //   //   .catch((error) => {
-  //   //     console.error(error);
-  //   //   }); 
-  // },[]);
+  useFocusEffect(
+    useCallback(() => {
+      // alert('Screen was focused');
+      getValueFor();  
+      // Do something when the screen is focused
+      // return () => {
+      //   alert('Screen was unfocused');
+      //   // Do something when the screen is unfocused
+      //   // Useful for cleanup functions
+      // };
+    }, [])
+  );
 
 
   const searchFilterFunction = (text) => {
@@ -97,7 +93,7 @@ const Vendor_dashboard = () =>{
 
     
   return (
-    <SafeAreaView style={{ flex: 1 , marginTop:'13%', height:'100%', width:'100%'}}>
+    <SafeAreaView style={{ flex: 1 , paddingTop:'11%', height:'100%', width:'100%', backgroundColor:'#EAF2F4'}}>
         <View style={{widht:'100%', flexDirection:'row', alignItems:'center'}}>
           <SearchBar 
           inputStyle={{width:'85%'}}
@@ -110,8 +106,9 @@ const Vendor_dashboard = () =>{
           onClear={(text) => searchFilterFunction('')}
           value={search}          
           />              
-          <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Login');}} style={{width:'15%'}}> 
-            <Image source={logout_button} style={{ width: 60, height: 60, alignSelf:'flex-end', top:0, paddingTop:0}} />
+          <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Login')}} style={{width:'15%',height:'100%', paddingTop:'4%', paddingLeft:'4%', backgroundColor:'#303436'}}> 
+            {/* <Image source={logout_button} style={{ width: 60, height: 60, alignSelf:'flex-end', top:0, paddingTop:0}} /> */}
+            <AntDesign name="logout" size={35} color="white" />
           </TouchableOpacity>
         </View>
         <View style = {styles.body}>
@@ -143,7 +140,7 @@ const Vendor_dashboard = () =>{
           }}/>
         </View>         
         <View style={styles.MainContainer}>
-          <TouchableOpacity activeOpacity={1.5} onPress = {() => SampleFunction()} style={styles.TouchableOpacityStyle} >
+          <TouchableOpacity activeOpacity={1.5} onPress = {() => SampleFunction() } style={styles.TouchableOpacityStyle} >
             <Image source={{uri : 'https://reactnativecode.com/wp-content/uploads/2017/11/Floating_Button.png'}} style={styles.FloatingButtonStyle}/>
           </TouchableOpacity>
         </View>
@@ -162,8 +159,8 @@ const Vendor_dashboard = () =>{
       // height:'100%',
       // justifyContent: 'flex-end',
       // alignItems: 'stretch',
-      marginTop:'160%',
-      marginLeft:'75%'
+      marginTop:'180%',
+      marginLeft:'80%'
     },
    
     TouchableOpacityStyle:{
@@ -186,7 +183,7 @@ const Vendor_dashboard = () =>{
     },
 
     body: {
-      backgroundColor : '#fff',
+      backgroundColor : '#EAF2F4',
       flex : 1,
       // marginTop: '5%',
       height: '100%',

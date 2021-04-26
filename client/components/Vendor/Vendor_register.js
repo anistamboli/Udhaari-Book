@@ -86,42 +86,46 @@ const Vendor_register = () => {
     <View style={styles.Wrapper}>  
       <View style={styles.headerWrapper}> 
         <Text style={styles.heading}> WELCOME</Text> 
-        <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Login');}}> 
-          {/* <Ionicons name="arrow-back-circle-sharp" size={24} color="black" /> */}
-        </TouchableOpacity>
+        {/* <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Login');}}> 
+          <Ionicons name="arrow-back-circle-sharp" size={40} color="black" />
+        </TouchableOpacity> */}
+      </View>
+
+      <View style={{ flexDirection:'row', borderBottomColor: '#ff9933', borderBottomWidth: 2, marginBottom: '12%', marginTop:'5%' }}> 
+        <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom:'3%', justifyContent :'center'}}> Register Here </Text> 
       </View>
      
       <TextInput style = {styles.textinputfields}      
       placeholder = 'Name' required
-      placeholderTextColor = "white"
+      placeholderTextColor = "black"
       onChangeText = {vendorName => setVendorName(vendorName)}/>
 
       <TextInput style = {styles.textinputfields}      
       placeholder = "Contact Number" required
-      placeholderTextColor = "white"
+      placeholderTextColor = "black"
       maxLength={10}
       keyboardType='numeric'
       onChangeText = {rmn => setRmn(rmn)}/>
 
       <TextInput style = {styles.textinputfields}      
       placeholder = "Shop Name" required
-      placeholderTextColor = "white"
+      placeholderTextColor = "black"
       onChangeText = {shopName => setShopName(shopName)}/>
 
       <TextInput style = {styles.textinputfields}     
       placeholder = "Shop Address" required
-      placeholderTextColor = "white"
+      placeholderTextColor = "black"
       onChangeText = {shopAddress => setShopAddress(shopAddress)}/>
 
       <TextInput style = {styles.textinputfields}      
       placeholder = "Password" required
-      placeholderTextColor = "white"
+      placeholderTextColor = "black"
       secureTextEntry = {true}
       onChangeText = {password => setPassword(password)}/>
 
       <TextInput style = {styles.textinputfields}      
       placeholder = "Re-Enter Your Password" required
-      placeholderTextColor = "white"
+      placeholderTextColor = "black"
       secureTextEntry = {true}
       onChangeText = {confirmpassword => setConfirmPassword(confirmpassword)}/>
 
@@ -129,8 +133,9 @@ const Vendor_register = () => {
         <Text style={styles.textstyle}> Create Account </Text>
       </TouchableOpacity>  
 
-      <TouchableOpacity style={{ marginTop:'6%'}}>
-          <Text  style={styles.textstyle} onPress={()=>{OnPressLogin()}}>Already User? Login...</Text>
+      <TouchableOpacity style={{ flexDirection:'row', justifyContent:'center', marginTop:'30%'}}>
+          <Text style={styles.textstyle}>Already User? </Text>
+          <Text  style={styles.textstyle1} onPress={()=>{OnPressLogin()}}> Login...</Text>
       </TouchableOpacity>    
       
     </View>
@@ -139,11 +144,12 @@ const Vendor_register = () => {
 
 const styles = StyleSheet.create({    
   Wrapper: {
-    backgroundColor: 'rgb(88, 149, 164)',
+    // backgroundColor: 'rgb(88, 149, 164)',
     // padding: 80,
+    backgroundColor: '#EAF2F4',
     width: '100%',
     height: '100%',
-    paddingTop:'30%',
+    paddingTop:'20%',
     paddingHorizontal:'14%'
   },
 
@@ -156,9 +162,11 @@ const styles = StyleSheet.create({
   },
 
   headerWrapper: {
-    borderBottomColor: '#ff9933',
-    borderBottomWidth: 2,
+    flexDirection:'row',
+    // borderBottomColor: '#ff9933',
+    // borderBottomWidth: 2,
     marginBottom: '10%', 
+    justifyContent:'center'
   },
 
   heading: {
@@ -172,7 +180,14 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: 15
+    fontSize: 16
+  },
+
+  textstyle1: {
+    color: 'blue',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 16
   },
 
   buttonstyle: {

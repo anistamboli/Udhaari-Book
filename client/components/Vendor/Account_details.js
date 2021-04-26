@@ -6,22 +6,32 @@ import { FlatList,StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } f
 //Expo Imports
 import { Entypo } from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
+import { useNavigation } from '@react-navigation/native';
+
 // import { response } from 'express';
 
+import axios from 'axios';
+
+// const promise = fetchData();
+// fetchData = ()=>{
+
+// }
 
 const Account_details = () => {  
 
-  // const vRMN = route.params.vRMN; 
-  // const cRMN = route.params.cRMN; 
   const [isLoading, setLoading] = useState(true);
-  // const [vendorContact, setVendorContact]=('9196191919');
-  // const [consumerContact, setConsumerContact]=('9021390130');
   const [selectedConsumer, setSelectedConsumer] = useState([]);
+  
   const [name, setName] = useState();
   const [threshold, setThreshold] = useState();
 
+  const today = new Date();
+  const [due, setDue]= useState(today);
+  const [recentPayment, setRecentPayment] = useState();
+
   const [vRMN, setvRMN] = useState();
   const [cRMN, setcRMN] = useState();
+  const navigation = useNavigation();
   
   async function getValueFor() {
     let vRMN = await SecureStore.getItemAsync('vendorContact');
@@ -30,12 +40,23 @@ const Account_details = () => {
     setcRMN(cRMN);
     // const cRMN=12;
     const response={}
-    fetch('http://localhost:5000/Account_details/'+vRMN+'/'+cRMN)
+    await fetch('http://localhost:5000/Account_details/'+vRMN+'/'+cRMN)
     .then((response) => response.json())
-    .then((result) => setSelectedConsumer(result))
+    .then((result) => {setSelectedConsumer(result)
+      setDue(new Date(result[0].due_date))
+        console.log(due)})
     .catch((error) => console.error(error))
     .finally(() => setLoading(false))
   }
+
+  const pymnt = axios.get('http://localhost:5000/Payment_history', {params:{
+    vRMN, cRMN }})
+    .then((pymnt)=> {
+      setRecentPayment(pymnt.data[0].payed_amount)           
+    })  
+    .catch((error)=>{
+      console.log(error)
+    })  
 
   useEffect(() => {
     getValueFor();
@@ -64,7 +85,9 @@ const Account_details = () => {
             // var cRMN=selectedConsumer[0].contact;
             alert(typeof(cRMN));
             const response = await fetch('http://localhost:5000/Account_details/'+vRMN+'/'+cRMN, { method: 'DELETE' });
-            const result = await response.json();
+            const result = await response.json()
+            if(result.success===true) {
+              navigation.navigate('Vendor Dashboard')}
             alert(result.message);
             // navigation.navigate('NavStack', {screen : 'Vendor_dashboard'})
           }
@@ -79,15 +102,7 @@ const Account_details = () => {
 
 
   const EditNameThreshold = async () =>{
-    // alert("EDIT VALUE"+editValue);//1
-    // setName(editValue);
-    // alert(typeof(name));
-    // var vRMN =9196191919;
-    // var cRMN =9021390130;
-    alert(name);//3 //3
-    alert(threshold);
-    alert(typeof(name));
-    alert(typeof(threshold));
+
     if(typeof(name)==='string' || typeof(threshold)==='string'){
       // var cRMN = selectedConsumer[0].contact;
       if(typeof(name)==='string'){
@@ -143,13 +158,21 @@ const Account_details = () => {
 
 
   return (      
-    <View style={{ flex: 1, padding: 24 }}>
+    <View style={{ flex: 1, padding: 24, backgroundColor:'#EAF2F4' }}>
       {isLoading ? <Text>Loading...</Text> : (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent:  'space-between', paddingTop:'3%'}}>  
-          {selectedConsumer[0].payed_amount>0 ? 
-            <Text style={{textAlign:'center',padding: 10, borderRadius: 5, width: '20%', backgroundColor: 'green', alignSelf:'flex-end'}}>Active</Text>: 
-            <Text style={{textAlign:'center',padding: 10, borderRadius: 5, width: '20%', backgroundColor: 'red', alignSelf:'flex-end'}}>Blocked</Text>
-          }           
+          <View style={{flexDirection:'row'}}>
+            <View style={{flexDirection:'column', width:'50%'}}>
+              <Text style={{fontWeight:'bold'}}>Address:</Text>
+              <Text>{selectedConsumer[0].address}</Text>
+            </View>
+            <View style={{width:'50%'}}>
+            { (due.getTime() + 5*24*60*60*1000) > (today.getTime()) ? 
+              <Text style={{textAlign:'center',fontWeight:'bold',padding: 10, borderRadius: 5, width: '50%',  backgroundColor: '#B2EBE0', borderWidth:1, borderColor:'green', alignSelf:'flex-end'}}>Active</Text>: 
+              <Text style={{textAlign:'center',fontWeight:'bold',padding: 10, borderRadius: 5, width: '50%', backgroundColor: '#F5E2E4', borderWidth:1, borderColor:'red', alignSelf:'flex-end'}}>Blocked</Text>
+            }   
+            </View>
+          </View>          
           {/* <Text>{'\n'}</Text>  */}
           <TouchableOpacity activeOpacity={2} style={{marginTop:'10%'}} >
             <TextInput style={{ fontSize: 18, color: 'green'}}
@@ -169,13 +192,13 @@ const Account_details = () => {
               <View style={{flexDirection:'column'}}>
                 <View style={{flexDirection:'row', width:'100%',marginTop:'3%'}}>
                   <View style={{width:'50%', justifyContent:'center'}}>
-                    <Text>Threshold</Text>
+                    <Text style={{fontWeight:'bold'}}>Threshold</Text>
                   </View>
                   <View style={{width:'50%', alignItems:'flex-end', paddingRight:'1%'}}>
                     <TouchableOpacity activeOpacity={2} >
                       <TextInput style={{ fontSize: 18, color: 'green'}}
                         style={{ height: 30, width:'50%', borderColor: 'gray', textAlign: 'right' }}
-                        placeholderTextColor = 'black'
+                        placeholderTextColor = 'green'
                         onChangeText={setThreshold}
                         value={threshold}
                         placeholder={(selectedConsumer[0].threshold).toString()}
@@ -185,7 +208,7 @@ const Account_details = () => {
                 </View>
                 <View style={{flexDirection:'row', width:'100%',marginTop:'2%'}}>
                   <View style={{width:'50%'}}>
-                    <Text>Account Started Date</Text>
+                    <Text style={{fontWeight:'bold'}}>Account Start Date</Text>
                   </View>
                   <View style={{width:'50%', alignItems:'flex-end'}}>
                     <Text>{new Date(item.start_date).toDateString()}</Text>
@@ -193,7 +216,7 @@ const Account_details = () => {
                 </View>
                 <View style={{flexDirection:'row', width:'100%',marginTop:'3%'}}>
                   <View style={{width:'50%'}}>
-                    <Text>Start Date</Text>
+                    <Text style={{fontWeight:'bold'}}>Billing Start Date</Text>
                   </View>
                   <View style={{width:'50%', alignItems:'flex-end'}}>
                     <Text>{new Date(item.billing_start_date).toDateString()}</Text>
@@ -201,7 +224,7 @@ const Account_details = () => {
                 </View>
                 <View style={{flexDirection:'row', width:'100%',marginTop:'3%'}}>
                   <View style={{width:'50%'}}>
-                    <Text>Due Date</Text>
+                    <Text style={{fontWeight:'bold'}}>Bill Due Date</Text>
                   </View>
                   <View style={{width:'50%', alignItems:'flex-end'}}>
                     <Text>{new Date(item.due_date).toDateString()}</Text>
@@ -209,61 +232,32 @@ const Account_details = () => {
                 </View>
                 <View style={{flexDirection:'row', width:'100%',marginTop:'3%'}}>
                   <View style={{width:'50%'}}>
-                    <Text>Last Paid Amount</Text>
+                    <Text style={{fontWeight:'bold'}}>Last Paid Amount</Text>
                   </View>
                   <View style={{width:'50%', alignItems:'flex-end'}}>
-                    <Text>₹{item.payed_amount}.00</Text>
+                    {recentPayment===undefined || recentPayment===0 || recentPayment===null? 
+                    <Text>No Payments Yet</Text>:
+                    <Text>₹ {recentPayment}.00</Text>
+                    }                   
+                  </View> 
+                </View>
+                <View style={{flexDirection:'row', width:'100%',marginTop:'3%'}}>
+                  <View style={{width:'50%'}}>
+                    <Text style={{fontWeight:'bold'}}>Total Due Amount</Text>
+                  </View>
+                  <View style={{width:'50%', alignItems:'flex-end'}}>
+                    <Text>₹ {item.balance}.00</Text>
                   </View>
                 </View>
                 <View style={{flexDirection:'row', width:'100%',marginTop:'3%'}}>
                   <View style={{width:'50%'}}>
-                    <Text>Total Due Amount</Text>
+                    <Text style={{fontWeight:'bold'}}>Partial  Due Amount</Text>
                   </View>
                   <View style={{width:'50%', alignItems:'flex-end'}}>
-                    <Text>₹{item.balance}.00</Text>
-                  </View>
-                </View>
-                <View style={{flexDirection:'row', width:'100%',marginTop:'3%'}}>
-                  <View style={{width:'50%'}}>
-                    <Text>Partial  Due Amount</Text>
-                  </View>
-                  <View style={{width:'50%', alignItems:'flex-end'}}>
-                    <Text>₹{item.balance*item.threshold}.00</Text>
+                    <Text>₹ {item.balance*item.threshold}.00</Text>
                   </View>
                 </View>
               </View>
-              // <View style={{justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', flex: 1, paddingTop:0}}>
-              //   <View>                
-              //     <Text>THRESHOLD</Text>
-              //     <Text></Text>
-              //     <Text>ACCOUNT STARTED DATE</Text>                                
-              //     <Text>START DATE</Text>
-              //     <Text>DUE DATE</Text>     
-              //     <Text>LAST PAID AMOUNT</Text>                            
-              //     <Text>TOTAL DUE AMOUNT</Text>
-              //     <Text>PARTIAL DUE AMOUNT</Text>        
-              //   </View>
-              //   <View>
-              //     <TouchableOpacity activeOpacity={2} >
-              //       <TextInput style={{ fontSize: 18, color: 'green', textAlign: 'center'}}
-              //       style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-              //       placeholderTextColor = 'black'
-              //       onChangeText={setThreshold}
-              //       value={threshold}
-              //       placeholder={(selectedConsumer[0].threshold).toString()}
-              //       />        
-              //     </TouchableOpacity>
-              //     <Text>{new Date(item.start_date).toDateString()}</Text>                                
-              //     <Text>{new Date(item.billing_start_date).toDateString()}</Text>
-              //     <Text>{new Date(item.due_date).toDateString()}</Text>      
-              //     <Text>₹{item.payed_amount}.00</Text>                
-              //     <Text>₹{item.balance}.00</Text>
-              //     <Text>₹{item.balance*item.threshold}.00</Text>   
-              //     {/* <TouchableOpacity activeOpacity={2} >
-              //         <Entypo name="trash" size={50} color="red" style={{alignSelf:'flex-end'}} onPress = {DeleteAccount}/> 
-              //     </TouchableOpacity>                       */}
-              //   </View>  
-              // </View>
             )            
           }}/>   
           <View style={{flexDirection:'row', width:'100%', marginBottom:'8%'}}>
@@ -274,7 +268,7 @@ const Account_details = () => {
             </View>
             <View style={{width:'50%', paddingRight:'2%'}}>
               <TouchableOpacity activeOpacity={2} >
-                <Entypo name="trash" size={50} color="red" style={{alignSelf:'flex-end'}} onPress = {DeleteAccount}/> 
+                <Entypo name="trash" size={35} color="gray" style={{alignSelf:'flex-end'}} onPress = {() => DeleteAccount()}/> 
               </TouchableOpacity>
             </View>  
           </View>

@@ -23,20 +23,20 @@ const Launching_page = () => {
   return (
     <SafeAreaView style = {styles.container}>
       <View style={{marginTop:'25%'}}>
-        <Image source={udhaari} style={{ width: 270, height: 270 }} />
+        <Image source={udhaari} style={{ width: 250, height: 250, borderRadius:60 }} />
       </View>
-      <View style={{flexDirection:'row', width:'100%', alignItems:'center',justifyContent:'center', marginTop:'15%'}}>
+      <View style={{flexDirection:'row', width:'100%', alignItems:'center',justifyContent:'center', marginTop:'25%'}}>
         <View style={{flexDirection:'column', justifyContent:'center', alignItems:'center', paddingHorizontal:'5%'}}>
           <TouchableOpacity onPress = {() => { navigation.navigate('Vendor Login');}}>
           <Image source= {require('../assets/seller.png')} style={{height:110, width:110}}/> 
           </TouchableOpacity>
-          <Text style={{marginTop:'5%', fontSize:20}}>Vendor</Text>
+          <Text style={{marginTop:'10%', fontSize:20, fontWeight:'bold'}}>Vendor</Text>
         </View>
         <View style={{flexDirection:'column', justifyContent:'center', alignItems:'center', paddingHorizontal:'5%'}}>
           <TouchableOpacity onPress = {() => { navigation.navigate('Consumer Login');}}>
-          <Image source= {require('../assets/customer.png')} style={{height:110, width:110}}/> 
+          <Image source= {require('../assets/consumer.png')} style={{height:110, width:110}}/> 
           </TouchableOpacity>
-          <Text style={{marginTop:'5%', fontSize:20}}>Consumer</Text>
+          <Text style={{paddingRight:'3%', marginTop:'10%', fontSize:20, fontWeight:'bold'}}>Consumer</Text>
         </View>      
       </View> 
     </SafeAreaView>
@@ -47,7 +47,7 @@ const Launching_page = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EDFFEF',
+    backgroundColor: '#EAF2F4',
     height:'100%',
     width:'100%',
     alignItems: 'center',

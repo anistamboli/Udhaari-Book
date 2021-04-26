@@ -10,9 +10,8 @@ import { useNavigation } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 
 export default function Vendor_login() {
-    const [contact, setContact] = useState('0');
+    const [contact, setContact] = useState('');
     const [password, setPassword] = useState('');
-    // const [validPassword, setValidPassword] = useState ('');
 
     const navigation = useNavigation();
 
@@ -26,6 +25,10 @@ export default function Vendor_login() {
 
     const OnPressLogin = async (contact) => {
       // var result = parseInt(reqId); 
+      if(!contact.trim() && !password.trim()){
+        alert('Please Enter RMN and password');
+        return;
+      }
       if(!contact.trim()){
         alert('Please Enter Your Contact Number');
         return;
@@ -62,7 +65,7 @@ export default function Vendor_login() {
           if(password===validPassword){
             // alert('welcome...');
             SaveVendorContact(contact)
-            navigation.navigate('Vendor_navTab')
+            navigation.navigate('Vendor Dashboard')
             return;
           }
           if(password!==validPassword){
@@ -79,10 +82,10 @@ export default function Vendor_login() {
    
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={{color: '#888', fontSize: 23 , paddingBottom:'4%'}}> 
+        <Text style={{color: 'black', fontSize: 25, fontWeight:'bold', paddingBottom:'4%', paddingTop:'10%'}}> 
             Vendor Login
         </Text>
-        <Image style={styles.image} source={require('../../assets/sk.jpg')} />
+        <Image style={styles.image} source={require('../../assets/sk3.jpg')} />
 
         <StatusBar style='auto' />
         <View style={styles.inputView}>
@@ -114,11 +117,12 @@ export default function Vendor_login() {
         </TouchableOpacity> */}
    
         <TouchableOpacity style={styles.loginBtn} onPress={()=>{OnPressLogin(contact)}}>
-          <Text style={styles.loginText}>LOGIN</Text>
+          <Text style={styles.TextInput}>LOGIN</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity>
-          <Text style={styles.register_button} onPress={()=>{OnPressRegister()}}>New User? Register.</Text>
+        <TouchableOpacity style={styles.register_button}>
+          <Text style={styles.textstyle}>New User? </Text>
+          <Text style={styles.textstyle1} onPress={()=>{OnPressRegister()}}>Register now...</Text>
         </TouchableOpacity>
 
       </SafeAreaView>
@@ -130,23 +134,27 @@ export default function Vendor_login() {
         width: '100%',
         height: '100%',
         flex: 0,
-        backgroundColor: '#EDFFEF',
+        backgroundColor: '#edf7fc',
         alignItems: 'center',
         // justifyContent: 'center',
-        padding: 60
+        // padding: 60
+        // paddingTop:'40%'
         
     },
    
     image: { 
-        marginBottom: 20,
+        marginBottom: '5%',
+        borderRadius: 60
     },
    
     inputView: {
-        backgroundColor: '#FFC0CB',
-        borderRadius: 30,
-        width: 280,
-        height: 45,
-        marginBottom: 20,
+        borderColor:'skyblue',
+        backgroundColor: 'white',
+        borderWidth:1,
+        borderRadius: 20,
+        width: '75%',
+        height: 52,
+        marginBottom: '5%',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -155,20 +163,41 @@ export default function Vendor_login() {
         height: 50,
         flex: 1,
         padding: 10,
+        fontSize: 16
     },
    
+    textstyle: {
+      color: 'black',
+      fontWeight: 'bold',
+      textAlign: 'center',
+      fontSize: 16
+    },
+
+    textstyle1: {
+      color: 'blue',
+      fontWeight: 'bold',
+      textAlign: 'center',
+      fontSize: 16
+    },
+
     register_button: {
-      marginTop: '10%',   
+      marginTop: '50%',   
       height: 30,
+      fontSize:16,
+      fontWeight:'bold',
+      flexDirection:'row',
+       justifyContent:'center'
     },
    
     loginBtn: {
-        width: 150,
-        borderRadius: 25,
+        width: '35%',
+        borderRadius: 13,
+        borderWidth:0.5,
+        backgroundColor: '#F5E2E4',
+        borderColor:'red',
         height: 45,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10,
-        backgroundColor: 'skyblue',
     },
   });

@@ -53,18 +53,16 @@ export default function Udhaari_records() {
     const response_acc = await axios.get('http://localhost:5000/Account_details/Udhaari_rec', {params:{
       vRMN,cRMN}})
       .then((response_acc)=> {
-        setAccDetails(response_acc.data)
-        // console.log(response_acc.data.start_date)
-        // console.log(response_acc.data)
-        // console.log(accDetails)
-      .then((response_acc)=>{
+       setAccDetails(response_acc.data)
         setStart(new Date(response_acc.data.start_date))
       })
       .catch((error)=>{
         console.log(error)
       })
-      })
+      
   }
+
+  
 
   useEffect(() => { 
     getValueFor();  
@@ -174,7 +172,7 @@ export default function Udhaari_records() {
            
           <View style={{marginTop:'1%', width:'100%', height:'100%'}}>
             <View style={{width:'100%', flexDirection:'row', marginBottom:'2%', marginTop:'2%'}}>
-            <View style={{width:'40%', marginHorizontal:'5%'}}>
+            <View style={{width:'30%', marginHorizontal:'10%'}}>
               <Button  title="From" onPress={showDatePicker} />
                 <DateTimePickerModal
                   isVisible={isDatePickerVisible}
@@ -183,9 +181,9 @@ export default function Udhaari_records() {
                   onCancel={hideDatePicker}
                   maximumDate={d2}
                 />
-              <Text style={{textAlign:'center', marginTop:'2%'}}>{sDate.toDateString('en-US')}</Text>
+              <Text style={{textAlign:'center', marginTop:'2%', fontWeight:'bold'}}>{sDate.toDateString('en-US')}</Text>
             </View>
-            <View style={{width:'40%', marginHorizontal:'5%'}}>
+            <View style={{width:'30%', marginHorizontal:'10%'}}>
               <Button title="To" onPress={showDatePicker1} />
                 <DateTimePickerModal
                   isVisible={isDatePickerVisible1}
@@ -195,11 +193,11 @@ export default function Udhaari_records() {
                   minimumDate={sDate}
                   maximumDate={d2}
                 />
-              <Text style={{textAlign:'center', marginTop:'2%'}}>{eDate.toDateString()}</Text>
+              <Text style={{textAlign:'center', marginTop:'2%', fontWeight:'bold'}}>{eDate.toDateString()}</Text>
             </View> 
           </View> 
           <View>
-            <ScrollView vertical style={{height:'81%'}} showsVerticalScrollIndicator={false}
+            <ScrollView vertical style={{height:'80%', marginHorizontal:'2%', borderWidth:1, borderColor:'#5caff2'}} showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             
             {allPaymentRec.map((item,index) => {
@@ -209,10 +207,10 @@ export default function Udhaari_records() {
               <View style= {{flexDirection :'column', width:'100%',height: 100,justifyContent: 'center', alignItems:'center', borderWidth:1}} key={index}>
                 <View style= {{flexDirection :'row', width:'100%',justifyContent: 'center'}}>
                   <View style= {{ width:'50%',justifyContent: 'center', alignItems:'flex-start', paddingLeft:'2%'}}>
-                      <Text>T-Id : {item.id}</Text>
+                      <Text style={{fontWeight:'bold'}}>T-Id : {item.id}</Text>
                   </View>
                   <View style= {{ width:'50%',justifyContent: 'center', alignItems: 'flex-end',paddingRight:'2%'}}>
-                    <Text>{new Date(item.transaction_date).toDateString()}</Text>
+                    <Text style={{fontWeight:'bold'}}>{new Date(item.transaction_date).toDateString()}</Text>
                   </View>
                 </View >
                 <View style= {{flexDirection :'row', width:'100%',justifyContent: 'center', alignItems:'flex-start'}}>
@@ -252,7 +250,7 @@ export default function Udhaari_records() {
           
         <View style={{marginTop:'1%', width:'100%', height:'100%'}}>
           <View style={{width:'100%', flexDirection:'row', marginBottom:'2%', marginTop:'2%'}}>
-            <View style={{width:'40%', marginHorizontal:'5%'}}>
+            <View style={{width:'30%', marginHorizontal:'10%'}}>
               <Button  title="From" onPress={showDatePicker} />
                 <DateTimePickerModal
                   isVisible={isDatePickerVisible}
@@ -261,9 +259,9 @@ export default function Udhaari_records() {
                   onCancel={hideDatePicker}
                   maximumDate={d2}
                 />
-              <Text style={{textAlign:'center', marginTop:'2%'}}>{sDate.toDateString()}</Text>
+              <Text style={{textAlign:'center', marginTop:'2%', fontWeight:'bold'}}>{sDate.toDateString()}</Text>
             </View>
-            <View style={{width:'40%', marginHorizontal:'5%'}}>
+            <View style={{width:'30%', marginHorizontal:'10%'}}>
               <Button title="To" onPress={showDatePicker1} />
                 <DateTimePickerModal
                   isVisible={isDatePickerVisible1}
@@ -273,30 +271,30 @@ export default function Udhaari_records() {
                   minimumDate={sDate}
                   maximumDate={d2}
                 />
-              <Text style={{textAlign:'center', marginTop:'2%'}}>{eDate.toDateString()}</Text>
+              <Text style={{textAlign:'center', marginTop:'2%', fontWeight:'bold'}}>{eDate.toDateString()}</Text>
             </View> 
           </View> 
-          <View style={{width:'100%', height:'100%', marginTop:'1%'}}>
-            <View style= {{width:'100%', flexDirection:'row', height:'7%', backgroundColor:'skyblue',justifyContent: 'center', alignItems:'center', borderWidth:1}}>
+          <View style={{width:'98%', height:'100%', marginTop:'1%', marginHorizontal:'1%', borderWidth:1, borderColor:'#5caff2'}}>
+            <View style= {{width:'100%', flexDirection:'row', height:'7%', backgroundColor:'skyblue',justifyContent: 'center', alignItems:'center', borderWidth:1, borderColor:'#0c88ed'}}>
               <View style= {{width:'30%', justifyContent: 'center', alignItems:'flex-start', paddingLeft: '1%'}}>
-                <Text>Date</Text>
+                <Text style={{fontWeight:'bold'}}>Date</Text>
               </View>
               <View style= {{width:'25%', justifyContent: 'center', alignItems:'center'}}>
-                <Text>Product</Text>
+                <Text style={{fontWeight:'bold'}}>Product</Text>
               </View>
               <View style={{width:'15%', justifyContent: 'center', alignItems:'center'}}>
-                <Text>quantity</Text>
+                <Text style={{fontWeight:'bold'}}>Qty</Text>
               </View>
               <View style={{width:'15%', justifyContent: 'center', alignItems:'center'}}>
-                <Text>Price</Text>
+                <Text style={{fontWeight:'bold'}}>Price</Text>
               </View>
               <View style={{width:'15%', justifyContent: 'center', alignItems:'flex-end', paddingRight:'2%'}}>
-                <Text>Total</Text>
+                <Text style={{fontWeight:'bold'}}>Tot</Text>
               </View>
             </View>
 
           <View>
-            <ScrollView vertical style={{height:'73%'}} showsVerticalScrollIndicator={false}
+            <ScrollView vertical style={{height:'72%', marginBottom:'1%'}} showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
       
             {allPurchaseRec.map((item, index) => {
