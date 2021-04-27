@@ -12,25 +12,28 @@ app.use(express.json());
 app.post('/Vendor_register', async(req,res) => {
     try{
         const {contact, name, shop_name, shop_address, password} = req.body;
-        await pool.query('INSERT INTO vendor (contact, name, shop_name, shop_address, password) VALUES ($1, $2, $3, $4, $5) RETURNING *', 
-        [contact, name, shop_name, shop_address, password],(err)=>{
-            if(err){   
-                res.json({
-                    success : false,
-                    message : 'Contact Number Already Registered', 
-                });
-            }
-            else{
-                res.json({
+        q1=await pool.query('Select name from vendor where contact=$1',
+        [contact]);
+        console.log('condition chk-',q1.rows)
+        if(q1.rows.length==0){
+            pool.query('INSERT INTO vendor (contact, name, shop_name, shop_address, password) VALUES ($1, $2, $3, $4, $5) RETURNING *', 
+            [contact, name, shop_name, shop_address, password]);
+            res.json({
                     success : true,
                     message : 'Registration Successful', 
-                });
-            }
-        });     
+            });
+        }
+        else{
+            console.log("e");
+            res.json({
+                success : false,
+                message : 'Contact Number Already Exists', 
+            });
+        } 
     }
     catch(err) {
         console.log(err.message);        
-    }
+    }    
 })
 
 
@@ -69,23 +72,25 @@ app.get( '/Consumer_login', async (req,res) => {
 
 app.post('/Consumer_register', async(req,res) => {
     try{
-        // console.log(req.body);
         const {contact, name, address, password} = req.body;
-        await pool.query('INSERT INTO consumer (contact, name, address, password) VALUES ($1, $2, $3, $4) RETURNING *', 
-        [contact, name, address, password], (err)=>{
-            if(err){   
-                res.json({
-                    success : false,
-                    message : 'Contact Number Already Registered', 
-                });
-            }
-            else{
-                res.json({
+        q1=await pool.query('Select name from consumer where contact=$1',
+        [contact]);
+        console.log('condition chk-',q1.rows)
+        if(q1.rows.length==0){
+            pool.query('INSERT INTO consumer (contact, name, address, password) VALUES ($1, $2, $3, $4) RETURNING *',  
+            [contact, name, address, password]);
+            res.json({
                     success : true,
                     message : 'Registration Successful', 
-                });
-            }
-        });     
+            });
+        }
+        else{
+            console.log("e");
+            res.json({
+                success : false,
+                message : 'Contact Number Already Exists', 
+            });
+        } 
     }
     catch(err) {
         console.log(err.message);        
