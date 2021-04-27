@@ -6,67 +6,83 @@ import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, ImageBackgr
 import { useNavigation } from '@react-navigation/native';
 import { NavigationContext, NavigationEvents } from 'react-navigation';
 
-import { Ionicons } from '@expo/vector-icons';
-
 
 const Consumer_register = () => {  
-  const[vendorName, setConsumerName] = useState('');
+  const[consumerName, setConsumerName] = useState('');
   const[rmn, setRmn] = useState('');
   const[address, setAddress] = useState('');
   const[password, setPassword] = useState('');
-  const[confirmpassword, setConfirmPassword] = useState('');
-  // const[refreshPage, setRefreshPage] = useState('');
-  
+  const[confirmpassword, setConfirmPassword] = useState('');  
   const navigation = useNavigation();
+
 
   const OnPressLogin = () => {
     navigation.navigate('Consumer Login');
   }
 
+
+  const ClearStates = () => {
+    setConsumerName('');
+    setRmn('');
+    setAddress('');
+    setPassword('');
+    setConfirmPassword('');
+  }
+
+
   const onSubmit = async () => { 
-    if(!vendorName.trim()){
+    if(!consumerName.trim()){
       alert('Please Enter Your Name');
       return;
     }
-    if(!rmn.trim()){
+    else if(!isNaN(consumerName) || !(consumerName.match(/^[A-Za-z]+$/))){
+      alert('Please Enter A Valid Name Containing Alphabets Only');
+      return;
+    }
+    else if(!rmn.trim()){
       alert('Please Enter Your Contact Number');
       return;
     }
-    if(rmn>10000000000 || rmn<999999999){
-      alert("Required 10 Digit Contact Number");
+    else if(isNaN(rmn)){
+      alert("Please Enter A Valid 10 Digit Contact Number");
       return;
     }
-    if(!shopAddress.trim()){
+    else if(rmn>10000000000 || rmn<999999999){
+      alert("Required 10 Digit Valid Contact Number");
+      return;
+    }
+    else if(!address.trim()){
       alert('Please Enter Your Address');
       return;
     }
-    if(!password.trim()){
+    else if(!password.trim()){
       alert('Please Enter Your Password');
       return;
     }
-    if(password!=confirmpassword){
+    else if(!confirmpassword.trim()){
+      alert('Please Re-Enter Your Password');
+      return;
+    }    
+    else if(password!=confirmpassword){
       alert('Password Unmatched');
       return;
     }
     else{
       try{      
-
-        const body = {contact:Number(rmn), name:vendorName, shop_name:shopName, shop_address:shopAddress, password:password};
+        const body = {contact:Number(rmn), name:consumerName, address:address, password:password};
         const response = await fetch('http://localhost:5000/Consumer_register', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/JSON'},
-            body: JSON.stringify(body)      
+            'Content-Type': 'application/JSON'
+          },
+          body: JSON.stringify(body)      
         });
         const result = await response.json();
-        // JSON.stringify(result);
-        // console.log(result);
         alert(result.message);
-        // window.location.reload();
-        // setRefreshPage("refresh");
-        alert('dsd');
-        
+        if(result.success==true){
+          ClearStates();        
+        }        
       }
       catch(err){
         console.error(err.message);
@@ -79,9 +95,6 @@ const Consumer_register = () => {
     <View style={styles.Wrapper}>  
       <View style={styles.headerWrapper}> 
         <Text style={styles.heading}> WELCOME</Text> 
-        {/* <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Login');}}> 
-          <Ionicons name="arrow-back-circle-sharp" size={40} color="black" />
-        </TouchableOpacity> */}
       </View>
 
       <View style={{ flexDirection:'row', borderBottomColor: '#ff9933', borderBottomWidth: 2, marginBottom: '10%' }}> 
@@ -91,31 +104,36 @@ const Consumer_register = () => {
       <TextInput style = {styles.textinputfields}      
       placeholder = 'Name' required
       placeholderTextColor = "black"
-      onChangeText = {consumerName => setConsumerName(consumerName)}/>
+      onChangeText = {consumerName => setConsumerName(consumerName)}
+      value ={consumerName}/>
 
       <TextInput style = {styles.textinputfields}      
       placeholder = "Contact Number" required
       placeholderTextColor = "black"
       maxLength={10}
       keyboardType='numeric'
-      onChangeText = {rmn => setRmn(rmn)}/>
+      onChangeText = {rmn => setRmn(rmn)}
+      value = {rmn}/>
 
       <TextInput style = {styles.textinputfields}     
       placeholder = "Address" required
       placeholderTextColor = "black"
-      onChangeText = {address => setAddress(address)}/>
+      onChangeText = {address => setAddress(address)}
+      value = {address}/>
 
       <TextInput style = {styles.textinputfields}      
       placeholder = "Password" required
       placeholderTextColor = "black"
       secureTextEntry = {true}
-      onChangeText = {password => setPassword(password)}/>
+      onChangeText = {password => setPassword(password)}
+      value = {password}/>
 
       <TextInput style = {styles.textinputfields}      
       placeholder = "Re-Enter Your Password" required
       placeholderTextColor = "black"
       secureTextEntry = {true}
-      onChangeText = {confirmpassword => setConfirmPassword(confirmpassword)}/>
+      onChangeText = {confirmpassword => setConfirmPassword(confirmpassword)}
+      value = {confirmpassword}/>
 
       <TouchableOpacity style = {styles.buttonstyle} onPress={()=>onSubmit()}>
         <Text style={styles.textstyle}> Create Account </Text>
@@ -124,11 +142,11 @@ const Consumer_register = () => {
       <TouchableOpacity style={{ flexDirection:'row', justifyContent:'center', marginTop:'62%'}}>
           <Text style={styles.textstyle}>Already User? </Text>
           <Text  style={styles.textstyle1} onPress={()=>{OnPressLogin()}}> Login...</Text>
-      </TouchableOpacity>    
-      
+      </TouchableOpacity>          
     </View>
   );  
 }
+
 
 const styles = StyleSheet.create({    
   Wrapper: {
@@ -201,7 +219,6 @@ const styles = StyleSheet.create({
     alignSelf:'flex-start'
     
   }
-
 }); 
 
 export default Consumer_register;
