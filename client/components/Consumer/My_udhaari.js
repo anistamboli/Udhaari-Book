@@ -292,7 +292,7 @@ export default function My_udhaari() {
             </View>
 
           <View>
-            <ScrollView vertical style={{height:'74%', marginBottom:'1%'}} showsVerticalScrollIndicator={false}
+            <ScrollView vertical style={{height:'74%', marginBottom:'1%',borderWidth:1}} showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
       
             {allPurchaseRec.map((item, index) => {

@@ -1,7 +1,9 @@
 //React Native Imports
 import React, {useState , useEffect, useCallback}                                                      from 'react'
 import { SearchBar }                                                                      from 'react-native-elements';
-import { SafeAreaView, StyleSheet, View, Image, TouchableOpacity, Alert , FlatList, Text} from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Alert , FlatList, Text} from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+
 
 //React Native Navigation Imports
 import { useNavigation, useIsFocused, useFocusEffect } from '@react-navigation/native';
@@ -81,7 +83,18 @@ const Consumer_dashboard = () =>{
     
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style = {styles.container}>
+        <View style = {styles.container}>
+        <View style={{widht:'100%', flexDirection:'row', alignItems:'center', paddingTop:'11%',paddingBottom:'1%', backgroundColor:'#EAF2F4'}}>
+          <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Dashboard');}} style={{width:'15%', paddingLeft:'3%', alignItems:'flex-start'}}> 
+            {/* <Image source={back_button} style={styles.back_button} /> */}
+            <AntDesign name="home" size={39} color="black" />
+          </TouchableOpacity>        
+          <Text style={{textAlign:'center', fontWeight:'bold', fontSize:25, color:'rgb(88, 149, 164)', width:'70%'}}>अब उधारी ले, विश्वास से!</Text> 
+          <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Login');}} style={{width:'15%',paddingRight:'3%', alignItems:'flex-end'}}> 
+            {/* <Image source={logout_button} style={styles.logout_button} /> */}
+            <AntDesign name="logout" size={32} color="black" />
+          </TouchableOpacity>   
+        </View>
         <View style={{widht:'100%', flexDirection:'row', alignItems:'center', marginTop:'5%'}}>
           <SearchBar 
           inputStyle={{width:'85%'}}

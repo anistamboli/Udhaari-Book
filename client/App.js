@@ -57,7 +57,8 @@ const Vendor_navTab = () => {
       <Tab.Navigator style={{paddingTop:'0.5%', backgroundColor:'skyblue'}} 
         tabBarOptions={{
         style: {
-          height: '9%',
+          height: 65,
+          // height:'9%',
           backgroundColor: '#5caff2',
           borderWidth:1,
           bottom:1,
@@ -107,7 +108,8 @@ const Consumer_navTab = () => {
       <Tab.Navigator style={{paddingTop:'0.5%', backgroundColor:'skyblue'}} 
         tabBarOptions={{
         style: {
-          height: '7%',
+          // height: '7%',
+          height:50,
           backgroundColor: '#5caff2',
           borderWidth:1,
           bottom:1,

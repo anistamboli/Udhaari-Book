@@ -1,11 +1,13 @@
 //React Native Imports
 import React, {useState , useEffect, useCallback}                                                      from 'react'
 import { SearchBar }                                                                      from 'react-native-elements';
-import { SafeAreaView, StyleSheet, View, Image, TouchableOpacity, Alert , FlatList, Text} from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Alert , FlatList, Text} from 'react-native';
 
 //React Native Navigation Imports
 import { useNavigation, useIsFocused, useFocusEffect } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+
 
 // import logout_button from '../../assets/logout_button.png'; 
 import { AntDesign } from '@expo/vector-icons';
@@ -94,10 +96,21 @@ const Vendor_dashboard = () =>{
     
   return (
     <SafeAreaView style={{ flex: 1 , paddingTop:'11%', height:'100%', width:'100%', backgroundColor:'#EAF2F4'}}>
-        <View style={{widht:'100%', flexDirection:'row', alignItems:'center'}}>
+        <View style={{widht:'100%', flexDirection:'row', alignItems:'center', paddingTop:'2%',paddingBottom:'1%', backgroundColor:'#EAF2F4'}}>
+          <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Dashboard');}} style={{width:'15%', paddingLeft:'4%', alignItems:'flex-start'}}> 
+            {/* <Image source={back_button} style={styles.back_button} /> */}
+            <AntDesign name="home" size={39} color="black" />
+          </TouchableOpacity>        
+          <Text style={{textAlign:'center', fontWeight:'bold', fontSize:25, color:'rgb(88, 149, 164)', width:'70%'}}>अब उधारी ले, विश्वास से!</Text> 
+          <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Login');}} style={{width:'15%',paddingRight:'4%', alignItems:'flex-end'}}> 
+            {/* <Image source={logout_button} style={styles.logout_button} /> */}
+            <AntDesign name="logout" size={32} color="black" />
+          </TouchableOpacity>   
+        </View>
+        <View style={{widht:'100%', alignItems:'center', paddingTop:'1%'}}>
           <SearchBar 
-          inputStyle={{width:'85%'}}
-          containerStyle={{width:'85%'}}
+          inputStyle={{width:'100%'}}
+          containerStyle={{width:'100%'}}
           backgroundColor = {'white'}
           placeholderTextColor = 'green'
           fontSize= {15}
@@ -106,15 +119,12 @@ const Vendor_dashboard = () =>{
           onClear={(text) => searchFilterFunction('')}
           value={search}          
           />              
-          <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Login')}} style={{width:'15%',height:'100%', paddingTop:'4%', paddingLeft:'4%', backgroundColor:'#303436'}}> 
-            {/* <Image source={logout_button} style={{ width: 60, height: 60, alignSelf:'flex-end', top:0, paddingTop:0}} /> */}
-            <AntDesign name="logout" size={35} color="white" />
-          </TouchableOpacity>
+         
         </View>
         <View style = {styles.body}>
-          <View style = {styles.listWrapper}>
-              <Text style = {styles.row}>Name </Text>
-              <Text style = {styles.row}>Consumer Contact Number</Text>
+          <View style = {styles.listWrapper1}>
+              <Text style = {styles.row1}>Name </Text>
+              <Text style = {styles.row1}>Contact </Text>
           </View>
           <FlatList 
           data = {filteredConsumers}
@@ -184,10 +194,14 @@ const Vendor_dashboard = () =>{
 
     body: {
       backgroundColor : '#EAF2F4',
+      borderWidth:2,
       flex : 1,
-      // marginTop: '5%',
+      marginTop: '5%',
+      marginBottom:'2%',
       height: '100%',
-      width: '100%'
+      width: '96%',
+      marginHorizontal:'2%',
+      backgroundColor:'white'
     },
     listWrapper : {
       flexDirection : 'row',
@@ -197,12 +211,30 @@ const Vendor_dashboard = () =>{
       borderBottomWidth : 1,
 
     },
+    listWrapper1 : {
+      flexDirection : 'row',
+      justifyContent: 'center',
+      alignItems:'center',
+      flexWrap : 'wrap',
+      borderBottomWidth : 2,
+
+    },
     row: {
       //backgroundColor : '#fff',
       flex : 1,
       fontSize : 15,
+      fontWeight:'bold',
       paddingHorizontal : 45,
       paddingVertical : 15
+    },
+    row1: {
+      //backgroundColor : '#fff',
+      flex : 1,
+      fontSize : 18,
+      fontWeight:'bold',
+      color:'red',
+      paddingHorizontal : 45,
+      paddingVertical : 15,
     }
   });
 
