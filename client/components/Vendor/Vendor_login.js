@@ -17,6 +17,8 @@ export default function Vendor_login() {
 
     async function SaveVendorContact(value) {
       await SecureStore.setItemAsync('vendorContact', value);
+      setContact('');
+      setPassword('');
     }
 
     const OnPressRegister = () => {
@@ -98,7 +100,7 @@ export default function Vendor_login() {
             textAlign='center'
             maxLength={10}
             onChangeText={(contact) => setContact(contact)}
-          />
+            value = {contact}/>
         </View>
    
         <View style={styles.inputView}>
@@ -109,7 +111,7 @@ export default function Vendor_login() {
             secureTextEntry={true}
             textAlign='center'
             onChangeText={(password) => setPassword(password)}
-          />
+            value = {password}/>
         </View>
    
         {/* <TouchableOpacity>

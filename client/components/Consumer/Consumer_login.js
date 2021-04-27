@@ -17,6 +17,8 @@ export default function Consumer_login() {
 
     async function SaveConsumerContact(value) {
       await SecureStore.setItemAsync('consumerMob', value);
+      setContact('');
+      setPassword('');
     }
 
     const OnPressRegister = () => {
@@ -98,7 +100,7 @@ export default function Consumer_login() {
             textAlign='center'
             maxLength={10}
             onChangeText={(contact) => setContact(contact)}
-          />
+            value ={contact}/>
         </View>
    
         <View style={styles.inputView}>
@@ -109,7 +111,7 @@ export default function Consumer_login() {
             secureTextEntry={true}
             textAlign='center'
             onChangeText={(password) => setPassword(password)}
-          />
+            value = {password}/>
         </View>
    
         {/* <TouchableOpacity>
