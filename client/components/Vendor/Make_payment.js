@@ -16,8 +16,8 @@ export default function Make_payment() {
   const [newDate , setNewDate] = useState('');
   const [amount , setAmount] = useState('');
   const [threshold , setthreshold] = useState('');
-  const [vRMN, setvRMN]=('2');
-  const [cRMN, setcRMN]=('11');
+  const [vRMN, setvRMN] = useState();
+  const [cRMN, setcRMN] = useState();
 
   async function getValueFor() {
     let vRMN = await SecureStore.getItemAsync('vendorContact');
@@ -25,17 +25,18 @@ export default function Make_payment() {
     setvRMN(vRMN);
     setcRMN(cRMN); 
       
-  }
- 
-  useEffect(() => {
-    const vRMN= 1;
-    const cRMN = 12;
     fetch('http://localhost:5000/threshold/'+vRMN+'/'+cRMN)
     .then((response1) => response1.json())
     .then((result1) => setthreshold(result1))
     .catch((error) => console.error(error))
     .finally(() => setLoading(false));
     ShowCurrentDate();
+  }
+ 
+  useEffect(() => {
+    const vRMN= 1;
+    const cRMN = 12;
+    
     getValueFor();
   }, []);
  

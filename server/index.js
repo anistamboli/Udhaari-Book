@@ -157,6 +157,23 @@ app.get('/Account_details/:vRMN/:cRMN', async (req, res) =>{
         console.error(err.message);
     }
 })
+// for consumer
+app.get('/My_account/:vRMN/:cRMN', async (req, res) =>{
+    try{
+        // console.log('HIE');
+        const {vRMN} = req.params;
+        const {cRMN} = req.params;
+        console.log(vRMN)
+        console.log(cRMN)
+        const result = await pool.query('SELECT consumer_name, vendor.shop_address, consumer.contact, threshold, start_date, due_date, balance, billing_start_date FROM vendor_consumer, consumer, vendor WHERE consumer.contact=vendor_consumer.consumer_contact and vendor.contact=vendor_consumer.vendor_contact and (consumer.contact=$1 and vendor_consumer.vendor_contact=$2)',
+        [cRMN,vRMN]);
+        // console.log(result.rows[0]);
+        res.json(result.rows);
+    }
+    catch(err){
+        console.error(err.message);
+    }
+})
 
 
 app.put('/Account_details/:vRMN/:cRMN', async (req, res) =>{

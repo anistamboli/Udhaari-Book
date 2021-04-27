@@ -34,29 +34,31 @@ const My_account = () => {
   const navigation = useNavigation();
   
   async function getValueFor() {
-    let vRMN = await SecureStore.getItemAsync('vendorContact');
-    let cRMN = await SecureStore.getItemAsync('consumerContact');
+    let vRMN = await SecureStore.getItemAsync('vendorMob');
+    let cRMN = await SecureStore.getItemAsync('consumerMob');
     setvRMN(vRMN);
     setcRMN(cRMN);
     // const cRMN=12;
     const response={}
-    await fetch('http://localhost:5000/Account_details/'+vRMN+'/'+cRMN)
+    await fetch('http://localhost:5000/My_account/'+vRMN+'/'+cRMN)
     .then((response) => response.json())
     .then((result) => {setselectedVendor(result)
       setDue(new Date(result[0].due_date))
         console.log(due)})
     .catch((error) => console.error(error))
     .finally(() => setLoading(false))
+
+    const pymnt = axios.get('http://localhost:5000/Payment_history', {params:{
+      vRMN, cRMN }})
+      .then((pymnt)=> {
+        setRecentPayment(pymnt.data[0].payed_amount)           
+      })  
+      .catch((error)=>{
+        console.log(error)
+      })  
   }
 
-  const pymnt = axios.get('http://localhost:5000/Payment_history', {params:{
-    vRMN, cRMN }})
-    .then((pymnt)=> {
-      setRecentPayment(pymnt.data[0].payed_amount)           
-    })  
-    .catch((error)=>{
-      console.log(error)
-    })  
+
 
   useEffect(() => {
     getValueFor();
@@ -163,8 +165,8 @@ const My_account = () => {
         <View style={{ flex: 1, flexDirection: 'column', justifyContent:  'space-between', paddingTop:'3%'}}>  
           <View style={{flexDirection:'row'}}>
             <View style={{flexDirection:'column', width:'50%'}}>
-              <Text style={{fontWeight:'bold', fontSize:16, }}>Address:</Text>
-              <Text >{selectedVendor[0].address}</Text>
+              <Text style={{fontWeight:'bold', fontSize:16, }}>Shop Address:</Text>
+              <Text >{selectedVendor[0].shop_address}</Text>
             </View>
             <View style={{width:'50%'}}>
             { (due.getTime() + 5*24*60*60*1000) > (today.getTime()) ? 
