@@ -37,27 +37,32 @@ export default function Consumer_login() {
       );
         return;
       }
-      if(!contact.trim()){
+      else if(!contact.trim()){
       //  alert('Please Enter Your Contact Number');
-      ToastAndroid.showWithGravity(
-        "Please Enter Your Contact Number",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER,
-       
-      );
-        return;
-      }
-      if(contact>10000000000 || contact<999999999){
-        //alert("Required 10 Digit Contact Number");
         ToastAndroid.showWithGravity(
-          "Required 10 Digit Contact Number",
+          "Please Enter Your Contact Number",
           ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-         
+          ToastAndroid.CENTER,       
         );
         return;
       }
-      if(!password.trim()){
+      else if(isNaN(contact)){
+        ToastAndroid.showWithGravity(
+          "Please Enter A Valid 10 Digit Contact Number",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,       
+        );
+        return;
+      }
+      else if(contact>9999999999 || contact<6999999999){
+        ToastAndroid.showWithGravity(
+          "Required 10 Digit Valid Contact Number",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,       
+        );
+        return;
+      }
+      else if(!password.trim()){
         //alert('Please Enter Your Password');
         ToastAndroid.showWithGravity(
           "Please Enter Your Password",
@@ -87,7 +92,7 @@ export default function Consumer_login() {
           if(validPassword==undefined){
             //alert('user not found');
             ToastAndroid.showWithGravity(
-              "user not found",
+              "User Not Found",
               ToastAndroid.SHORT,
               ToastAndroid.CENTER,
              

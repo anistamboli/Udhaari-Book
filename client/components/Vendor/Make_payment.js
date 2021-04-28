@@ -116,6 +116,14 @@ export default function Make_payment() {
         );
         return 
       }
+      if(isNaN(amount)){
+        ToastAndroid.showWithGravity(
+          "Please Enter Valid paying amount...",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
+        return 
+      }
       if(amount <0){
        // alert('Negative amount is not allowed!!!');
        ToastAndroid.showWithGravity(
@@ -149,7 +157,7 @@ export default function Make_payment() {
         var updatedAmount = Number(amount);
         
         try {
-          const body = {consumer_contact : cRMN , vendor_contact : vRMN ,payed_amount : updatedAmount , remaining_amount : remain , transaction_date : current , total_amount :  threshold[0].balance}
+          const body = {consumer_contact : cRMN , vendor_contact : vRMN ,payed_amount : updatedAmount , remaining_amount : remain , transaction_date : current , total_amount :  threshold[0].balance, transaction_time: (new Date()).toLocaleTimeString()}
           const response = await fetch('http://localhost:5000/changedata',{
             method : 'POST',
             headers: {
@@ -192,7 +200,7 @@ export default function Make_payment() {
                 <View style={{flexDirection:'row',width: '100%', marginTop:'5%'}}>
                   <Text style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Minimum/Partial Due Amount</Text>
                   <Text style={{textAlign:'right', width:'50%'}}>₹ {item.balance*item.threshold}</Text>                                           
-                </View>
+                </View>                 
                 <View style={{flexDirection:'row',width: '100%', marginTop:'5%'}}>
                   <Text style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Paying Date</Text> 
                   <Text style={{textAlign:'right', width:'50%'}}>{(new Date()).toDateString()}</Text>                                          

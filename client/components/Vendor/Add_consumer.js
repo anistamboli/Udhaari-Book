@@ -55,11 +55,6 @@ const Add_consumer = () => {
     }); 
   }
       
-      
-  // useEffect(()=>{
-  //   GetDetails()  
-  //   GetVendorContact()
-  // },[])  
 
   useFocusEffect(
     useCallback(() => {
@@ -102,25 +97,12 @@ const Add_consumer = () => {
       
   const handleConfirm = (date) => {
     setStart(date);
+    var result = new Date(date);
+    result.setDate(result.getDate() + 30);
+    setDue(result);
     setTempStart(date.toDateString());
+    setTempDue(result.toDateString());
     hideDatePicker();
-  };
-
-
-  const showDatePickerdue = () => {
-    setDatePickerVisibilitydue(true);
-  };
-        
-  
-  const hideDatePickerdue = () => {
-    setDatePickerVisibilitydue(false);
-  };
-        
-          
-  const handleConfirmdue = (date) => {
-    setDue(date);
-    setTempDue(date.toDateString());
-    hideDatePickerdue();
   };
       
 
@@ -264,7 +246,7 @@ const Add_consumer = () => {
           textAlign='center'
           color='black'
           onChangeText={(threshold) => setThreshold(threshold)}
-          />
+          value={threshold}/>
         }  
         </View>
         <View style={styles.inputView}>                  
@@ -274,17 +256,11 @@ const Add_consumer = () => {
           mode="date"                            
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
-          />
+          minimumDate={new Date()}/>
         </View>
-        <View style={styles.inputView}>
-          <Text onPress={showDatePickerdue} style={{color: 'black', fontSize:16}}>{tempdue}</Text>
-          <DateTimePickerModal
-          isVisible={isDatePickerVisibledue}
-          mode="date"
-          onConfirm={handleConfirmdue}
-          onCancel={hideDatePickerdue}
-          />                   
-        </View>         
+        {/* <View style={styles.inputView}>
+          <Text style={{color: 'black', fontSize:16}}>{tempdue}</Text>                  
+        </View>                     */}        
         <TouchableOpacity style={styles.Btn} onPress={() => {onPressConsumer(vRMN)}}>
           <Text style={styles.txt}>Add Consumer</Text>
         </TouchableOpacity>

@@ -60,6 +60,19 @@ export default function Udhaari_records() {
       .catch((error)=>{
         console.log(error)
       })
+      const response_pay =  await axios.get('http://localhost:5000/Payment_history', {params:{
+      vRMN, cRMN }})
+      .then((response_pay)=> {
+        // console.log(response.data)
+        // const allPayments= response.data
+        // console.log(allPayments)
+        // console.log(typeof(response.data[0].transaction_date))
+        setAllPaymentRec(response_pay.data)
+              
+      })  
+      .catch((error)=>{
+        console.log(error)
+      })
       
   }
 

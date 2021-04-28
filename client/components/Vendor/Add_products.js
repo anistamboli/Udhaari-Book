@@ -18,13 +18,14 @@ const Add_products = () => {
   const [current, setCurrent] = useState('');
   const [consumers , setConsumers] = useState([]);
   const [totalAmount , setTotalAmount] = useState(0);
+  const [currentTotalAmount , setCurrentTotalAmount] = useState(0);
   const [onlyDate, setOnlyDate] = useState('');
   const [onlyTime, setOnlyTime] = useState('');
 
   const [vRMN, setvRMN] = useState();
   const [cRMN, setcRMN] = useState();
   
-  const [inputs, setInputs] = useState([{key: '', id:'', current:'', product: '',quantity: '' ,baseprice:0,total_price:0}]);  
+  const [inputs, setInputs] = useState([{key: '', id:'', current:'', product: '',quantity: '' ,baseprice: '',total_price: ''}]);
   const [filteredConsumers, setFilteredConsumers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,7 +35,7 @@ const Add_products = () => {
     let cRMN = await SecureStore.getItemAsync('consumerContact');
     setvRMN(vRMN);
     setcRMN(cRMN);
-    
+     
 
     fetch('http://localhost:5000/Add_products/product')
     .then((response) => response.json())
@@ -102,8 +103,7 @@ const Add_products = () => {
       ToastAndroid.showWithGravity(
         "Enter the quantity",
         ToastAndroid.SHORT,
-        ToastAndroid.CENTER,
-       
+        ToastAndroid.CENTER,       
       );
     }
     else{
@@ -116,7 +116,9 @@ const Add_products = () => {
       console.log(total);
       setTotalAmount(total);
       console.log(totalAmount);  
-      _inputs.push({key: '', id:'', current:'', product: '',quantity:'',baseprice:0,total_price:0});
+      setCurrentTotalAmount(currentTotalAmount+inputs[tempKey].total_price);
+      console.log(totalAmount);  
+      _inputs.push({key: '', id:'', current:'', product: '',quantity:'',baseprice:'',total_price:''});
       setInputs(_inputs);
       setSearch('');
       console.log(_inputs);
@@ -124,7 +126,7 @@ const Add_products = () => {
       console.log(tempKey);
       try{      
         console.log("total" + total);
-        const body = {product_id:inputs[tempKey].id, quantity:Number(inputs[tempKey].quantity), date_purchase:onlyDate, time_purchase:onlyTime, total_amount:total, total_price:inputs[tempKey].total_price};
+        const body = {product_id:inputs[tempKey].id, quantity:Number(inputs[tempKey].quantity), date_purchase:onlyDate, time_purchase:onlyTime, total_amount:Number(total), total_price:Number(inputs[tempKey].total_price)};
         const response = await fetch('http://localhost:5000/Add_products/'+vRMN+'/'+cRMN, {
           method: 'POST',
           headers: {
@@ -143,11 +145,27 @@ const Add_products = () => {
 
   
   const inputHandler = (quantity)=>{
-    const _inputs = [...inputs];
-    _inputs[tempKey].quantity = quantity;
-    _inputs[tempKey].total_price = inputs[tempKey].baseprice*inputs[tempKey].quantity;
-    _inputs[tempKey].key   = tempKey;
-    setInputs(_inputs);    
+    if(isNaN(quantity)){
+      ToastAndroid.showWithGravity(
+        "Invalid Quantity",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,       
+      );
+    }
+    else if(!isNaN(quantity) && Number(quantity)<0.1){
+      ToastAndroid.showWithGravity(
+        "Invalid Quantity",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,       
+      );
+    }
+    else{
+      const _inputs = [...inputs];
+      _inputs[tempKey].quantity = quantity;
+      _inputs[tempKey].total_price = inputs[tempKey].baseprice*inputs[tempKey].quantity;
+      _inputs[tempKey].key   = tempKey;
+      setInputs(_inputs);    
+    }  
   }
 
 
@@ -226,7 +244,11 @@ const Add_products = () => {
         </View>
 
         <View styel={{width:'15%', justifyContent:'center', alignItems:'center',}}>
-          <TextInput  placeholder={"Qty"} keyboardType='numeric' onChangeText = {quantity => inputHandler(Number(quantity))}/> 
+          <TextInput  
+          placeholder={"Qty"} 
+          keyboardType='numeric' 
+          onChangeText = {quantity => inputHandler(quantity)}
+          value = {inputs[tempKey].quantity}/> 
         </View>
         <View style={{width:'10%',marginLeft:'5%', marginTop:'3%' }}>
           <Button title="+" onPress={()=>addHandler(vRMN, cRMN)} />
@@ -273,9 +295,15 @@ const Add_products = () => {
       )
       )}
       </ScrollView>
-      <View style = {styles.TotalAmountText}> 
-        <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>Total Udhaari</Text>
-        <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>₹ {totalAmount}</Text>
+      <View>
+        <View style = {styles.CurrentTotalAmountText}> 
+          <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>Current Total Udhaari</Text>
+          <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>₹ {currentTotalAmount}</Text>
+        </View>
+        <View style = {styles.TotalAmountText}> 
+          <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>Total Udhaari</Text>
+          <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>₹ {totalAmount}</Text>
+        </View>
       </View>
   </View>
 
@@ -325,6 +353,18 @@ const styles = StyleSheet.create({
     marginRight:'4%',
     backgroundColor: '#f55864'
   },
+
+  CurrentTotalAmountText :{
+    flexDirection:'column',
+    alignSelf:'flex-start',
+    padding: '3%',
+    borderRadius: 10, 
+    width: '40%', 
+    // height:'10%',
+    marginBottom:'5%',
+    marginLeft:'4%',
+    backgroundColor: '#f55864'
+  }
   
   // MainContainer:{
   //   width : 300,

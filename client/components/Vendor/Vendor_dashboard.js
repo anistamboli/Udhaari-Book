@@ -164,7 +164,7 @@ const Vendor_dashboard = () =>{
       // height:'100%',
       // justifyContent: 'flex-end',
       // alignItems: 'stretch',
-      marginTop:'180%',
+      marginTop:'130%',
       marginLeft:'80%'
     },
    
