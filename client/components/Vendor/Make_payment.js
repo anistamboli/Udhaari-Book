@@ -26,7 +26,7 @@ export default function Make_payment() {
     let cRMN = await SecureStore.getItemAsync('consumerContact');
     setvRMN(vRMN);
     setcRMN(cRMN); 
-      
+    setAmount(''); 
     fetch('http://localhost:5000/threshold/'+vRMN+'/'+cRMN)
     .then((response1) => response1.json())
     .then((result1) => setthreshold(result1))
@@ -75,9 +75,9 @@ export default function Make_payment() {
       );
       
       const result = await response.json();
-      // alert(result);
+      alert(result);
       // alert("Balance updated successfully.....");
-              
+      getValueFor();         
       
     
     }
@@ -111,7 +111,7 @@ export default function Make_payment() {
 
       }
       if(total > amount ){
-        alert('Paying amount should be atleast'+' '+ total);
+        alert('Paying amount should be atleast'+' ₹ '+ total);
         return
       }
       if(amount >  threshold[0].balance) {
@@ -134,7 +134,7 @@ export default function Make_payment() {
           );
           
           const result = await response.json();
-          alert(result);
+          // alert(result);
           // alert("payed amount updated successfully.....");
           updatedata(remain);          
         
@@ -160,8 +160,12 @@ export default function Make_payment() {
               
               <View style={{ justifyContent: 'center', padding:'5%', alignItems: 'center',borderRadius:30,backgroundColor:'white',  flexDirection: 'column',width:'92%',marginHorizontal:'4%',height:'100%', flex: 1}}>
                 <View style={{flexDirection:'row',width: '100%', marginTop:'5%'}}>
-                  <Text style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Total Amount</Text>
+                  <Text style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Total Due Amount</Text>
                   <Text style={{textAlign:'right', width:'50%'}}>₹ {item.balance}</Text>                                           
+                </View>
+                <View style={{flexDirection:'row',width: '100%', marginTop:'5%'}}>
+                  <Text style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Minimum/Partial Due Amount</Text>
+                  <Text style={{textAlign:'right', width:'50%'}}>₹ {item.balance*item.threshold}</Text>                                           
                 </View>
                 <View style={{flexDirection:'row',width: '100%', marginTop:'5%'}}>
                   <Text style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Paying Date</Text> 
@@ -172,9 +176,10 @@ export default function Make_payment() {
                   <TextInput
                     textAlign='right'
                     keyboardType='numeric'
-                    placeholder = '               Paying Amount'
+                    style={{width:'50%'}}
+                    placeholder = 'Paying Amount'
                     onChangeText={(amount) =>  setAmount(amount)}
-                  />                                          
+                    value={amount}/>                                          
                 </View>
                 <View style={{flexDirection:'row',width: '100%', marginTop:'5%', marginBottom:'5%'}}>
                   <Text style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Remaining Amount</Text> 

@@ -473,7 +473,7 @@ app.put("/updatedata/:vRMN/:cRMN" , async(req,res) => {
             console.log(req.body);
             const updatedata = await pool.query("UPDATE vendor_consumer SET due_date = $1 , balance = $2, billing_start_date = $3 where consumer_contact = $4 AND vendor_contact = $5 ",
             [due_date , balance , billing_start_date, cRMN, vRMN]);
-            res.json("Data Updated Successfully.....");
+            res.json('Payment Successful');
             console.log(updatedata);
 
 

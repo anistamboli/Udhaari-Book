@@ -47,7 +47,7 @@ const Consumer_register = () => {
       alert("Please Enter A Valid 10 Digit Contact Number");
       return;
     }
-    else if(rmn>10000000000 || rmn<999999999){
+    else if(rmn>9999999999 || rmn<6999999999){
       alert("Required 10 Digit Valid Contact Number");
       return;
     }
