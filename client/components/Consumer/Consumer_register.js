@@ -1,6 +1,6 @@
 //React Native Imports
 import React, { useState }                                     from 'react'; 
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, ImageBackground } from 'react-native'; 
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image,ToastAndroid, ImageBackground } from 'react-native'; 
 
 //React Native Navigation Imports
 import { useNavigation } from '@react-navigation/native';
@@ -32,39 +32,84 @@ const Consumer_register = () => {
 
   const onSubmit = async () => { 
     if(!consumerName.trim()){
-      alert('Please Enter Your Name');
+      //alert('Please Enter Your Name');
+      ToastAndroid.showWithGravity(
+        "Please Enter Your Name",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
       return;
     }
     else if(!isNaN(consumerName) || !(consumerName.match(/^[A-Za-z]+$/))){
-      alert('Please Enter A Valid Name Containing Alphabets Only');
+     // alert('Please Enter A Valid Name Containing Alphabets Only');
+     ToastAndroid.showWithGravity(
+      "Please Enter A Valid Name Containing Alphabets Only",
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    );
       return;
     }
     else if(!rmn.trim()){
-      alert('Please Enter Your Contact Number');
+      //alert('Please Enter Your Contact Number');
+      ToastAndroid.showWithGravity(
+        "Please Enter Your Contact Number",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
       return;
     }
     else if(isNaN(rmn)){
-      alert("Please Enter A Valid 10 Digit Contact Number");
+      //alert("Please Enter A Valid 10 Digit Contact Number");
+      ToastAndroid.showWithGravity(
+        "Please Enter A Valid 10 Digit Contact Number",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
       return;
     }
-    else if(rmn>9999999999 || rmn<6999999999){
-      alert("Required 10 Digit Valid Contact Number");
+    else if(rmn>10000000000 || rmn<999999999){
+     // alert("Required 10 Digit Valid Contact Number");
+     ToastAndroid.showWithGravity(
+      "Required 10 Digit Valid Contact Number",
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    );
       return;
     }
     else if(!address.trim()){
-      alert('Please Enter Your Address');
+     // alert('Please Enter Your Address');
+     ToastAndroid.showWithGravity(
+      "Please Enter Your Address",
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    );
       return;
     }
     else if(!password.trim()){
-      alert('Please Enter Your Password');
+      //alert('Please Enter Your Password');
+      ToastAndroid.showWithGravity(
+        "Please Enter Your Password",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
       return;
     }
     else if(!confirmpassword.trim()){
-      alert('Please Re-Enter Your Password');
+     // alert('Please Re-Enter Your Password');
+     ToastAndroid.showWithGravity(
+      "Please Re-Enter Your Password",
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    );
       return;
     }    
     else if(password!=confirmpassword){
-      alert('Password Unmatched');
+     // alert('Password Unmatched');
+     ToastAndroid.showWithGravity(
+      "Password Unmatched",
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    );
       return;
     }
     else{
@@ -79,7 +124,12 @@ const Consumer_register = () => {
           body: JSON.stringify(body)      
         });
         const result = await response.json();
-        alert(result.message);
+        //alert(result.message);
+        ToastAndroid.showWithGravity(
+          result.message,
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
         if(result.success==true){
           ClearStates();        
         }        

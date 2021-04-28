@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useState, useEffect, useCallback } from 'react';
-import { FlatList,Button, StyleSheet, Text, View , TextInput , TouchableOpacity , Alert} from 'react-native';
+import { FlatList,Button, StyleSheet, Text, View , TextInput , TouchableOpacity ,ToastAndroid, Alert} from 'react-native';
 
 
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -75,7 +75,13 @@ export default function Make_payment() {
       );
       
       const result = await response.json();
-      alert(result);
+     // alert(result);
+     ToastAndroid.showWithGravity(
+      result,
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    );
+
       // alert("Balance updated successfully.....");
       getValueFor();         
       
@@ -102,20 +108,40 @@ export default function Make_payment() {
      
       
       if(!amount.trim()){
-        alert('Please Enter paying amount...')
+        //alert('Please Enter paying amount...')
+        ToastAndroid.showWithGravity(
+          "Please enter paying amount",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
         return 
       }
       if(amount <0){
-        alert('Negative amount is not allowed!!!');
+       // alert('Negative amount is not allowed!!!');
+       ToastAndroid.showWithGravity(
+        "Negative amount is not allowed!!!",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
         return
 
       }
       if(total > amount ){
-        alert('Paying amount should be atleast'+' ₹ '+ total);
+        //alert('Paying amount should be atleast'+' ₹ '+ total);
+        ToastAndroid.showWithGravity(
+          "Paying amount should be atleast"+"  : ₹ "+ total,
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
         return
       }
       if(amount >  threshold[0].balance) {
-        alert('Paying amount should be less than total amount....');
+        //alert('Paying amount should be less than total amount....');
+        ToastAndroid.showWithGravity(
+          "Paying amount should be less than total amount",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
         return
       }
       

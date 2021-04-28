@@ -1,7 +1,7 @@
 //React Native Imports
 import 'react-native-gesture-handler';
 import React, {useEffect, useState, useCallback} from 'react';
-import { FlatList,StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { FlatList,StyleSheet, Text, View, TouchableOpacity, TextInput, ToastAndroid, Alert } from 'react-native';
 
 //Expo Imports
 import { Entypo } from '@expo/vector-icons';
@@ -89,7 +89,13 @@ const Account_details = () => {
             const result = await response.json()
             if(result.success===true) {
               navigation.navigate('Vendor Dashboard')}
-            alert(result.message);
+           // alert(result.message);
+           ToastAndroid.showWithGravity(
+            result.message,
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+           
+          );
             // navigation.navigate('NavStack', {screen : 'Vendor_dashboard'})
           }
         },
@@ -120,7 +126,13 @@ const Account_details = () => {
           const result = await response.json();
           // JSON.stringify(result);
           // console.log(result);
-          alert(result.message);
+          //alert(result.message);
+          ToastAndroid.showWithGravity(
+            result.message,
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+           
+          );
         }
         catch(err){
           console.error(err.message);
@@ -129,7 +141,13 @@ const Account_details = () => {
       if(typeof(threshold)==='string'){
         var updatedThreshold = Number(threshold);
         if(updatedThreshold<0 || updatedThreshold>10){
-          alert('Threshold must be a value between 0-1');
+          //alert('Threshold must be a value between 0-1');
+          ToastAndroid.showWithGravity(
+            "Threshold must be a value between 0-1",
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+           
+          );
         }
         else{
           try{      
@@ -144,7 +162,13 @@ const Account_details = () => {
             const result = await response.json();
             // JSON.stringify(result);
             // console.log(result);
-            alert(result.message);
+           // alert(result.message);
+           ToastAndroid.showWithGravity(
+            result.message,
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+           
+          );
           }
           catch(err){
             console.error(err.message);
@@ -153,7 +177,14 @@ const Account_details = () => {
       }
     }
     else{
-      alert('You have not made any changes');
+      //alert('You have not made any changes');
+      ToastAndroid.showWithGravity(
+        "You have not made any changes",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+       
+      );
+      
     }
   }
 

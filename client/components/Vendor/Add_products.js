@@ -4,7 +4,7 @@ import 'react-native-gesture-handler';
 
 
 import React, { useEffect, useState, useCallback } from 'react'
-import { View, Text, Button, TextInput, TouchableOpacity, StyleSheet, ScrollView, FlatList } from 'react-native'
+import { View, Text, Button, TextInput, TouchableOpacity, StyleSheet, ScrollView, ToastAndroid, FlatList } from 'react-native'
 import { SearchBar } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
 
@@ -89,10 +89,22 @@ const Add_products = () => {
   const addHandler = async (vRMN,cRMN) => {   
 
     if(inputs[tempKey].product==''){
-      alert('Enter The Product');
+      //alert('Enter The Product');
+      ToastAndroid.showWithGravity(
+        "Enter the product",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+       
+      );
     }
     else if(inputs[tempKey].quantity==''){
-      alert('Enter The Quantity');
+      //alert('Enter The Quantity');
+      ToastAndroid.showWithGravity(
+        "Enter the quantity",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+       
+      );
     }
     else{
       const _inputs = [...inputs];

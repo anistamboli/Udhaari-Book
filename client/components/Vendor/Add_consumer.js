@@ -1,6 +1,6 @@
 //React Native Imports
 import React, { useState, useEffect, useCallback}                                                                from 'react';
-import { StyleSheet, Text, View, FlatList, TextInput, Button, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TextInput, Button, TouchableOpacity,ToastAndroid, ScrollView } from 'react-native';
 import { SearchBar }                                                                      from 'react-native-elements';
 import DateTimePickerModal                                                                from "react-native-modal-datetime-picker";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -127,19 +127,44 @@ const Add_consumer = () => {
   const onPressConsumer = async (vRMN) => {
 
     if(user=='Name' || address=='Address'){
-      alert('Search A Consumer');
+      //alert('Search A Consumer');
+      ToastAndroid.showWithGravity(
+        "Search A Consumer",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
     }
     else if( threshold==''){
-      alert('Threshold Missing')
+     // alert('Threshold Missing')
+     ToastAndroid.showWithGravity(
+      "Threshold Missing!!!",
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    );
     }
     else if(threshold<0 || threshold>1){
-      alert('Threshold must be a value between 0-1');
+     // alert('Threshold must be a value between 0-1');
+     ToastAndroid.showWithGravity(
+      "Threshold must be a value between 0-1",
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    );
     }
     else if(start==''){
-      alert('Start Date Missing');
+     // alert('Start Date Missing');
+     ToastAndroid.showWithGravity(
+      "Start Date Missing",
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    );
     }
     else if(due==''){
-      alert('Due Date Missing');
+      //alert('Due Date Missing');
+      ToastAndroid.showWithGravity(
+        "Due Date Missing",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
     }
     else{
       try{                          
@@ -156,7 +181,12 @@ const Add_consumer = () => {
         if (result.success===true) {
           navigation.navigate('Vendor Dashboard')
         }
-        alert(result.message);
+       // alert(result.message);
+       ToastAndroid.showWithGravity(
+        result.message,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
         GetDetails();
       }
       catch(err){

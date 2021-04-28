@@ -2,7 +2,7 @@
 import { StatusBar } from 'expo-status-bar';
 // import { response } from 'express';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, Button, TouchableOpacity, } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, Button,ToastAndroid, TouchableOpacity, } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import axios from 'axios';
@@ -27,20 +27,49 @@ export default function Vendor_login() {
 
     const OnPressLogin = async (contact) => {
       // var result = parseInt(reqId); 
+ 
       if(!contact.trim() && !password.trim()){
-        alert('Please Enter RMN and password');
+        //alert('Please Enter RMN and password');
+        //return;
+        
+        ToastAndroid.showWithGravity(
+          "Please Enter RMN and password",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+         
+        );
         return;
+
       }
+      
+      
       if(!contact.trim()){
-        alert('Please Enter Your Contact Number');
+        //alert('Please Enter Your Contact Number');
+        ToastAndroid.showWithGravity(
+          "Please Enter Your Contact Number",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
         return;
       }
-      // if(contact>10000000000 || contact<999999999){
-      //   alert("Required 10 Digit Contact Number");
-      //   return;
-      // }
+     
+       if(contact>10000000000 || contact<999999999){
+        //alert("Required 10 Digit Contact Number");
+        ToastAndroid.showWithGravity(
+          "Required 10 Digit Contact Number",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
+         return;
+       }
       if(!password.trim()){
-        alert('Please Enter Your Password');
+       // alert('Please Enter Your Password');
+       ToastAndroid.showWithGravity(
+        "Please Enter Your Password",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
+       
         return;
       }
 
@@ -61,7 +90,12 @@ export default function Vendor_login() {
           
         function Check(validPassword){
           if(validPassword==undefined){
-            alert('user not found');
+           // alert('user not found');
+           ToastAndroid.showWithGravity(
+            "User Not Found!!!",
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER
+          );
             return;
           }
           if(password===validPassword){
@@ -71,7 +105,13 @@ export default function Vendor_login() {
             return;
           }
           if(password!==validPassword){
-            alert('invalid password... Try again');
+            //alert('invalid password... Try again');
+            ToastAndroid.showWithGravity(
+              "Invalid Password",
+              ToastAndroid.SHORT,
+              ToastAndroid.CENTER,
+              ToastAndroid.color = '#f55864'
+            );
             return;
           }
         }
