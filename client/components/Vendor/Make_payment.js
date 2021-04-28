@@ -1,10 +1,12 @@
 import 'react-native-gesture-handler';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FlatList,Button, StyleSheet, Text, View , TextInput , TouchableOpacity , Alert} from 'react-native';
 
 
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import * as SecureStore from 'expo-secure-store';
+import { useNavigation, useIsFocused, useFocusEffect } from '@react-navigation/native';
+
 
 export default function Make_payment() {
 
@@ -33,13 +35,17 @@ export default function Make_payment() {
     ShowCurrentDate();
   }
  
-  useEffect(() => {
-    const vRMN= 1;
-    const cRMN = 12;
-    
-    getValueFor();
-  }, []);
+  // useEffect(() => {
+  //   getValueFor();
+  // }, []);
  
+  useFocusEffect(
+    useCallback(() => {
+      getValueFor();  
+    }, [])
+  );
+
+
   const ShowCurrentDate= async ()=>{
  
     var date = new Date().getDate();
@@ -57,8 +63,6 @@ export default function Make_payment() {
    const updatedata = async (remain) => {
     
     try {
-      var vRMN = 2;
-      var cRMN = 11;
      
       const body= {due_date :newDate, balance : Number(remain) , billing_start_date : current}
       const response = await fetch('http://localhost:5000/updatedata/'+vRMN+'/'+cRMN,{
@@ -71,8 +75,8 @@ export default function Make_payment() {
       );
       
       const result = await response.json();
-      alert(result);
-      alert("Balance updated successfully.....");
+      // alert(result);
+      // alert("Balance updated successfully.....");
               
       
     
@@ -90,10 +94,10 @@ export default function Make_payment() {
  
       const check = async ()=> {
       var total = threshold[0].balance * threshold[0].threshold;
-      alert( threshold[0].balance);
-      alert(typeof( threshold[0].balance));
-      alert(amount);
-      alert(typeof(amount));
+      // alert( threshold[0].balance);
+      // alert(typeof( threshold[0].balance));
+      // alert(amount);
+      // alert(typeof(amount));
       var remain =  threshold[0].balance - Number(amount)
      
       
@@ -119,9 +123,6 @@ export default function Make_payment() {
         var updatedAmount = Number(amount);
         
         try {
-          var vRMN = 2;
-          var cRMN = 11;
-         
           const body = {consumer_contact : cRMN , vendor_contact : vRMN ,payed_amount : updatedAmount , remaining_amount : remain , transaction_date : current , total_amount :  threshold[0].balance}
           const response = await fetch('http://localhost:5000/changedata',{
             method : 'POST',
@@ -134,7 +135,7 @@ export default function Make_payment() {
           
           const result = await response.json();
           alert(result);
-          alert("payed amount updated successfully.....");
+          // alert("payed amount updated successfully.....");
           updatedata(remain);          
         
         }
@@ -149,7 +150,7 @@ export default function Make_payment() {
    
   return (
     
-    <View style={{ flex: 1, marginTop:'10%' }}>
+    <View style={{ flex: 1, paddingTop:'10%',backgroundColor: '#edf7fc', }}>
       {isLoading ? <Text>Loading...</Text> : (
        <View style={{ flexDirection: 'column', justifyContent:  'space-between', height:'100%', width:'100%'}}>
         <FlatList
@@ -157,7 +158,7 @@ export default function Make_payment() {
           renderItem = {({item}) => {
             return(
               
-              <View style={{ justifyContent: 'center', padding:'5%', alignItems: 'center',borderRadius:10, borderColor:'green',backgroundColor:'white', borderWidth:1, flexDirection: 'column',width:'92%',marginHorizontal:'4%',height:'100%', flex: 1}}>
+              <View style={{ justifyContent: 'center', padding:'5%', alignItems: 'center',borderRadius:30,backgroundColor:'white',  flexDirection: 'column',width:'92%',marginHorizontal:'4%',height:'100%', flex: 1}}>
                 <View style={{flexDirection:'row',width: '100%', marginTop:'5%'}}>
                   <Text style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Total Amount</Text>
                   <Text style={{textAlign:'right', width:'50%'}}>₹ {item.balance}</Text>                                           
@@ -171,7 +172,7 @@ export default function Make_payment() {
                   <TextInput
                     textAlign='right'
                     keyboardType='numeric'
-                    placeholder = 'Enter Paying Amount...'
+                    placeholder = '               Paying Amount'
                     onChangeText={(amount) =>  setAmount(amount)}
                   />                                          
                 </View>
@@ -186,7 +187,7 @@ export default function Make_payment() {
           />
            <View style = {{ alignItems : 'center', flex :1, height:'100%', width:'100%'}}>
                 <TouchableOpacity style={styles.loginBtn} onPress={()=>check()}>
-                    <Text >Make Payment</Text>
+                    <Text style={{color:'white', fontWeight:'bold'}}>Make Payment</Text>
                     </TouchableOpacity>
           </View>
         </View>
@@ -202,8 +203,8 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#B2EBE0',
-    borderWidth:1,
+    backgroundColor: '#f55864',
+    // borderWidth:1,
     borderColor:'green'
   }
   

@@ -1,12 +1,12 @@
 //React Native Imports
 import 'react-native-gesture-handler';
-import React, { useState, useEffect}                                           from 'react';
+import React, { useState, useEffect, useCallback}                                           from 'react';
 import { FlatList,StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native';
 
 //Expo Imports
 import { Entypo } from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused, useFocusEffect  } from '@react-navigation/native';
 
 // import { response } from 'express';
 
@@ -60,21 +60,19 @@ const My_account = () => {
 
 
 
-  useEffect(() => {
-    getValueFor();
-    // const response= await fetch('http://localhost:5000/Account_details/'+vRMN+'/'+cRMN)
-    // .then((response) => response.json())
-    // .then((result) => setselectedVendor(result))
-    // .catch((error) => console.error(error))
-    // .finally(() => setLoading(false));
+  // useEffect(() => {
+  //   getValueFor();
+  // },[]);
 
-  },[]);
+  useFocusEffect(
+    useCallback(() => {
+      getValueFor();  
+    }, [])
+  );
 
 
   const DeleteAccount = () =>{
-    // var vRMN =432424234;
-    // var cRMN =3333333444;
-    // alert(vendorContact);
+
     alert("DELETE");
     Alert.alert(
       'Confirm Delete',
@@ -160,9 +158,9 @@ const My_account = () => {
 
 
   return (      
-    <View style={{ flex: 1, padding: 24, backgroundColor:'#EAF2F4' }}>
+    <View style={{ flex: 1, padding:'6%', backgroundColor:'#EAF2F4' }}>
       {isLoading ? <Text>Loading...</Text> : (
-        <View style={{ flex: 1, flexDirection: 'column', justifyContent:  'space-between', paddingTop:'3%'}}>  
+        <View style={{ flex: 1, flexDirection: 'column', paddingTop:'3%'}}>  
           <View style={{flexDirection:'row'}}>
             <View style={{flexDirection:'column', width:'50%'}}>
               <Text style={{fontWeight:'bold', fontSize:16, }}>Shop Address:</Text>
@@ -175,12 +173,12 @@ const My_account = () => {
             }   
             </View>
           </View>          
-            <View style={{backgroundColor:'white', marginTop:'10%',height:'7%', width:'60%' ,borderWidth: 1, borderColor:'orange',borderRadius:40, justifyContent:'center', alignItems:'center',alignSelf:'center'}}>
-                <Text style={{ fontSize: 18, color: 'green'}}>{selectedVendor[0].consumer_name}</Text>
+            <View style={{ marginTop:'10%',height:45, width:'60%' ,justifyContent:'center', alignItems:'center',alignSelf:'center'}}>
+                <Text style={{ fontSize: 18, color: 'green'}}>{selectedVendor[0].shop_name}</Text>
             </View>
 
           <Text style={{ fontSize: 14, color: 'green', textAlign: 'center', paddingVertical: '2%'}}>{vRMN}</Text>                  
-          <FlatList style={{paddingHorizontal:'4%', marginTop:'4%',marginBottom:'30%', width:'100%', backgroundColor:'white',borderColor:'orange', borderWidth:1, borderRadius:30}}
+          <FlatList style={{paddingHorizontal:'4%', marginTop:'4%',marginBottom:'35%', width:'100%', backgroundColor:'white',borderColor:'orange', borderRadius:30}}
           data = {selectedVendor}
           renderItem = {({item}) => {
             return(

@@ -3,10 +3,13 @@ import 'react-native-gesture-handler';
 // import * as React from 'react';
 
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { View, Text, Button, TextInput, TouchableOpacity, StyleSheet, ScrollView, FlatList } from 'react-native'
 import { SearchBar } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
+
+import * as SecureStore from 'expo-secure-store';
+import { useNavigation, useIsFocused, useFocusEffect } from '@react-navigation/native';
 
 
 const Add_products = () => {
@@ -17,13 +20,22 @@ const Add_products = () => {
   const [totalAmount , setTotalAmount] = useState(0);
   const [onlyDate, setOnlyDate] = useState('');
   const [onlyTime, setOnlyTime] = useState('');
+
+  const [vRMN, setvRMN] = useState();
+  const [cRMN, setcRMN] = useState();
   
-  const [inputs, setInputs] = useState([{key: '', id:'', current:'', product: '',quantity: '' ,baseprice:0,totalprice:0}]);  
+  const [inputs, setInputs] = useState([{key: '', id:'', current:'', product: '',quantity: '' ,baseprice:0,total_price:0}]);  
   const [filteredConsumers, setFilteredConsumers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
 
-  const GetProductDetails = () => {
+  async function getValueFor() {
+    let vRMN = await SecureStore.getItemAsync('vendorContact');
+    let cRMN = await SecureStore.getItemAsync('consumerContact');
+    setvRMN(vRMN);
+    setcRMN(cRMN);
+    
+
     fetch('http://localhost:5000/Add_products/product')
     .then((response) => response.json())
     .then((result) => {
@@ -33,13 +45,10 @@ const Add_products = () => {
     .catch((error) => {
       console.error(error);
     });
-  }
 
-
-  const GetTotalAmount = () => {
-    console.log("TOTAL CLIENT");
-    var vRMN = 1;
-    var cRMN = 12;
+    // console.log("TOTAL CLIENT");
+    // var vRMN = 1;
+    // var cRMN = 12;
     fetch('http://localhost:5000/Add_products/total_amount/'+vRMN+'/'+cRMN)
     .then((response) => response.json())
     .then((result) => {
@@ -50,7 +59,15 @@ const Add_products = () => {
     .catch((error) => {
       console.error(error);
     });
+   
   }
+
+  useFocusEffect(
+    useCallback(() => {
+      getValueFor();  
+    }, [])
+  );
+
 
 
   const searchFilterFunction = (text) => {
@@ -69,7 +86,7 @@ const Add_products = () => {
   }
 
 
-  const addHandler = async () => {   
+  const addHandler = async (vRMN,cRMN) => {   
 
     if(inputs[tempKey].product==''){
       alert('Enter The Product');
@@ -79,15 +96,15 @@ const Add_products = () => {
     }
     else{
       const _inputs = [...inputs];
-      _inputs[tempKey].totalprice = inputs[tempKey].baseprice*inputs[tempKey].quantity;
+      _inputs[tempKey].total_price = inputs[tempKey].baseprice*Number(inputs[tempKey].quantity);
       _inputs[tempKey].key   = tempKey;
       _inputs[tempKey].current = current;
       setInputs(_inputs);  
-      var total=totalAmount+inputs[tempKey].totalprice;  
+      var total=totalAmount+inputs[tempKey].total_price;  
       console.log(total);
       setTotalAmount(total);
       console.log(totalAmount);  
-      _inputs.push({key: '', id:'', current:'', product: '',quantity:'',baseprice:0,totalprice:0});
+      _inputs.push({key: '', id:'', current:'', product: '',quantity:'',baseprice:0,total_price:0});
       setInputs(_inputs);
       setSearch('');
       console.log(_inputs);
@@ -95,9 +112,7 @@ const Add_products = () => {
       console.log(tempKey);
       try{      
         console.log("total" + total);
-        var vRMN = 9196191919;
-        var cRMN = 7678697696;
-        const body = {product_id:inputs[tempKey].id, quantity:Number(inputs[tempKey].quantity), date_purchase:onlyDate, time_purchase:onlyTime, total_amount:total};
+        const body = {product_id:inputs[tempKey].id, quantity:Number(inputs[tempKey].quantity), date_purchase:onlyDate, time_purchase:onlyTime, total_amount:total, total_price:inputs[tempKey].total_price};
         const response = await fetch('http://localhost:5000/Add_products/'+vRMN+'/'+cRMN, {
           method: 'POST',
           headers: {
@@ -106,7 +121,7 @@ const Add_products = () => {
             body: JSON.stringify(body)      
         });
         const result = await response.json();
-        alert(result.message);
+        // alert(result.message);
       }
       catch(err){
         console.error(err.message);
@@ -118,16 +133,16 @@ const Add_products = () => {
   const inputHandler = (quantity)=>{
     const _inputs = [...inputs];
     _inputs[tempKey].quantity = quantity;
-    _inputs[tempKey].totalprice = inputs[tempKey].baseprice*inputs[tempKey].quantity;
+    _inputs[tempKey].total_price = inputs[tempKey].baseprice*inputs[tempKey].quantity;
     _inputs[tempKey].key   = tempKey;
     setInputs(_inputs);    
   }
 
 
-  useEffect(() => {    
-    GetProductDetails();
-    GetTotalAmount();    
-  } , []);
+  // useEffect(() => {    
+  //   GetProductDetails();
+  //   GetTotalAmount();    
+  // } , []);
 
 
   const ShowCurrentDate = ()=>{
@@ -152,15 +167,14 @@ const Add_products = () => {
 
   return (
     <View style={styles.container}>
-      <View style = {{flexDirection:'row', width:'100%', justifyContent:'center', backgroundColor:'cyan'}}> 
-      <View style={{width:'50%',flexDirection:'column', justifyContent:'center', alignItems:'center',backgroundColor:'brown',
-      marginLeft:'5%', marginTop:'5%'
-      }}>
+      <View style = {{flexDirection:'row', width:'100%',}}> 
+      <View style={{width:'75%',flexDirection:'column', alignItems:'center',}}>
         <SearchBar 
-          inputStyle={{width:'50%'}}
-          containerStyle={{width:'100%'}}
+          inputStyle={{width:'100%', backgroundColor:'white', borderRadius: 25}}
+          containerStyle={{width:'95%', backgroundColor: 'white', borderWidth: 1, borderRadius: 40}}
+          inputContainerStyle={{width:'100%', backgroundColor: 'white',borderWidth:1, borderRadius: 40, height:40}}
           backgroundColor = {'white'}
-          placeholder="product"
+          placeholder="Search Product"
           searchIcon = {false}
           lightTheme = {true}
           cancelIcon = {true}
@@ -177,7 +191,7 @@ const Add_products = () => {
               return(
                 <View>
                 {  
-                  <Text style = {styles.row} onPress = {() => {
+                  <Text style = {{fontSize:16, paddingVertical:1}} onPress = {() => {
                     ShowCurrentDate();
                     const _inputs = [...inputs];                  
                     _inputs[tempKey].id = item.id;                      
@@ -189,7 +203,7 @@ const Add_products = () => {
                     setSearch(item.name);
                     setIsLoading(false);
                   }}>                
-                    {item.name} {item.base_price}
+                    {item.name}   ₹ {item.base_price}
                   </Text>
                 }                
                 </View>
@@ -199,62 +213,57 @@ const Add_products = () => {
         :<Text></Text>}
         </View>
 
-        <View styel={{width:'20%', justifyContent:'center', alignItems:'center',backgroundColor:'yellow'}}>
-       <TextInput  placeholder={"Qty"} keyboardType='numeric' onChangeText = {quantity => inputHandler(Number(quantity))}/>
-       
+        <View styel={{width:'15%', justifyContent:'center', alignItems:'center',}}>
+          <TextInput  placeholder={"Qty"} keyboardType='numeric' onChangeText = {quantity => inputHandler(Number(quantity))}/> 
         </View>
-        <View style={{width:'20%', alignItems:'flex-end',backgroundColor:'orange'}}>
-          <Button title="+" onPress={()=>addHandler()} />
+        <View style={{width:'10%',marginLeft:'5%', marginTop:'3%' }}>
+          <Button title="+" onPress={()=>addHandler(vRMN, cRMN)} />
         </View> 
       </View>
 
-      <View style = {styles.listWrapper1}>
-                  <Text style = {styles.row}>Date</Text>
-                  {/* <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text> */}
-                  
-                  <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
-                  <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
-                  <Text style = {styles.row}>Product </Text>
-                  
-                  <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
-                  <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
-                  
-                  <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
-                  <Text></Text>
-                  <Text style = {styles.row}>BP</Text>
-                  {/* <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text> */}
-                  <Text style = {styles.row}>QTY</Text>
-                  {/* <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text> */}
-                  <Text style = {styles.row}>Total </Text>
-                  {/* <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text> */}
-                  {/* <Text style = {styles.row}>Add</Text>             */}
-              </View>
-
-
-      <ScrollView  style={styles.inputsContainer}>          
-      {inputs.map((input, key)=>(
-        <View style={styles.inputContainer}>          
-          {/* <Text>{current}</Text> */}
-          <Text>{inputs[key].current}</Text> 
-          {/* <StatusBar style='auto' /> */}
-          {/* <View style = {styles.MainContainer}> */}
-                    
-          {/* <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text> */}
-          <Text>{inputs[key].product}</Text> 
-          <Text>{inputs[key].baseprice}</Text> 
-          <Text>{inputs[key].quantity}</Text> 
-          <Text>{inputs[key].totalprice}</Text> 
-          
-
-          
+      <View style = {{width:'100%', marginTop:'3%', height:40,backgroundColor:'skyblue', flexDirection:'row', paddingHorizontal:'2%', paddingTop:'2%', borderRadius:5, borderEndColor:'blue', borderWidth:0.5}}>
+        <View style= {{width:'20%'}}>
+          <Text style={{fontSize:15, fontWeight:'bold'}}>Date</Text>
         </View>
-       
+        <View style= {{width:'41%'}}>
+          <Text style={{fontSize:15, fontWeight:'bold',}} > Product </Text>
+        </View>
+        <View style= {{width:'13%'}}>
+          <Text  style={{fontSize:15, fontWeight:'bold'}}>BP</Text>
+        </View>
+        <View style= {{width:'13%'}}>
+          <Text style={{fontSize:15, fontWeight:'bold'}} >Qty</Text>
+        </View>
+        <View style= {{width:'13%'}}>
+          <Text style={{fontSize:15, fontWeight:'bold'}} >Tot </Text>
+        </View>
+      </View>
+
+      <ScrollView  vertical >          
+      {inputs.map((input, key)=>(
+      <View style = {{width:'100%', marginTop:'0.5%',paddingTop:'2%',paddingLeft:'2%', height:50,backgroundColor:'white', flexDirection:'row', borderRadius:5}}>
+        <View style= {{width:'20%'}}>
+          <Text >{inputs[key].current}</Text>
+        </View>
+        <View style= {{width:'41%'}}>
+          <Text >   {inputs[key].product} </Text>
+        </View>
+        <View style= {{width:'13%'}}>
+          <Text >{inputs[key].baseprice}</Text>
+        </View>
+        <View style= {{width:'13%'}}>
+          <Text >{inputs[key].quantity}</Text>
+        </View>
+        <View style= {{width:'13%'}}>
+          <Text >{inputs[key].total_price}</Text>
+        </View>
+      </View>   
       )
       )}
       </ScrollView>
       <View style = {styles.TotalAmountText}> 
-        <Text>TOTAL AMOUNT</Text>
-        <Text>{totalAmount}</Text>
+        <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>Total Udhaari</Text>
+        <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>₹ {totalAmount}</Text>
       </View>
   </View>
 
@@ -266,61 +275,43 @@ const styles = StyleSheet.create({
 
   container: {
     width : '100%',
+    height:'100%',
     flex: 1,
-    padding: 20,
-    backgroundColor: 'blue'
-  },
-  inputsContainer: {
-    flex: 1, marginBottom: 20,
-    backgroundColor:'pink',
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: "lightgray",
-    marginTop:'1%',
-    backgroundColor:'gray',
+    padding: '2%',
+    backgroundColor : '#EAF2F4',
   },
 
   listWrapper : {
-    marginTop:'3%',
+    marginTop:'1%',
     flexDirection : 'row',
-    backgroundColor:'brown',
+    backgroundColor:'white',
+    marginHorizontal:'5%',
+    paddingHorizontal:'5%',
+    borderRadius:5,
+    backgroundColor:'#EAF2F4'
    // flexWrap : 'wrap',
-    borderBottomWidth : 1
+    // borderBottomWidth : 1
   },
 
 
   listWrapper1 : {
-    marginTop:'20%',
+    marginTop:'10%',
     flexDirection : 'row',
-   // flexWrap : 'wrap',
     borderBottomWidth : 1,
     backgroundColor:'green',
   },
 
 
-
-  row: {
-    //backgroundColor : '#fff',
-    flex : 1,
-    //fontSize : 15,
-    //paddingHorizontal : 45,
-    //paddingVertical : 15
-  },
-
   TotalAmountText :{
-    color:'black',
-    fontWeight:'bold',
-    textAlign: 'center',
-    fontSize: 15,
+    flexDirection:'column',
     alignSelf:'flex-end',
-    padding: 10,
-    borderRadius: 5, 
-    width: '100%', 
-    backgroundColor: 'rgb(88, 149, 164)'
+    padding: '3%',
+    borderRadius: 10, 
+    width: '40%', 
+    // height:'10%',
+    marginBottom:'5%',
+    marginRight:'4%',
+    backgroundColor: '#f55864'
   },
   
   // MainContainer:{

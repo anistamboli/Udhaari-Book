@@ -55,14 +55,7 @@ const Vendor_dashboard = () =>{
 
   useFocusEffect(
     useCallback(() => {
-      // alert('Screen was focused');
       getValueFor();  
-      // Do something when the screen is focused
-      // return () => {
-      //   alert('Screen was unfocused');
-      //   // Do something when the screen is unfocused
-      //   // Useful for cleanup functions
-      // };
     }, [])
   );
 
@@ -109,10 +102,12 @@ const Vendor_dashboard = () =>{
         </View>
         <View style={{widht:'100%', alignItems:'center', paddingTop:'1%'}}>
           <SearchBar 
-          inputStyle={{width:'100%'}}
-          containerStyle={{width:'100%'}}
+          inputStyle={{width:'100%', backgroundColor:'white', borderRadius: 25}}
+          containerStyle={{width:'90%', backgroundColor: 'white', borderWidth: 1, borderRadius: 40}}
+          inputContainerStyle={{width:'100%', backgroundColor: 'white', borderRadius: 40, height:35}}
           backgroundColor = {'white'}
-          placeholderTextColor = 'green'
+          placeholderTextColor = 'black'
+          platform='lightTheme'
           fontSize= {15}
           placeholder="   Consumer Name or Number....."
           onChangeText={(text) => searchFilterFunction(text)}
@@ -182,7 +177,7 @@ const Vendor_dashboard = () =>{
       justifyContent: 'center',
       right: '10%',
       bottom: '8%',
-      flex: 1
+      flex: 1,
     },
    
     FloatingButtonStyle: {
@@ -194,7 +189,8 @@ const Vendor_dashboard = () =>{
 
     body: {
       backgroundColor : '#EAF2F4',
-      borderWidth:2,
+      // borderWidth:2,
+      borderRadius:15,
       flex : 1,
       marginTop: '5%',
       marginBottom:'2%',
@@ -208,7 +204,8 @@ const Vendor_dashboard = () =>{
       justifyContent: 'center',
       alignItems:'center',
       flexWrap : 'wrap',
-      borderBottomWidth : 1,
+      borderBottomWidth : 0.5,
+      borderStartColor: 'gray'
 
     },
     listWrapper1 : {
@@ -224,6 +221,7 @@ const Vendor_dashboard = () =>{
       flex : 1,
       fontSize : 15,
       fontWeight:'bold',
+      color:'#484848',
       paddingHorizontal : 45,
       paddingVertical : 15
     },
@@ -232,7 +230,8 @@ const Vendor_dashboard = () =>{
       flex : 1,
       fontSize : 18,
       fontWeight:'bold',
-      color:'red',
+      color:'#484848',
+      fontStyle:'italic' ,
       paddingHorizontal : 45,
       paddingVertical : 15,
     }

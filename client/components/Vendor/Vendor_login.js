@@ -119,7 +119,7 @@ export default function Vendor_login() {
         </TouchableOpacity> */}
    
         <TouchableOpacity style={styles.loginBtn} onPress={()=>{OnPressLogin(contact)}}>
-          <Text style={styles.TextInput}>LOGIN</Text>
+          <Text style={styles.TextInput1}>LOGIN</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.register_button}>
@@ -165,8 +165,17 @@ export default function Vendor_login() {
         height: 50,
         flex: 1,
         padding: 10,
-        fontSize: 16
+        fontSize: 16,
     },
+
+    TextInput1: {
+      height: 50,
+      flex: 1,
+      padding: 10,
+      fontSize: 16,
+      color:'white', 
+      fontWeight:'bold'
+  },
    
     textstyle: {
       color: 'black',
@@ -176,7 +185,7 @@ export default function Vendor_login() {
     },
 
     textstyle1: {
-      color: 'blue',
+      color: '#109dcc',
       fontWeight: 'bold',
       textAlign: 'center',
       fontSize: 16
@@ -195,7 +204,8 @@ export default function Vendor_login() {
         width: '35%',
         borderRadius: 13,
         borderWidth:0.5,
-        backgroundColor: '#F5E2E4',
+        // backgroundColor: '#F5E2E4',
+        backgroundColor:'#f55864',
         borderColor:'red',
         height: 45,
         alignItems: 'center',

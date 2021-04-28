@@ -1,5 +1,5 @@
 //React Native Imports
-import React, { useState, useEffect}                                                                from 'react';
+import React, { useState, useEffect, useCallback}                                                                from 'react';
 import { StyleSheet, Text, View, FlatList, TextInput, Button, TouchableOpacity, ScrollView } from 'react-native';
 import { SearchBar }                                                                      from 'react-native-elements';
 import DateTimePickerModal                                                                from "react-native-modal-datetime-picker";
@@ -9,7 +9,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 //ExpoImports
 import { StatusBar } from 'expo-status-bar';
 import * as SecureStore from 'expo-secure-store';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused, useFocusEffect } from '@react-navigation/native';
 
 const Add_consumer = () => {
   
@@ -56,11 +56,17 @@ const Add_consumer = () => {
   }
       
       
-  useEffect(()=>{
-    GetDetails()  
-    GetVendorContact()
-  },[])  
+  // useEffect(()=>{
+  //   GetDetails()  
+  //   GetVendorContact()
+  // },[])  
 
+  useFocusEffect(
+    useCallback(() => {
+      GetDetails()
+      GetVendorContact() 
+    }, [])
+  );
 
   const searchFilterFunction = (text) => {
     if (text) {
@@ -167,11 +173,12 @@ const Add_consumer = () => {
         <StatusBar style='auto'/>
         <View style={styles.MainContainer}>
           <SearchBar 
-          inputStyle={{width:'100%'}}
-          containerStyle={{width:'100%', borderRadius:15, borderWidth:1}}
+          inputStyle={{width:'100%', backgroundColor:'white', borderRadius: 25}}
+          containerStyle={{width:'100%', backgroundColor: 'white', borderWidth: 1, borderRadius: 40}}
+          inputContainerStyle={{width:'100%', backgroundColor: 'white',marginLeft:'2%', borderRadius: 40, height:35}}
           backgroundColor = {'white'}
-          placeholderTextColor = 'green'
-          placeholder="  Enter Contact number"
+          placeholderTextColor = 'black'
+          placeholder="  Enter Contact Number"
           onChangeText={(text) => searchFilterFunction(text)}
           onClear={(text) => searchFilterFunction('')}
           value={search}          
@@ -261,7 +268,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop :'10%',
-    backgroundColor: '#FFF',
+    backgroundColor: '#edf7fc',
     alignItems: 'center',
     // justifyContent: 'center',
     height:'100%',
@@ -269,7 +276,7 @@ const styles = StyleSheet.create({
   },
    
   txt: {
-    color: 'black',
+    color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: 16
@@ -302,7 +309,7 @@ const styles = StyleSheet.create({
     marginTop:'20%',
     borderRadius: 5,
     width: '70%',
-    backgroundColor: '#ff9933'
+    backgroundColor: '#f55864'
   },
   
   MainContainer:{

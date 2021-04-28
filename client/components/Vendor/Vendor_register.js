@@ -87,7 +87,8 @@ const Vendor_register = () => {
         const result = await response.json();
         alert(result.message);
         if(result.success==true){
-          ClearStates();        
+          ClearStates()
+          navigation.navigate('Vendor Login')        
         }
       }
       catch(err){
@@ -103,7 +104,7 @@ const Vendor_register = () => {
         <Text style={styles.heading}> WELCOME</Text> 
       </View>
 
-      <View style={{ flexDirection:'row', borderBottomColor: '#ff9933', borderBottomWidth: 2, marginBottom: '12%', marginTop:'5%' }}> 
+      <View style={{ flexDirection:'row', borderBottomColor: '#f55864', borderBottomWidth: 2, marginBottom: '12%', marginTop:'5%' }}> 
         <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom:'3%', justifyContent :'center'}}> Register Here </Text> 
       </View>
      
@@ -152,7 +153,7 @@ const Vendor_register = () => {
       </TouchableOpacity>  
 
       <TouchableOpacity style={{ flexDirection:'row', justifyContent:'center', marginTop:'30%'}}>
-          <Text style={styles.textstyle}>Already User? </Text>
+          <Text style={{color:'black',fontWeight: 'bold',textAlign: 'center', fontSize: 16}}>Already User? </Text>
           <Text  style={styles.textstyle1} onPress={()=>{OnPressLogin()}}> Login...</Text>
       </TouchableOpacity>      
     </View>
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
   Wrapper: {
     // backgroundColor: 'rgb(88, 149, 164)',
     // padding: 80,
-    backgroundColor: '#EAF2F4',
+    backgroundColor: '#edf7fc',
     width: '100%',
     height: '100%',
     paddingTop:'20%',
@@ -195,14 +196,14 @@ const styles = StyleSheet.create({
   },
 
   textstyle: {
-    color: 'black',
+    color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: 16
   },
 
   textstyle1: {
-    color: 'blue',
+    color: '#109dcc',
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: 16
@@ -213,7 +214,7 @@ const styles = StyleSheet.create({
     marginTop:'3%',
     borderRadius: 5,
     width: '100%',
-    backgroundColor: '#ff9933'
+    backgroundColor: '#f55864'
   },
 
   back_button: {

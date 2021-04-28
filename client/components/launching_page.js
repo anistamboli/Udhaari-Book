@@ -22,10 +22,13 @@ const Launching_page = () => {
 
   return (
     <SafeAreaView style = {styles.container}>
-      <View style={{marginTop:'25%'}}>
-        <Image source={udhaari} style={{ width: 250, height: 250, borderRadius:60 }} />
+      <Text style={{fontSize:26, fontWeight:'bold',marginTop:'10%', color :'#fa4d59'}}>UDHAARI BOOK</Text>
+      <View style={{ marginBottom:'10%',marginTop:'10%',}}>
+        <Image source={require('../assets/circle.png')} style={{ width: 250, height: 250, borderRadius:60 }} />
       </View>
-      <View style={{flexDirection:'row', width:'100%', alignItems:'center',justifyContent:'center', marginTop:'25%'}}>
+      
+      <Text style={{fontSize:22, fontWeight:'bold', fontStyle:'italic', color:'#f06771'}}>चल कर ले थोडी उधारी...</Text>
+      <View style={{flexDirection:'row', width:'100%', alignItems:'center',justifyContent:'center', marginTop:'15%'}}>
         <View style={{flexDirection:'column', justifyContent:'center', alignItems:'center', paddingHorizontal:'5%'}}>
           <TouchableOpacity onPress = {() => { navigation.navigate('Vendor Login');}}>
           <Image source= {require('../assets/seller.png')} style={{height:110, width:110}}/> 
@@ -47,7 +50,7 @@ const Launching_page = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EAF2F4',
+    backgroundColor: '#edf7fc',
     height:'100%',
     width:'100%',
     alignItems: 'center',

@@ -48,23 +48,24 @@ const Vendor_navTab = () => {
           {/* <Image source={back_button} style={styles.back_button} /> */}
           <AntDesign name="home" size={39} color="black" />
         </TouchableOpacity>        
-        <Text style={{textAlign:'center', fontWeight:'bold', fontSize:25, color:'rgb(88, 149, 164)', width:'70%'}}>अब उधारी ले, विश्वास से!</Text> 
+        <Text style={{textAlign:'center', fontWeight:'bold', fontSize:25, color:'#109dcc', width:'70%'}}>अब उधारी ले, विश्वास से!</Text> 
         <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Login');}} style={{width:'15%',paddingRight:'3%', alignItems:'flex-end'}}> 
           {/* <Image source={logout_button} style={styles.logout_button} /> */}
           <AntDesign name="logout" size={32} color="black" />
         </TouchableOpacity>   
       </View>
-      <Tab.Navigator style={{paddingTop:'0.5%', backgroundColor:'skyblue'}} 
+      <Tab.Navigator style={{paddingTop:'0.5%'}} 
         tabBarOptions={{
         style: {
           height: 65,
           // height:'9%',
-          backgroundColor: '#5caff2',
+          backgroundColor: '#c0edfc',
           borderWidth:1,
           bottom:1,
           elevation:8,
+          
         },
-        activeTintColor: 'white',
+        activeTintColor: '#fa3264',
         inactiveTintColor :'black',
         // activeBackgroundColor :'red',
         // inactiveBackgroundColor :'green',
@@ -99,7 +100,7 @@ const Consumer_navTab = () => {
           {/* <Image source={back_button} style={styles.back_button} /> */}
           <AntDesign name="home" size={39} color="black" />
         </TouchableOpacity>        
-        <Text style={{textAlign:'center', fontWeight:'bold', fontSize:25, color:'rgb(88, 149, 164)', width:'70%'}}>अब उधारी ले, विश्वास से!</Text> 
+        <Text style={{textAlign:'center', fontWeight:'bold', fontSize:25, color:'#109dcc', width:'70%'}}>अब उधारी ले, विश्वास से!</Text> 
         <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Consumer Login');}} style={{width:'15%',paddingRight:'3%', alignItems:'flex-end'}}> 
           {/* <Image source={logout_button} style={styles.logout_button} /> */}
           <AntDesign name="logout" size={32} color="black" />
@@ -123,7 +124,7 @@ const Consumer_navTab = () => {
         // showLabel: true,
       }} >
         <Tab.Screen name="My Udhaari" component={My_udhaari}  />
-        <Tab.Screen name="My Account" component={My_account} />
+        <Tab.Screen name="Account Details" component={My_account} />
       </Tab.Navigator>
     </>
   );

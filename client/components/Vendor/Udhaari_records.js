@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 
 import { Button, View, Text, StyleSheet, TouchableOpacity, Image, Alert,ScrollView} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import axios from 'axios';
@@ -9,6 +9,7 @@ import axios from 'axios';
 // import { useNavigation } from '@react-navigation/native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as SecureStore from 'expo-secure-store';
+import { useNavigation, useIsFocused, useFocusEffect } from '@react-navigation/native';
 
 export default function Udhaari_records() {
   // const val = route.params.mob;
@@ -62,11 +63,16 @@ export default function Udhaari_records() {
       
   }
 
-  
+  useFocusEffect(
+    useCallback(() => {
+      getValueFor();  
+    }, [])
+  );
 
-  useEffect(() => { 
-    getValueFor();  
-    },[]);  
+
+  // useEffect(() => { 
+  //   getValueFor();  
+  //   },[]);  
 
 
   const PurchaseRec = async (vRMN,cRMN) => {
@@ -173,7 +179,8 @@ export default function Udhaari_records() {
           <View style={{marginTop:'1%', width:'100%', height:'100%'}}>
             <View style={{width:'100%', flexDirection:'row', marginBottom:'2%', marginTop:'2%'}}>
             <View style={{width:'30%', marginHorizontal:'10%'}}>
-              <Button  title="From" onPress={showDatePicker} />
+              <View style={{width:'60%', marginHorizontal:'20%' }}>
+              <Button color='#109dcc' title="From" onPress={showDatePicker} />
                 <DateTimePickerModal
                   isVisible={isDatePickerVisible}
                   mode="date"
@@ -181,10 +188,12 @@ export default function Udhaari_records() {
                   onCancel={hideDatePicker}
                   maximumDate={d2}
                 />
+                </View>
               <Text style={{textAlign:'center', marginTop:'2%', fontWeight:'bold'}}>{sDate.toDateString('en-US')}</Text>
             </View>
             <View style={{width:'30%', marginHorizontal:'10%'}}>
-              <Button title="To" onPress={showDatePicker1} />
+              <View style={{width:'60%', marginHorizontal:'20%'}}>
+              <Button color='#109dcc' title="To" onPress={showDatePicker1} />
                 <DateTimePickerModal
                   isVisible={isDatePickerVisible1}
                   mode="date"
@@ -193,18 +202,19 @@ export default function Udhaari_records() {
                   minimumDate={sDate}
                   maximumDate={d2}
                 />
+                </View>
               <Text style={{textAlign:'center', marginTop:'2%', fontWeight:'bold'}}>{eDate.toDateString()}</Text>
             </View> 
           </View> 
           <View>
-            <ScrollView vertical style={{height:'80%', marginHorizontal:'2%', borderWidth:1, borderColor:'#5caff2'}} showsVerticalScrollIndicator={false}
+            <ScrollView vertical style={{height:'80%', marginHorizontal:'2%', borderWidth:1, borderColor:'#5caff2', backgroundColor:'white'}} showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             
             {allPaymentRec.map((item,index) => {
               if(new Date(item.transaction_date)>=sDate && new Date(item.transaction_date)<=eDate)
               {
               return(
-              <View style= {{flexDirection :'column', width:'100%',height: 100,justifyContent: 'center', alignItems:'center', borderWidth:1}} key={index}>
+              <View style= {{flexDirection :'column', width:'100%',height: 100,justifyContent: 'center', alignItems:'center', borderWidth:0.5}} key={index}>
                 <View style= {{flexDirection :'row', width:'100%',justifyContent: 'center'}}>
                   <View style= {{ width:'50%',justifyContent: 'center', alignItems:'flex-start', paddingLeft:'2%'}}>
                       <Text style={{fontWeight:'bold'}}>T-Id : {item.id}</Text>
@@ -251,7 +261,8 @@ export default function Udhaari_records() {
         <View style={{marginTop:'1%', width:'100%', height:'100%'}}>
           <View style={{width:'100%', flexDirection:'row', marginBottom:'2%', marginTop:'2%'}}>
             <View style={{width:'30%', marginHorizontal:'10%'}}>
-              <Button  title="From" onPress={showDatePicker} />
+              <View style={{width:'60%', marginHorizontal:'20%'}}>
+              <Button color='#109dcc' title="From" onPress={showDatePicker} />
                 <DateTimePickerModal
                   isVisible={isDatePickerVisible}
                   mode="date"
@@ -259,10 +270,12 @@ export default function Udhaari_records() {
                   onCancel={hideDatePicker}
                   maximumDate={d2}
                 />
+                </View>
               <Text style={{textAlign:'center', marginTop:'2%', fontWeight:'bold'}}>{sDate.toDateString()}</Text>
             </View>
             <View style={{width:'30%', marginHorizontal:'10%'}}>
-              <Button title="To" onPress={showDatePicker1} />
+             <View style={{width:'60%', marginHorizontal:'20%'}}>
+              <Button title="To" color='#109dcc' onPress={showDatePicker1} />
                 <DateTimePickerModal
                   isVisible={isDatePickerVisible1}
                   mode="date"
@@ -271,10 +284,11 @@ export default function Udhaari_records() {
                   minimumDate={sDate}
                   maximumDate={d2}
                 />
+                </View>
               <Text style={{textAlign:'center', marginTop:'2%', fontWeight:'bold'}}>{eDate.toDateString()}</Text>
             </View> 
           </View> 
-          <View style={{width:'98%', height:'100%', marginTop:'1%', marginHorizontal:'1%', borderWidth:1, borderColor:'#5caff2'}}>
+          <View style={{width:'98%', height:'100%', marginTop:'1%', marginHorizontal:'1%', borderWidth:1,borderRadius:5, borderColor:'#5caff2'}}>
             <View style= {{width:'100%', flexDirection:'row', height:'7%', backgroundColor:'skyblue',justifyContent: 'center', alignItems:'center', borderWidth:1, borderColor:'#0c88ed'}}>
               <View style= {{width:'30%', justifyContent: 'center', alignItems:'flex-start', paddingLeft: '1%'}}>
                 <Text style={{fontWeight:'bold'}}>Date</Text>
@@ -292,16 +306,16 @@ export default function Udhaari_records() {
                 <Text style={{fontWeight:'bold'}}>Tot</Text>
               </View>
             </View>
-
+  
           <View>
-            <ScrollView vertical style={{height:'72%', marginBottom:'1%',borderWidth:1}} showsVerticalScrollIndicator={false}
+            <ScrollView vertical style={{height:'72%', marginBottom:'1%',borderWidth:0.5, backgroundColor:'white'}} showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
       
             {allPurchaseRec.map((item, index) => {
               if(new Date(item.date_purchase)>=sDate && new Date(item.date_purchase)<=eDate)
               {
               return(
-                <View style= {{ width:'100%', flexDirection:'row', height: 80,justifyContent: 'center', alignItems:'center', borderWidth:1}} key={index} >
+                <View style= {{ width:'100%', flexDirection:'row', height: 80,justifyContent: 'center', alignItems:'center', borderWidth:0.5}} key={index} >
                   <View style= {{width:'30%', flexDirection:'column',justifyContent: 'center', alignItems:'flex-start', paddingLeft:'2%'}}>
                     <View>
                       <Text>{new Date(item.date_purchase).toDateString()}</Text>
@@ -353,7 +367,7 @@ export default function Udhaari_records() {
     display:'flex',
     justifyContent:'center',
     textAlign:'center',
-    fontSize:15,
+    fontSize:14,
     color:'#000',
     fontWeight:'bold',
     letterSpacing:1,
@@ -390,7 +404,7 @@ button: {
     display:'flex',
     justifyContent:'center',
     textAlign:'center',
-    fontSize:15,
+    fontSize:14,
     color:'#4398D4',
     marginBottom:'10%',
     letterSpacing:1,
