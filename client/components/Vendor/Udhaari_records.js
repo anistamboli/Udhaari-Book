@@ -234,6 +234,7 @@ export default function Udhaari_records() {
                   </View>
                   <View style= {{ width:'50%',justifyContent: 'center', alignItems: 'flex-end',paddingRight:'2%'}}>
                     <Text style={{fontWeight:'bold'}}>{new Date(item.transaction_date).toDateString()}</Text>
+                    {/* <Text style={{fontWeight:'bold'}}> {item.transaction_time}</Text> */}
                   </View>
                 </View >
                 <View style= {{flexDirection :'row', width:'100%',justifyContent: 'center', alignItems:'flex-start'}}>

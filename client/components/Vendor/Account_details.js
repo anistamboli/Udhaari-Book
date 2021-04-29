@@ -217,8 +217,8 @@ const Account_details = () => {
             placeholder={selectedConsumer[0].consumer_name}
           />
           </TouchableOpacity>
-          <Text style={{ fontSize: 14, color: 'black', textAlign: 'center', paddingVertical: '2%'}}>{cRMN}</Text>                  
-          <FlatList style={{paddingHorizontal:'4%',marginBottom:'7%', width:'100%', backgroundColor:'white',borderColor:'orange',  borderRadius:30}}
+          <Text style={{ fontSize: 15, color: 'black', textAlign: 'center', paddingVertical: '1%', marginBottom:'2%'}}>{cRMN}</Text>                  
+          <FlatList style={{paddingHorizontal:'4%',marginBottom:'8%', width:'100%', backgroundColor:'white',borderColor:'orange',  borderRadius:30}}
           data = {selectedConsumer}
           renderItem = {({item}) => {
             return(
@@ -230,7 +230,7 @@ const Account_details = () => {
                   <View style={{width:'50%', alignItems:'flex-end', paddingRight:'1%'}}>
                     <TouchableOpacity activeOpacity={2} >
                       <TextInput style={{ fontSize: 20, color: 'green'}}
-                        style={{ height: 30, width:'50%', borderColor: 'gray', textAlign: 'right' }}
+                        style={{ height: 45, width:'50%', borderColor: 'gray', textAlign: 'right' }}
                         placeholderTextColor = 'green'
                         onChangeText={setThreshold}
                         value={threshold}

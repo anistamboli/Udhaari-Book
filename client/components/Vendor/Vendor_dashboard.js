@@ -89,7 +89,7 @@ const Vendor_dashboard = () =>{
     
   return (
     <SafeAreaView style={{ flex: 1 , paddingTop:'11%', height:'100%', width:'100%', backgroundColor:'#EAF2F4'}}>
-        <View style={{widht:'100%', flexDirection:'row', alignItems:'center', paddingTop:'2%',paddingBottom:'1%', backgroundColor:'#EAF2F4'}}>
+        <View style={{widht:'100%', flexDirection:'row', alignItems:'center', paddingTop:'2%',paddingBottom:'2%', backgroundColor:'#EAF2F4'}}>
           <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Vendor Dashboard');}} style={{width:'15%', paddingLeft:'4%', alignItems:'flex-start'}}> 
             {/* <Image source={back_button} style={styles.back_button} /> */}
             <AntDesign name="home" size={39} color="black" />
@@ -164,7 +164,7 @@ const Vendor_dashboard = () =>{
       // height:'100%',
       // justifyContent: 'flex-end',
       // alignItems: 'stretch',
-      marginTop:'130%',
+      marginTop:'180%',
       marginLeft:'80%'
     },
    

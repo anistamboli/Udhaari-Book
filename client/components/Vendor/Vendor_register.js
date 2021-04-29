@@ -170,7 +170,7 @@ const Vendor_register = () => {
         <Text style={styles.heading}> WELCOME</Text> 
       </View>
 
-      <View style={{ flexDirection:'row', borderBottomColor: '#f55864', borderBottomWidth: 2, marginBottom: '12%', marginTop:'5%' }}> 
+      <View style={{ flexDirection:'row', borderBottomColor: '#f55864', borderBottomWidth: 2, marginBottom: '7%', marginTop:'5%' }}> 
         <Text style={{fontSize: 18, fontWeight: 'bold', marginBottom:'3%', justifyContent :'center'}}> Register Here </Text> 
       </View>
      
@@ -218,7 +218,7 @@ const Vendor_register = () => {
         <Text style={styles.textstyle}> Create Account </Text>
       </TouchableOpacity>  
 
-      <TouchableOpacity style={{ flexDirection:'row', justifyContent:'center', marginTop:'30%'}}>
+      <TouchableOpacity style={{ flexDirection:'row', justifyContent:'center', marginTop:'60%'}}>
           <Text style={{color:'black',fontWeight: 'bold',textAlign: 'center', fontSize: 16}}>Already User? </Text>
           <Text  style={styles.textstyle1} onPress={()=>{OnPressLogin()}}> Login...</Text>
       </TouchableOpacity>      
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   textinputfields: {
     fontSize: 15,
     color: 'black',
-    marginBottom: '12%',
+    marginBottom: '7%',
     borderBottomColor: 'grey',
     borderBottomWidth: 2
   },
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     // borderBottomColor: '#ff9933',
     // borderBottomWidth: 2,
-    marginBottom: '10%', 
+    marginBottom: '3%', 
     justifyContent:'center'
   },
 
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
 
   buttonstyle: {
     padding: '4%',
-    marginTop:'3%',
+    marginTop:'4%',
     borderRadius: 5,
     width: '100%',
     backgroundColor: '#f55864'

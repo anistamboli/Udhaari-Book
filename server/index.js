@@ -398,7 +398,7 @@ app.get( '/Payment_history', async(req,res) => {
     try{
         const vRMN = req.query.vRMN;
         const cRMN = req.query.cRMN;
-        const transactions = await pool.query('SELECT id, transaction_time, transaction_date, total_amount, payed_amount, remaining_amount FROM payment_history WHERE ( vendor_contact= $1 and consumer_contact= $2) order by transaction_date desc, transaction_time asc' , [vRMN, cRMN]); 
+        const transactions = await pool.query('SELECT id, transaction_time, transaction_date, total_amount, payed_amount, remaining_amount FROM payment_history WHERE ( vendor_contact= $1 and consumer_contact= $2) order by transaction_date desc, transaction_time desc' , [vRMN, cRMN]); 
         res.json(transactions.rows);
         // console.log(transactions.rows)
     }

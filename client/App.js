@@ -62,7 +62,7 @@ const Vendor_navTab = () => {
           backgroundColor: '#c0edfc',
           borderWidth:1,
           bottom:1,
-          elevation:8,
+          elevation:10,
           
         },
         activeTintColor: '#fa3264',
@@ -95,7 +95,7 @@ const Consumer_navTab = () => {
   const navigation = useNavigation();
   return (
     <>    
-      <View style={{widht:'100%',height:'10%', flexDirection:'row', alignItems:'center', paddingTop:'11%',paddingBottom:'1%', backgroundColor:'#EAF2F4'}}>
+      <View style={{widht:'100%',height:'10%', flexDirection:'row', alignItems:'center', paddingTop:'11%',paddingBottom:'1%',marginVertical:'1%', backgroundColor:'#EAF2F4'}}>
         <TouchableOpacity activeOpacity={1.5} onPress={()=>{navigation.navigate('Consumer Dashboard');}} style={{width:'15%', paddingLeft:'3%', alignItems:'flex-start'}}> 
           {/* <Image source={back_button} style={styles.back_button} /> */}
           <AntDesign name="home" size={39} color="black" />
@@ -114,7 +114,7 @@ const Consumer_navTab = () => {
           backgroundColor: '#5caff2',
           borderWidth:1,
           bottom:1,
-          elevation:8,
+          elevation:10,
         },
         activeTintColor: 'white',
         inactiveTintColor :'black',

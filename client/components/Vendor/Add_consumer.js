@@ -111,7 +111,7 @@ const Add_consumer = () => {
     if(user=='Name' || address=='Address'){
       //alert('Search A Consumer');
       ToastAndroid.showWithGravity(
-        "Search A Consumer",
+        "Please Search Consumer",
         ToastAndroid.SHORT,
         ToastAndroid.CENTER
       );
@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'grey',
     borderBottomWidth: 2,
     width: '70%',
-    height: '6%',
+    height: 40,
     marginBottom: '8%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
    
   Btn: {
     padding: '4%',
-    marginTop:'20%',
+    marginTop:'50%',
     borderRadius: 5,
     width: '70%',
     backgroundColor: '#f55864'

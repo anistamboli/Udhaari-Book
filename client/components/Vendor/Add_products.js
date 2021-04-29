@@ -197,12 +197,12 @@ const Add_products = () => {
 
   return (
     <View style={styles.container}>
-      <View style = {{flexDirection:'row', width:'100%',}}> 
-      <View style={{width:'75%',flexDirection:'column', alignItems:'center',}}>
+      <View style = {{flexDirection:'row', width:'100%',marginTop:'2%'}}> 
+      <View style={{width:'72%',flexDirection:'column', alignItems:'center',paddingHorizontal:'2%'}}>
         <SearchBar 
           inputStyle={{width:'100%', backgroundColor:'white', borderRadius: 25}}
-          containerStyle={{width:'95%', backgroundColor: 'white', borderWidth: 1, borderRadius: 40}}
-          inputContainerStyle={{width:'100%', backgroundColor: 'white',borderWidth:1, borderRadius: 40, height:40}}
+          containerStyle={{width:'100%', backgroundColor: 'white',  borderRadius: 40}}
+          inputContainerStyle={{width:'90%', backgroundColor: 'white', borderRadius: 40, height:35,}}
           backgroundColor = {'white'}
           placeholder="Search Product"
           searchIcon = {false}
@@ -243,14 +243,14 @@ const Add_products = () => {
         :<Text></Text>}
         </View>
 
-        <View styel={{width:'15%', justifyContent:'center', alignItems:'center',}}>
           <TextInput  
-          placeholder={"Qty"} 
+          style={{height:45, marginTop:'1%',backgroundColor:'white', borderWidth:0.25, borderRadius:3 ,width:'15%'}}
+          placeholder={"  Qty"} 
           keyboardType='numeric' 
           onChangeText = {quantity => inputHandler(quantity)}
           value = {inputs[tempKey].quantity}/> 
-        </View>
-        <View style={{width:'10%',marginLeft:'5%', marginTop:'3%' }}>
+
+        <View style={{width:'10%', marginTop:'2%', paddingLeft:'2%' }}>
           <Button title="+" onPress={()=>addHandler(vRMN, cRMN)} />
         </View> 
       </View>
@@ -260,7 +260,7 @@ const Add_products = () => {
           <Text style={{fontSize:15, fontWeight:'bold'}}>Date</Text>
         </View>
         <View style= {{width:'41%'}}>
-          <Text style={{fontSize:15, fontWeight:'bold',}} > Product </Text>
+          <Text style={{fontSize:15, fontWeight:'bold',}} >   Product </Text>
         </View>
         <View style= {{width:'13%'}}>
           <Text  style={{fontSize:15, fontWeight:'bold'}}>BP</Text>
@@ -295,14 +295,14 @@ const Add_products = () => {
       )
       )}
       </ScrollView>
-      <View>
-        <View style = {styles.CurrentTotalAmountText}> 
-          <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>Current Total Udhaari</Text>
-          <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>₹ {currentTotalAmount}</Text>
-        </View>
+      <View style={{flexDirection:'row', width:'100%',alignContent:'center',}}>
         <View style = {styles.TotalAmountText}> 
           <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>Total Udhaari</Text>
           <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>₹ {totalAmount}</Text>
+        </View>
+        <View style = {styles.CurrentTotalAmountText}> 
+          <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>Current Total</Text>
+          <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>₹ {currentTotalAmount}</Text>
         </View>
       </View>
   </View>
@@ -343,26 +343,28 @@ const styles = StyleSheet.create({
 
 
   TotalAmountText :{
+    width:'40%',
     flexDirection:'column',
     alignSelf:'flex-end',
-    padding: '3%',
+    padding: '2%',
     borderRadius: 10, 
-    width: '40%', 
+    marginHorizontal:'5%',
     // height:'10%',
     marginBottom:'5%',
-    marginRight:'4%',
+    // marginRight:'4%',
     backgroundColor: '#f55864'
   },
 
   CurrentTotalAmountText :{
+    width:'40%',
     flexDirection:'column',
     alignSelf:'flex-start',
-    padding: '3%',
-    borderRadius: 10, 
-    width: '40%', 
+    padding: '2%',
+    borderRadius: 10, marginHorizontal:'5%',
+  
     // height:'10%',
     marginBottom:'5%',
-    marginLeft:'4%',
+    // marginLeft:'4%',
     backgroundColor: '#f55864'
   }
   
