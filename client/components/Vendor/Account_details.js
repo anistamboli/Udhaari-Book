@@ -25,6 +25,9 @@ const Account_details = () => {
   const [name, setName] = useState();
   const [threshold, setThreshold] = useState();
 
+  const [tempName, setTempName] = useState();
+  const [tempThreshold, setTempThreshold] = useState();
+
   const today = new Date();
   const [due, setDue]= useState(today);
   const [recentPayment, setRecentPayment] = useState();
@@ -42,9 +45,16 @@ const Account_details = () => {
     const response={}
     await fetch('http://localhost:5000/Account_details/'+vRMN+'/'+cRMN)
     .then((response) => response.json())
-    .then((result) => {setSelectedConsumer(result)
-      setDue(new Date(result[0].due_date))
-        console.log(due)})
+    .then((result) => {
+      setSelectedConsumer(result);
+      setName(result[0].consumer_name);
+      setTempName(result[0].consumer_name);
+      var stringThreshold = result[0].threshold.toString();
+      setTempThreshold(stringThreshold);
+      setThreshold(stringThreshold);
+      setDue(new Date(result[0].due_date));
+      console.log(due)
+    })
     .catch((error) => console.error(error))
     .finally(() => setLoading(false))
 
@@ -109,13 +119,52 @@ const Account_details = () => {
 
 
   const EditNameThreshold = async () =>{
-
-    if(typeof(name)==='string' || typeof(threshold)==='string'){
-      // var cRMN = selectedConsumer[0].contact;
-      if(typeof(name)==='string'){
-        // var updatedName = name;
+    if(name==tempName && threshold==tempThreshold){
+      ToastAndroid.showWithGravity(
+        "You have not made any changes",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,       
+      );
+    }
+    else if(tempName==''){
+      ToastAndroid.showWithGravity(
+        "Please Enter A Name",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,       
+      );
+    }
+    else if(tempThreshold==''){
+      ToastAndroid.showWithGravity(
+        "Please Enter A Threshold",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,       
+      );
+    }
+    else if(!isNaN(tempName)){
+      ToastAndroid.showWithGravity(
+        "Please Enter A Valid Name",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,       
+      );
+    }
+    else if(isNaN(tempThreshold)){
+      ToastAndroid.showWithGravity(
+        "Please Enter A Valid Threshold",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,       
+      );
+    }
+    else if(!isNaN(tempThreshold) && (tempThreshold<=0 || tempThreshold>1)){
+      ToastAndroid.showWithGravity(
+        "Threshold must be a value between 0-1",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,       
+      );
+    }
+    else{
+      if(tempName!=name){
         try{      
-          const body = {updatingValue:name};
+          const body = {updatingValue:tempName};
           const response = await fetch('http://localhost:5000/Account_details/'+vRMN+'/'+cRMN, {
             method: 'PUT',
             headers: {
@@ -124,70 +173,40 @@ const Account_details = () => {
               body: JSON.stringify(body)      
           });
           const result = await response.json();
-          // JSON.stringify(result);
-          // console.log(result);
-          //alert(result.message);
           ToastAndroid.showWithGravity(
             result.message,
             ToastAndroid.SHORT,
-            ToastAndroid.CENTER,
-           
-          );
+            ToastAndroid.CENTER,    
+          );         
+        }
+        catch(err){
+          console.error(err.message);
+        }     
+      }
+      if(tempThreshold!=threshold){
+        try{                       
+          const body = {updatingValue:Number(tempThreshold)};
+          const response = await fetch('http://localhost:5000/Account_details/'+vRMN+'/'+cRMN, {
+            method: 'PUT',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/JSON'},
+              body: JSON.stringify(body)      
+          });
+          const result = await response.json();
+          ToastAndroid.showWithGravity(
+            result.message,
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,    
+          );     
         }
         catch(err){
           console.error(err.message);
         }
       }
-      if(typeof(threshold)==='string'){
-        var updatedThreshold = Number(threshold);
-        if(updatedThreshold<0 || updatedThreshold>10){
-          //alert('Threshold must be a value between 0-1');
-          ToastAndroid.showWithGravity(
-            "Threshold must be a value between 0-1",
-            ToastAndroid.SHORT,
-            ToastAndroid.CENTER,
-           
-          );
-        }
-        else{
-          try{      
-            const body = {updatingValue:updatedThreshold};
-            const response = await fetch('http://localhost:5000/Account_details/'+vRMN+'/'+cRMN, {
-              method: 'PUT',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/JSON'},
-                body: JSON.stringify(body)      
-            });
-            const result = await response.json();
-            // JSON.stringify(result);
-            // console.log(result);
-           // alert(result.message);
-           ToastAndroid.showWithGravity(
-            result.message,
-            ToastAndroid.SHORT,
-            ToastAndroid.CENTER,
-           
-          );
-          }
-          catch(err){
-            console.error(err.message);
-          }
-        }
-      }
-    }
-    else{
-      //alert('You have not made any changes');
-      ToastAndroid.showWithGravity(
-        "You have not made any changes",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER,
-       
-      );
-      
+      getValueFor(); 
     }
   }
-
 
   return (      
     <View style={{ flex: 1, padding:'5%', backgroundColor:'#EAF2F4' }}>
@@ -209,12 +228,13 @@ const Account_details = () => {
           <TouchableOpacity activeOpacity={2} style={{ height:45, width:'60%' , justifyContent:'center', alignItems:'center',alignSelf:'center'}} >
             <TextInput style={{ fontSize: 20, color: 'green'}}
             style={{ height: 40,  textAlign: 'center' }}
-            placeholderTextColor = 'green'
+            placeholderTextColor = 'gray'
             fontSize={20}
-            textColor='black'
-            onChangeText={setName}
-            value={name}
-            placeholder={selectedConsumer[0].consumer_name}
+            color='green'
+            onChangeText={setTempName}
+            value={tempName}
+            placeholder='Name Required'
+            // placeholder={selectedConsumer[0].consumer_name}
           />
           </TouchableOpacity>
           <Text style={{ fontSize: 15, color: 'black', textAlign: 'center', paddingVertical: '1%', marginBottom:'2%'}}>{cRMN}</Text>                  
@@ -231,11 +251,12 @@ const Account_details = () => {
                     <TouchableOpacity activeOpacity={2} >
                       <TextInput style={{ fontSize: 20, color: 'green'}}
                         style={{ height: 45, width:'50%', borderColor: 'gray', textAlign: 'right' }}
-                        placeholderTextColor = 'green'
-                        onChangeText={setThreshold}
-                        value={threshold}
-                        placeholder={(selectedConsumer[0].threshold).toString()}
-                      />        
+                        placeholderTextColor = 'gray'
+                        onChangeText={setTempThreshold}
+                        value={tempThreshold}
+                        color='green'
+                        placeholder='Threshold Required'
+                      />       
                     </TouchableOpacity>
                   </View>
                 </View>

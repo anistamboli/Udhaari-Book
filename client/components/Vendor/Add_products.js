@@ -106,6 +106,13 @@ const Add_products = () => {
         ToastAndroid.CENTER,       
       );
     }
+    else if(!isNaN(inputs[tempKey].quantity) && Number(inputs[tempKey].quantity)<0.1){
+      ToastAndroid.showWithGravity(
+        "Invalid Quantity",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,       
+      );
+    }
     else{
       const _inputs = [...inputs];
       _inputs[tempKey].total_price = inputs[tempKey].baseprice*Number(inputs[tempKey].quantity);
@@ -152,13 +159,13 @@ const Add_products = () => {
         ToastAndroid.CENTER,       
       );
     }
-    else if(!isNaN(quantity) && Number(quantity)<0.1){
-      ToastAndroid.showWithGravity(
-        "Invalid Quantity",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER,       
-      );
-    }
+    // else if(!isNaN(quantity) && Number(quantity)<0.1){
+    //   ToastAndroid.showWithGravity(
+    //     "Invalid Quantity",
+    //     ToastAndroid.SHORT,
+    //     ToastAndroid.CENTER,       
+    //   );
+    // }
     else{
       const _inputs = [...inputs];
       _inputs[tempKey].quantity = quantity;
