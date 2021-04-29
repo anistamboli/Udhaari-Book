@@ -304,12 +304,12 @@ const Add_products = () => {
       </ScrollView>
       <View style={{flexDirection:'row', width:'100%',alignContent:'center',}}>
         <View style = {styles.TotalAmountText}> 
-          <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>Total Udhaari</Text>
-          <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>₹ {totalAmount}</Text>
+          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}}>Total Udhaari</Text>
+          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}}>₹ {totalAmount}</Text>
         </View>
         <View style = {styles.CurrentTotalAmountText}> 
-          <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>Current Total</Text>
-          <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>₹ {currentTotalAmount}</Text>
+          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}}>Current Total</Text>
+          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}}>₹ {currentTotalAmount}</Text>
         </View>
       </View>
   </View>
@@ -354,12 +354,12 @@ const styles = StyleSheet.create({
     flexDirection:'column',
     alignSelf:'flex-end',
     padding: '2%',
-    borderRadius: 10, 
+    // borderRadius: 10, 
     marginHorizontal:'5%',
     // height:'10%',
     marginBottom:'5%',
     // marginRight:'4%',
-    backgroundColor: '#f55864'
+    backgroundColor: 'skyblue'
   },
 
   CurrentTotalAmountText :{
@@ -367,12 +367,13 @@ const styles = StyleSheet.create({
     flexDirection:'column',
     alignSelf:'flex-start',
     padding: '2%',
-    borderRadius: 10, marginHorizontal:'5%',
-  
+    // borderRadius: 10,
+     marginHorizontal:'5%',
+    
     // height:'10%',
     marginBottom:'5%',
     // marginLeft:'4%',
-    backgroundColor: '#f55864'
+    backgroundColor: 'skyblue'
   }
   
   // MainContainer:{

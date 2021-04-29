@@ -106,6 +106,12 @@ export default function Vendor_login() {
           }
           if(password===validPassword){
             // alert('welcome...');
+            ToastAndroid.showWithGravity(
+              "Welcome...",
+              ToastAndroid.SHORT,
+              ToastAndroid.CENTER,
+              ToastAndroid.color = '#f55864'
+            );
             SaveVendorContact(contact)
             navigation.navigate('Vendor Dashboard')
             return;

@@ -100,10 +100,10 @@ const Vendor_dashboard = () =>{
             <AntDesign name="logout" size={32} color="black" />
           </TouchableOpacity>   
         </View>
-        <View style={{widht:'100%', alignItems:'center', paddingTop:'1%'}}>
+        <View style={{width:'100%', alignItems:'center', paddingTop:'1%'}}>
           <SearchBar 
           inputStyle={{width:'100%', backgroundColor:'white', borderRadius: 25}}
-          containerStyle={{width:'90%', backgroundColor: 'white', borderWidth: 1, borderRadius: 40}}
+          containerStyle={{width:'94%', backgroundColor: 'white', borderWidth: 1, borderRadius: 40}}
           inputContainerStyle={{width:'100%', backgroundColor: 'white', borderRadius: 40, height:35}}
           backgroundColor = {'white'}
           placeholderTextColor = 'black'
@@ -195,8 +195,8 @@ const Vendor_dashboard = () =>{
       marginTop: '5%',
       marginBottom:'2%',
       height: '100%',
-      width: '96%',
-      marginHorizontal:'2%',
+      width: '100%',
+      // marginHorizontal:'2%',
       backgroundColor:'white'
     },
     listWrapper : {

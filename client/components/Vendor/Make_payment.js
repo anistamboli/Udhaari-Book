@@ -203,7 +203,7 @@ export default function Make_payment() {
                 </View>                 
                 <View style={{flexDirection:'row',width: '100%', marginTop:'5%'}}>
                   <Text style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Paying Date</Text> 
-                  <Text style={{textAlign:'right', width:'50%'}}>{(new Date()).toDateString()}</Text>                                          
+                  <Text style={{textAlign:'right', width:'50%', color:'green'}}>{(new Date()).toDateString()}</Text>                                          
                 </View>
                 <View style={{flexDirection:'row',width: '100%', marginTop:'5%'}}>
                   <Text  style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Paying Amount</Text>
@@ -211,7 +211,8 @@ export default function Make_payment() {
                     textAlign='right'
                     keyboardType='numeric'
                     style={{width:'50%'}}
-                    placeholder = 'Paying Amount'
+                    placeholderTextColor='green'
+                    placeholder = 'Enter Amount'
                     onChangeText={(amount) =>  setAmount(amount)}
                     value={amount}/>                                          
                 </View>
