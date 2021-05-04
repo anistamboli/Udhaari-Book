@@ -8,6 +8,8 @@ import { View, Text, Button, TextInput, TouchableOpacity, StyleSheet, ScrollView
 import { SearchBar } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
 
+import Modal from 'react-native-modal';
+
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation, useIsFocused, useFocusEffect } from '@react-navigation/native';
 
@@ -25,6 +27,10 @@ const Add_products = () => {
   const [currentTotalAmount , setCurrentTotalAmount] = useState(0);
   const [onlyDate, setOnlyDate] = useState('');
   const [onlyTime, setOnlyTime] = useState('');
+
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [product, setProduct] = useState('');
+  const [baseprice, setBasePrice] = useState('');
 
   const [vRMN, setvRMN] = useState();
   const [cRMN, setcRMN] = useState();
@@ -146,6 +152,66 @@ const Add_products = () => {
   }
 
 
+  const toggleModal = () => {
+        
+    setModalVisible(!isModalVisible);
+  };
+
+  const onPressDelete = async () => {
+
+    setModalVisible(!isModalVisible);
+
+  }
+  const onPressProduct = async () => {
+
+    if(!product.trim()){
+      // alert('Threshold Missing')
+      ToastAndroid.showWithGravity(
+       "Product Name Missing!!!",
+       ToastAndroid.SHORT,
+       ToastAndroid.CENTER
+     );
+     }
+     else if(!baseprice.trim()){
+      // alert('Threshold Missing')
+      ToastAndroid.showWithGravity(
+       "Base Price Missing!!!",
+       ToastAndroid.SHORT,
+       ToastAndroid.CENTER
+     );
+     }
+    
+     else{
+      
+      try{                          
+        const body = {name : product , base_price : baseprice };
+        const response = await fetch('http://localhost:5000/Add_products/new_product', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/JSON'
+          },
+          body: JSON.stringify(body)      
+        });
+        const result = await response.json();
+       
+       // alert(result.message);
+       ToastAndroid.showWithGravity(
+        result.message,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
+      setModalVisible(!isModalVisible);
+      getValueFor()
+      }
+      catch(err){
+        console.error(err.message);
+      }
+    }       
+  }
+
+
+
   const addHandler = async (vRMN,cRMN) => {   
     if(arrayProduct==''){
       ToastAndroid.showWithGravity(
@@ -254,7 +320,7 @@ const Add_products = () => {
           ToastAndroid.CENTER,       
         );
         inputs.splice(0, inputs.length);
-        console.log(inputs);
+        // console.log(inputs);
         setIsAddHandlerClicked(false);
       }
       else{
@@ -269,33 +335,76 @@ const Add_products = () => {
 
 
   const ShowCurrentDate = ()=>{
-    console.log(new Date());
+    // console.log(new Date());
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
     var tempOnlyDate = date + '-' + month + '-' + year;
     setOnlyDate(tempOnlyDate);
-    console.log(onlyDate);
+    // console.log(onlyDate);
     var hours = new Date().getHours(); 
     var min = new Date().getMinutes(); 
     var sec = new Date().getSeconds();
     var tempOnlyTime = hours+':'+min+':'+sec;
     setOnlyTime(tempOnlyTime);
-    console.log(onlyTime);
-    var dataset = date + '/' + month + '/' + year+'\n'+hours+':'+min+':'+sec;
+    // console.log(onlyTime);
+    var dataset =hours+':'+min+':'+sec  +'  '+ date + '/' + month + '/' + year;
     setCurrent(dataset); 
-    console.log(current);   
+    // console.log(current);   
   }
 
 
   return (
     <View style={styles.container}>
-      <View style = {{flexDirection:'row', width:'100%',marginTop:'2%'}}>       
-        <View style={{width:'50%',flexDirection:'column', alignItems:'center',paddingHorizontal:'2%'}}>
+      <View style= {{width:'100%',flexDirection:'row', marginTop:'1%', paddingHorizontal:'3%'}}>
+          <TouchableOpacity style={{width:'50%'}} onPress={()=>{navigation.navigate('New Product')}}>
+          <Text style={{fontSize:14,width:'100%', textAlign:'left', color:'blue'}} >View All Products</Text>          
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={{width:'50%'}} onPress={toggleModal}>
+            <Text style={{fontSize:14,width:'100%', textAlign:'right', color:'blue'}} >Add New Product</Text>          
+          </TouchableOpacity>
+      </View>
+      <Modal isVisible={isModalVisible}  transparent={true} backgroundColor = "#EAF2F4" height='90%' alignItems = "center" >
+      <View style={{ justifyContent: 'center', padding:'5%', alignItems: 'center',borderRadius:30,backgroundColor:'white',height : 400, width : '95%',  flexDirection: 'column', flex: 0}}>
+          <Text style={{fontWeight:'bold', fontSize:17}}>ADD NEW PRODUCT</Text>
+      <View style={{flexDirection:'row',width: '100%', marginTop:'10%'}}>
+                  <Text  style={{alignItems:'flex-start', width:'50%', fontWeight:"bold", fontSize:15}}> Product Name : </Text>
+                  <TextInput
+                    textAlign='right'
+                    style={{width:'50%'}}
+                    placeholder = 'Product Name'
+                    onChangeText={(product) =>  setProduct(product)}
+                    value={product}/>                                          
+                </View>
+                <View style={{flexDirection:'row',width: '100%', marginTop:'3%'}}>
+                  <Text  style={{alignItems:'flex-start', width:'50%', fontWeight:"bold", fontSize:15}}> Base Price :</Text>
+                  <TextInput
+                    textAlign='right'
+                    keyboardType='numeric'
+                    style={{width:'50%'}}
+                    placeholder = 'base price'
+                    onChangeText={(baseprice) =>  setBasePrice(baseprice)}
+                    value={baseprice}/>                                          
+                </View>
+                
+                <View style={{flexDirection:'row' ,width: '100%', marginTop:'10%', marginBottom:'5%'}}>
+                  <View style={{width:'50%', paddingHorizontal:'13%'}}>
+                    <Button title="ADD" color='green' onPress={() => {onPressProduct()}} />
+                  </View>
+                  <View style={{width:'50%', paddingHorizontal:'13%'}}>
+                    <Button title="Cancel" color='red'  onPress={() => {onPressDelete()}} />    
+                  </View>
+                </View>
+       </View>
+      </Modal>
+
+      <View style = {{flexDirection:'row', width:'100%',marginTop:'2%',}}>       
+        <View style={{width:'71%',flexDirection:'column', alignItems:'center',paddingHorizontal:'1%',}}>
           <SearchBar 
             inputStyle={{width:'100%', backgroundColor:'white', borderRadius: 25}}
             containerStyle={{width:'100%', backgroundColor: 'white',  borderRadius: 40}}
-            inputContainerStyle={{width:'90%', backgroundColor: 'white', borderRadius: 40, height:35,}}
+            inputContainerStyle={{width:'90%', backgroundColor: 'white', borderRadius: 40, height:30,}}
             backgroundColor = {'white'}
             placeholder="Search Product"
             searchIcon = {false}
@@ -333,36 +442,34 @@ const Add_products = () => {
           :<Text></Text>}
         </View>
         <TextInput  
-          style={{height:45, marginTop:'1%',backgroundColor:'white', borderWidth:0.25, borderRadius:3 ,width:'15%'}}
+          style={{height:40, marginTop:'1%',backgroundColor:'white',textAlign:'center', borderWidth:0.25, borderRadius:3 ,width:'15%',marginLeft:'1%'}}
           placeholder={" Qty"} 
           keyboardType='numeric' 
           value = {arrayQuantity}
           onChangeText = {quantity => inputHandler(Number(quantity))}
         /> 
-        <View style={{width:'10%', marginTop:'1%', paddingLeft:'2%' }}>
+        <View style={{width:'12%', marginTop:'1%', paddingLeft:'2%' }}>
           <Button title="+" onPress={()=>addHandler(vRMN, cRMN)} />
-        </View> 
-        <View style= {{width:'25%', marginTop:'1%'}}>
-          <Text style={{fontSize:14, textAlign:'right', color:'blue'}} >View All Products</Text>
-          <Text style={{fontSize:14, textAlign:'right', color:'blue'}} >+ New Product</Text> 
-          <Text style={{fontSize:15, fontWeight:'bold', textAlign:'right'}}>{current}</Text>           
-        </View>    
+        </View>   
       </View>
-      <View style = {{width:'100%', marginTop:'3%', height:40,backgroundColor:'skyblue', flexDirection:'row', paddingHorizontal:'2%', paddingTop:'2%', borderRadius:5, borderEndColor:'blue', borderWidth:0.5}}>
-        <View style= {{width:'40%'}}>
-          <Text style={{fontSize:15, fontWeight:'bold',}} >Product </Text>
+        
+      <Text style={{fontSize:15,width:'100%', fontWeight:'bold', textAlign:'right',}}>{onlyDate}</Text>  
+
+      <View style = {{width:'100%', marginTop:'1%', height:40,backgroundColor:'skyblue', flexDirection:'row', paddingHorizontal:'2%', paddingTop:'2%', borderRadius:5, borderEndColor:'blue', borderWidth:0.5}}>
+        <View style= {{width:'38%'}}>
+          <Text style={{fontSize:15, fontWeight:'bold',}} > Product </Text>
         </View>
         <View style= {{width:'15%'}}>
           <Text  style={{fontSize:15, fontWeight:'bold',alignSelf:'flex-end'}}>BP</Text>
         </View>
-        <View style= {{width:'20%'}}>
-          <Text style={{fontSize:15, fontWeight:'bold',alignSelf:'center'}}>Qty</Text>
+        <View style= {{width:'22%'}}>
+          <Text style={{fontSize:15, fontWeight:'bold',alignSelf:'center'}}>   Qty</Text>
         </View>
         <View style= {{width:'15%'}}>
           <Text style={{fontSize:15, fontWeight:'bold',alignSelf:'flex-end'}}>Tot </Text>
         </View>
         <View style= {{width:'10%'}}>
-          <Text style={{fontSize:15, fontWeight:'bold',alignSelf:'flex-end'}}>Del</Text>
+          <Text style={{fontSize:15, fontWeight:'bold',alignSelf:'flex-end'}}></Text>
         </View>
       </View>
       <ScrollView  vertical >   
@@ -370,25 +477,25 @@ const Add_products = () => {
         ?inputs.map((input, key=0) =>
           (        
             <View style = {{width:'100%', marginTop:'0.5%',paddingTop:'2%',paddingLeft:'2%', height:50,backgroundColor:'white', flexDirection:'row', borderRadius:5}}>
-              <View style= {{width:'40%'}}>
+              <View style= {{width:'38%'}}>
                 {console.log("MAAAp"+key)}
                 <Text >{inputs[key].product}</Text>
               </View>
               <View style= {{width:'15%'}}>
-                <Text style= {{textAlign:'right'}}>{inputs[key].baseprice}</Text>
+                <Text style= {{textAlign:'right'}}>{inputs[key].baseprice}.0</Text>
               </View>
-              <View style={{width:'20%', marginTop:'0%', paddingLeft:'0%' }}>
+              <View style={{width:'22%', marginTop:'0%', paddingLeft:'2%', alignItems:'flex-end' }}>
                 <InputSpinner
-                  style={{width:'100%', height:5}}
+                  style={{width:'90%', height:5}}
                   max={100}
                   min={0}
                   rounded={false}
                   showBorder={true}
                   fontSize={14}
                     // background={'transparent'}
-                    // color={'#3e525f'}
-                  width={100}
-                  height={35}
+                  color={'gray'}
+                  width={10}
+                  height={25}
                   type={'real'}
                   step={1}
                   colorMax={"#f04048"}
@@ -420,10 +527,10 @@ const Add_products = () => {
                 }/>
               </View> 
               <View style= {{width:'15%'}}>
-                <Text style= {{textAlign:'right'}}>{inputs[key].total_price}</Text>
+                <Text style= {{textAlign:'right'}}>{inputs[key].total_price}.0</Text>
               </View>
               <View style= {{width:'10%'}}>
-                <Text style={{fontSize:15, fontWeight:'bold',alignSelf:'flex-end', color:'red'}} onPress = {()=> deleteHandler(key)}>X</Text>
+                <Text style={{fontSize:15, fontWeight:'bold',alignSelf:'flex-end',paddingRight:'20%', color:'red'}} onPress = {()=> deleteHandler(key)}>X</Text>
               </View>
             </View>         
           )
@@ -433,11 +540,11 @@ const Add_products = () => {
       <View style={{flexDirection:'row', width:'100%',alignContent:'center',}}>
         <View style = {styles.TotalAmountText}> 
           <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}}>Total Udhaari</Text>
-          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}}>₹ {totalAmount}</Text>
+          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}}>₹ {totalAmount}.00</Text>
         </View>
         <View style = {styles.CurrentTotalAmountText}> 
           <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}} onPress={addToRecords}>Add Current Bill</Text>
-          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}} onPress={addToRecords}>₹ {currentTotalAmount}</Text>
+          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}} onPress={addToRecords}>₹ {currentTotalAmount}.00</Text>
         </View>
       </View>
     </View>

@@ -20,6 +20,8 @@ const Consumer_dashboard = () =>{
 
   const [cRMN, setcRMN] = useState();
 
+  var today = new Date();
+
   async function SaveVendorContact(value) {
     await SecureStore.setItemAsync('vendorMob', value);
   }
@@ -111,13 +113,13 @@ const Consumer_dashboard = () =>{
         <View style = {styles.body}>
           <View style = {styles.listWrapper1}>
               <Text style = {styles.row1}>Shop Name </Text>
-              <Text style = {styles.row1}>Udhaari</Text>
+              <Text style = {styles.row2}>Udhaari</Text>
             </View>
           <FlatList 
           data = {filteredVendors}
           renderItem = {({ item }) => {
             return(
-              <View style = {styles.listWrapper}>
+              <View style ={[((new Date(item.due_date)).getTime()+5*24*60*60*1000) > today.getTime()? styles.listWrapper:styles.listWrapper2]}>
                 <TouchableOpacity style={{flexDirection:'column', alignItems:'flex-start', width:'60%', paddingHorizontal:'5%',}}>
                 <Text style = {styles.row}
                 onPress = {() => { 
@@ -135,12 +137,12 @@ const Consumer_dashboard = () =>{
                 </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{width:'40%', paddingLeft:'3%'}}>
-                <Text style = {styles.row}
+                <Text style = {styles.row3}
                 onPress = {() => { 
                   SaveVendorContact(item.contact) 
                   navigation.navigate('Consumer_navTab', {screen : 'My Udhaari'})
                 }}>
-                  ₹ {item.balance}
+                  ₹ {item.balance}.00
                 </Text>
                 </TouchableOpacity>
               </View>
@@ -186,8 +188,17 @@ const Consumer_dashboard = () =>{
       alignItems:'center',
       flexWrap : 'wrap',
       borderBottomWidth : 0.5,
-      paddingVertical:'2%'
-
+      paddingVertical:'2%',
+      backgroundColor:'#e5f8e5'
+    },
+    listWrapper2 : {
+      flexDirection : 'row',
+      justifyContent: 'center',
+      alignItems:'center',
+      flexWrap : 'wrap',
+      borderBottomWidth : 0.5,
+      paddingVertical:'2%',
+      backgroundColor:'#ffebea'
     },
     listWrapper1 : {
       flexDirection : 'row',
@@ -205,10 +216,35 @@ const Consumer_dashboard = () =>{
       // paddingHorizontal : 45,
       // paddingVertical : 15
     },
+    row3: {
+      //backgroundColor : '#fff',
+      flex : 1,
+      fontSize : 15,
+      fontWeight:'bold',
+      textAlign:'right',
+      color:'black',
+      paddingHorizontal:'15%'
+      // paddingHorizontal : 45,
+      // paddingVertical : 15
+    },
     row1: {
       //backgroundColor : '#fff',
       flex : 1,
       fontSize : 17,
+      textAlign:'left',
+      paddingHorizontal:'5%',
+      fontWeight:'bold',
+      color:'#484848',
+      fontStyle:'italic',
+      paddingHorizontal : 45,
+      paddingVertical : 15,
+    },
+    row2: {
+      //backgroundColor : '#fff',
+      flex : 1,
+      fontSize : 17,
+      textAlign:'right',
+      paddingHorizontal:'5%',
       fontWeight:'bold',
       color:'#484848',
       fontStyle:'italic',

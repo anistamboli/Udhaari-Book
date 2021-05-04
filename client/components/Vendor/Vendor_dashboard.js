@@ -128,7 +128,7 @@ const Vendor_dashboard = () =>{
             return(
               <View style = {styles.listWrapper}>
                 <TouchableOpacity style={{flexDirection:'column', alignItems:'flex-start', width:'60%', paddingHorizontal:'5%',}}>
-                <Text style = {styles.row}
+                <Text style = {styles.nam}
                 onPress = {() => { 
                   SaveConsumerContact(item.consumer_contact) 
                   navigation.navigate('Vendor_navTab', {screen : 'Account Details'})
@@ -239,14 +239,23 @@ const Vendor_dashboard = () =>{
       borderBottomWidth : 2,
 
     },
+    nam: {
+      //backgroundColor : '#fff',
+      flex : 1,
+      fontSize : 16,
+      fontWeight:'bold' ,
+      color:'#484848',
+      paddingHorizontal : 10,
+      paddingVertical : 3
+    },
     row: {
       //backgroundColor : '#fff',
       flex : 1,
       fontSize : 15,
-      fontWeight:'bold',
+      // fontWeight:'bold',
       color:'#484848',
       paddingHorizontal : 10,
-      paddingVertical : 5
+      paddingVertical : 3
     },
     row1: {
       //backgroundColor : '#fff',

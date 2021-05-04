@@ -135,7 +135,7 @@ export default function Purchase_bill() {
                 <Text style={{width:'50%', textAlign:'right', fontWeight:'bold', fontSize:15}}>₹ {mainDetails[0].transaction_amount}.00</Text>
             </View>
 
-           <View style = {{ alignItems : 'flex-end',marginTop:'10%', flex :1, width:'100%', paddingHorizontal:'3%'}}>
+           <View style = {{ alignItems : 'flex-end',marginTop:'5%', flex :1, width:'100%', paddingHorizontal:'3%'}}>
                 <TouchableOpacity style={styles.loginBtn} onPress={()=>navigation.goBack()}>
                     <Text style={{color:'white', fontWeight:'bold', textAlign:'center'}}>Close</Text>
                 </TouchableOpacity>

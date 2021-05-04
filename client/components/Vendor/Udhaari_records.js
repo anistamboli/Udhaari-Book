@@ -241,7 +241,7 @@ export default function Udhaari_records() {
             <View style={{width:'100%', flexDirection:'row', marginBottom:'2%', marginTop:'2%'}}>
             <View style={{ flexDirection:'row',}}>
               <Picker 
-              style={{width:'27%', height:25, borderWidth:1, color:'black', alignItems: 'center', marginLeft:'2%'}} 
+              style={{width:'30%', height:25, borderWidth:1, color:'black', alignItems: 'center', marginLeft:'2%'}} 
               selectedValue={month}
               
               onValueChange={ (itemValue)=> {setMonth(itemValue) 
@@ -249,7 +249,7 @@ export default function Udhaari_records() {
                   setStart(new Date(String(year+'-'+itemValue+'-01')))
                   setEnd(new Date(String(year+'-'+itemValue+'-'+totDays)))}}
                 >
-                <Picker.Item label='Mnth'  />
+                <Picker.Item label='Month'  />
                 <Picker.Item label='Jan' value='01' />
                 <Picker.Item label='Feb' value='02' />
                 <Picker.Item label='Mar' value='03' />
@@ -265,7 +265,7 @@ export default function Udhaari_records() {
               </Picker>
 
               <Picker 
-              style={{width:'26%', height:25, borderWidth:1, color:'black'}} 
+              style={{width:'27%', height:25, borderWidth:1, color:'black'}} 
               selectedValue={year}
               onValueChange={ (itemValue)=>{ setYear(itemValue)
                   var totDays= (new Date(itemValue, month, 0)).getDate()
@@ -281,7 +281,7 @@ export default function Udhaari_records() {
                 <Picker.Item label='2015' value='2015' />
               </Picker>
               
-              <View style={{width:'44%', flexDirection:'column',}}>
+              <View style={{width:'40%', flexDirection:'column',}}>
                 <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>Udhaari </Text>
                 <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>₹ {bal}.00</Text>
               </View> 
@@ -336,7 +336,7 @@ export default function Udhaari_records() {
           <View style={{width:'100%', flexDirection:'row', marginBottom:'2%', marginTop:'2%'}}>
             <View style={{ flexDirection:'row',}}>
               <Picker 
-              style={{width:'27%', height:25, borderWidth:1, color:'black', alignItems: 'center', marginLeft:'2%'}} 
+              style={{width:'30%', height:25, borderWidth:1, color:'black', alignItems: 'center', marginLeft:'2%'}} 
               selectedValue={month}
               
               onValueChange={ (itemValue)=> {setMonth(itemValue) 
@@ -344,7 +344,7 @@ export default function Udhaari_records() {
                   setStart(new Date(String(year+'-'+itemValue+'-01')))
                   setEnd(new Date(String(year+'-'+itemValue+'-'+totDays)))}}
                 >
-                <Picker.Item label='Mnth'  />
+                <Picker.Item label='Month'  />
                 <Picker.Item label='Jan' value='01' />
                 <Picker.Item label='Feb' value='02' />
                 <Picker.Item label='Mar' value='03' />
@@ -360,7 +360,7 @@ export default function Udhaari_records() {
               </Picker>
 
               <Picker 
-              style={{width:'26%', height:25, borderWidth:1, color:'black'}} 
+              style={{width:'27%', height:25, borderWidth:1, color:'black'}} 
               selectedValue={year}
               onValueChange={ (itemValue)=>{ setYear(itemValue)
                   var totDays= (new Date(itemValue, month, 0)).getDate()
@@ -376,7 +376,7 @@ export default function Udhaari_records() {
                 <Picker.Item label='2015' value='2015' />
               </Picker>
               
-              <View style={{width:'44%', flexDirection:'column',}}>
+              <View style={{width:'40%', flexDirection:'column',}}>
                 <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>Udhaari </Text>
                 <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>₹ {bal}.00</Text>
               </View> 

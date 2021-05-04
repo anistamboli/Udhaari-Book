@@ -7,6 +7,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation, useIsFocused, useFocusEffect } from '@react-navigation/native';
 
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export default function Make_payment() {
 
@@ -14,12 +15,18 @@ export default function Make_payment() {
   // const cRMN = route.params.cRMN; 
   const [isLoading, setLoading] = useState(true);
   
-  const [current, setCurrent] = useState('');
+  const [current, setCurrent] = useState(new Date());
   const [newDate , setNewDate] = useState('');
   const [amount , setAmount] = useState('');
   const [threshold , setthreshold] = useState('');
   const [vRMN, setvRMN] = useState();
   const [cRMN, setcRMN] = useState();
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [defaultDate, setDefaultDate] = useState((new Date()).toDateString());  
+  const [transactionId, setTransactionId] = useState(0);
+  const [onlyDate, setOnlyDate] = useState('');
+  const [onlyTime, setOnlyTime] = useState('');
+
 
   async function getValueFor() {
     let vRMN = await SecureStore.getItemAsync('vendorContact');
@@ -27,12 +34,16 @@ export default function Make_payment() {
     setvRMN(vRMN);
     setcRMN(cRMN); 
     setAmount(''); 
+    var d = new Date();
+    var n = d.getTime();
+    setTransactionId(n);
+    ShowCurrentDate();
+    setDefaultDate((new Date()).toDateString());
     fetch('http://localhost:5000/threshold/'+vRMN+'/'+cRMN)
     .then((response1) => response1.json())
     .then((result1) => setthreshold(result1))
     .catch((error) => console.error(error))
     .finally(() => setLoading(false));
-    ShowCurrentDate();
   }
  
   // useEffect(() => {
@@ -46,19 +57,53 @@ export default function Make_payment() {
   );
 
 
-  const ShowCurrentDate= async ()=>{
- 
+  const ShowCurrentDate = ()=>{
+    console.log(new Date());
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
-    var month1 = new Date().getMonth() + 2;
-    var dataset = date + '-' + month + '-' + year
-    var dataset1 = date + '-' + month1 + '-' + year
-    setCurrent(dataset);
-    setNewDate(dataset1);
-   
+    var tempOnlyDate = date + '-' + month + '-' + year;
+    setOnlyDate(tempOnlyDate);
+    console.log(onlyDate);
+    var hours = new Date().getHours(); 
+    var min = new Date().getMinutes(); 
+    var sec = new Date().getSeconds();
+    var tempOnlyTime = hours+':'+min+':'+sec;
+    setOnlyTime(tempOnlyTime);
+    console.log(onlyTime);
+  }
 
-   }
+
+   const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+      
+  
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+      
+      
+  const handleConfirm = (date) => {
+    setCurrent(date);
+    setDefaultDate(date.toDateString());
+    // alert(date);
+    
+    var result = new Date(date);
+    result.setDate(result.getDate() + 30);
+    setNewDate(result); 
+    // alert("Result"+result);
+    hideDatePicker();
+
+    // setStart(date);
+    // var result = new Date(date);
+    // result.setDate(result.getDate() + 30);
+    // setDue(result);
+    // setTempStart(date.toDateString());
+    // setTempDue(result.toDateString());
+   
+  };
+
 
    const updatedata = async (remain) => {
     
@@ -153,25 +198,45 @@ export default function Make_payment() {
         return
       }
       
-      if(typeof(amount) === 'string' && typeof(current)==='string' && typeof(remain)=== 'number'){
+      if(typeof(amount) === 'string' && typeof(remain)=== 'number'){
         var updatedAmount = Number(amount);
-        
-        try {
-          const body = {consumer_contact : cRMN , vendor_contact : vRMN ,payed_amount : updatedAmount , remaining_amount : remain , transaction_date : current , total_amount :  threshold[0].balance, transaction_time: (new Date()).toLocaleTimeString()}
-          const response = await fetch('http://localhost:5000/changedata',{
-            method : 'POST',
+        // alert('Going to try')
+        try{      
+          // alert('In try')
+          // alert(current.toLocaleDateString());
+          const body = {id:transactionId, type:'payment', transaction_amount:updatedAmount, transaction_date:onlyDate, transaction_time:onlyTime};
+          const response = await fetch('http://localhost:5000/Add_products/transaction/'+vRMN+'/'+cRMN, {
+            method: 'POST',
             headers: {
-              'Accept' : 'application/json',
-              'Content-Type' : 'application/JSON'},
-              body : JSON.stringify(body)
-            }
-          );
-          
+              'Accept': 'application/json',
+              'Content-Type': 'application/JSON'
+            },
+            body: JSON.stringify(body)      
+          });
           const result = await response.json();
-          // alert(result);
-          // alert("payed amount updated successfully.....");
-          updatedata(remain);          
-        
+          if(result.success==true){
+            console.log('TRUEEEEEEEE');
+            var date = current.getDate();
+            var month = current.getMonth() + 1;
+            var year = current.getFullYear();
+            var tempOnlyDate = year + '-' + month + '-' + date;
+            const body = {consumer_contact : cRMN , vendor_contact : vRMN ,payed_amount : updatedAmount , remaining_amount : remain , transaction_date : tempOnlyDate , total_amount :  threshold[0].balance, transaction_time: (new Date()).toLocaleTimeString(), tr_id:transactionId}
+            const response = await fetch('http://localhost:5000/changedata',{
+              method : 'POST',
+              headers: {
+                'Accept' : 'application/json',
+                'Content-Type' : 'application/JSON'
+              },
+              body : JSON.stringify(body)
+            });          
+            const result = await response.json();
+            // alert(result);
+            // alert("payed amount updated successfully.....");
+            updatedata(remain);  
+          }
+          else{
+            console.log('Falseeeeeee');
+          }    
         }
         catch (err) {
          // alert("catch");
@@ -203,7 +268,14 @@ export default function Make_payment() {
                 </View>                 
                 <View style={{flexDirection:'row',width: '100%', marginTop:'5%'}}>
                   <Text style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Paying Date</Text> 
-                  <Text style={{textAlign:'right', width:'50%', color:'green'}}>{(new Date()).toDateString()}</Text>                                          
+                  <Text style={{textAlign:'right', width:'50%', color:'green'}} onPress={showDatePicker}>{defaultDate}</Text>  
+                  <DateTimePickerModal
+                  isVisible={isDatePickerVisible}
+                  mode="date"                            
+                  onConfirm={handleConfirm}
+                  onCancel={hideDatePicker}
+                  maximumDate={new Date()}
+                  />                                        
                 </View>
                 <View style={{flexDirection:'row',width: '100%', marginTop:'5%'}}>
                   <Text  style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Paying Amount</Text>

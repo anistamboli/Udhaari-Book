@@ -115,7 +115,7 @@ app.get('/Vendor_dashboard/:vRMN', async(req,res) => {
 app.get('/Consumer_dashboard/:cRMN', async(req,res) => {
     try{
         var {cRMN} = req.params;
-        const allvendor = await pool.query('select name,contact, balance, shop_name from vendor, vendor_consumer where vendor_consumer.vendor_contact=vendor.contact and vendor_consumer.consumer_contact=$1 order by shop_name',
+        const allvendor = await pool.query('select name,contact, balance, due_date, shop_name from vendor, vendor_consumer where vendor_consumer.vendor_contact=vendor.contact and vendor_consumer.consumer_contact=$1 order by shop_name',
         [cRMN]);
         // console.log(allvendor.rows);
         res.json(allvendor.rows);
@@ -562,18 +562,18 @@ app.get('/threshold/:vRMN/:cRMN', async(req,res) => {
 
 app.post("/changedata" , async(req,res) => {
     try {
-            
+
+            console.log(req.body);
+            const { consumer_contact , vendor_contact,total_amount , payed_amount , remaining_amount , transaction_date, transaction_time, tr_id} = req.body;
             // console.log(req.body);
-            const { consumer_contact , vendor_contact,total_amount , payed_amount , remaining_amount , transaction_date, transaction_time} = req.body;
-            // console.log(req.body);
-            const updatedata = await pool.query('INSERT INTO payment_history (consumer_contact , vendor_contact , total_amount , payed_amount , remaining_amount , transaction_date, transaction_time) VALUES ($1, $2, $3, $4, $5 ,$6, $7 ) RETURNING *', 
-            [consumer_contact , vendor_contact , total_amount , payed_amount , remaining_amount , transaction_date, transaction_time]);
+            const updatedata = await pool.query('INSERT INTO payment_history (consumer_contact , vendor_contact , total_amount , payed_amount , remaining_amount , transaction_date, transaction_time, tr_id) VALUES ($1, $2, $3, $4, $5 ,$6, $7, $8 ) RETURNING *', 
+            [consumer_contact , vendor_contact , total_amount , payed_amount , remaining_amount , transaction_date, transaction_time, tr_id]);
             res.json("Data Inserted Successfully.....");
 
-        
+
     } catch (err) {
         console.error(err.message);
-        
+
     }
 });
 
@@ -598,6 +598,50 @@ app.put("/updatedata/:vRMN/:cRMN" , async(req,res) => {
 });
 
 
+//add new products
+
+app.get('/Add_products/product', async(req,res) => {
+    try{
+        console.log(req.body);
+        const allproduct = await pool.query('SELECT * from product');
+        console.log(allproduct.rows);
+        res.json(allproduct.rows);
+       // console.log(res.json);
+    }
+    catch(err) {
+        console.log(err.message);
+    }
+})
+
+app.post('/Add_products/new_product', async(req,res) => {
+    try{
+        console.log(req.body);
+        const { name , base_price} = req.body;
+         console.log(req.body);
+         q1=await pool.query('Select * from product where name= $1 and base_price = $2',
+        [name , base_price ]);
+        console.log('condition chk-',q1.rows)
+        if(q1.rows.length==0){
+            pool.query('INSERT INTO product (name , base_price) VALUES ($1, $2 ) RETURNING *', 
+            [name , base_price]);
+             res.json({
+                success : true,
+                message : 'Product Added Successfully', 
+            });
+            console.log(res.data)
+        }
+        else{
+            console.log("e");
+            res.json({
+                success : false,
+                message : 'Product Already Exists', 
+            });
+        }
+    }
+    catch(err) {
+        console.log(err.message);
+    }
+})
 
 
 app.listen(port, ()=>{
