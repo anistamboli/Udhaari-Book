@@ -24,6 +24,8 @@ import Account_details  from './components/Vendor/Account_details';
 import Add_products     from './components/Vendor/Add_products';
 import Udhaari_records  from './components/Vendor/Udhaari_records';
 import Make_payment     from './components/Vendor/Make_payment';
+import Payment_details  from './components/Vendor/Payment_details';
+import Purchase_bill    from './components/Vendor/Purchase_bill';
 
 //Consumer Imports
 import Consumer_register  from './components/Consumer/Consumer_register';
@@ -139,7 +141,9 @@ const NavStack = () => {
       <Stack.Screen name="Vendor Login" component={Vendor_login} options={{ headerShown: false }} />      
       <Stack.Screen name="Vendor Registration" component={Vendor_register} options={{ headerShown: false }}/>      
       <Stack.Screen name="Vendor Dashboard" component={Vendor_dashboard} options={{ headerShown: false }}/>
-      <Stack.Screen name="Add Consumer" component={Add_consumer} options={{ headerShown: false }}/>      
+      <Stack.Screen name="Add Consumer" component={Add_consumer} options={{ headerShown: false }}/> 
+      <Stack.Screen name="Payment Details" component={Payment_details} options={{ headerShown: false }}/>   
+      <Stack.Screen name="Purchase Bill" component={Purchase_bill} options={{ headerShown: false }}/>    
       <Stack.Screen name="Vendor_navTab" component={Vendor_navTab} options={{ headerShown: false }} /> 
       <Stack.Screen name="Consumer Login" component={Consumer_login} options={{ headerShown: false }} /> 
       <Stack.Screen name="Consumer Registration" component={Consumer_register} options={{ headerShown: false }}/>

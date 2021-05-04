@@ -59,6 +59,7 @@ const Vendor_dashboard = () =>{
     }, [])
   );
 
+  var today = new Date();
 
   const searchFilterFunction = (text) => {
     if (text) {
@@ -119,28 +120,50 @@ const Vendor_dashboard = () =>{
         <View style = {styles.body}>
           <View style = {styles.listWrapper1}>
               <Text style = {styles.row1}>Name </Text>
-              <Text style = {styles.row1}>Contact </Text>
+              <Text style = {styles.row3}>Udhaari </Text>
           </View>
           <FlatList 
           data = {filteredConsumers}
           renderItem = {({ item }) => {
             return(
               <View style = {styles.listWrapper}>
-                <Text style = {styles.row} 
+                <TouchableOpacity style={{flexDirection:'column', alignItems:'flex-start', width:'60%', paddingHorizontal:'5%',}}>
+                <Text style = {styles.row}
                 onPress = {() => { 
                   SaveConsumerContact(item.consumer_contact) 
                   navigation.navigate('Vendor_navTab', {screen : 'Account Details'})
                 }}>
-                  {item.consumer_name} 
+                  {item.consumer_name}
                 </Text>
                 <Text style = {styles.row}
-                onPress = {() => {
+                onPress = {() => { 
                   SaveConsumerContact(item.consumer_contact) 
                   navigation.navigate('Vendor_navTab', {screen : 'Account Details'})
                 }}>
                   {item.consumer_contact}
                 </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{width:'40%', paddingLeft:'3%', }}>
+                  {((new Date(item.due_date)).getTime()+5*24*60*60*1000) > today.getTime()?
+                <Text style = {styles.row2}
+                onPress = {() => { 
+                  SaveConsumerContact(item.consumer_contact) 
+                  navigation.navigate('Vendor_navTab', {screen : 'Account Details'})
+                }}>
+                  ₹ {item.balance}.00
+                </Text>
+                :
+                <Text style = {styles.row4}
+                onPress = {() => { 
+                  SaveConsumerContact(item.consumer_contact) 
+                  navigation.navigate('Vendor_navTab', {screen : 'Account Details'})
+                }}>
+                  ₹ {item.balance}.00
+                </Text>
+                }
+                </TouchableOpacity>
               </View>
+
             )
           }}/>
         </View>         
@@ -222,8 +245,8 @@ const Vendor_dashboard = () =>{
       fontSize : 15,
       fontWeight:'bold',
       color:'#484848',
-      paddingHorizontal : 45,
-      paddingVertical : 15
+      paddingHorizontal : 10,
+      paddingVertical : 5
     },
     row1: {
       //backgroundColor : '#fff',
@@ -234,7 +257,38 @@ const Vendor_dashboard = () =>{
       fontStyle:'italic' ,
       paddingHorizontal : 45,
       paddingVertical : 15,
-    }
+    },
+    row3: {
+      //backgroundColor : '#fff',
+      flex : 1,
+      fontSize : 18,
+      fontWeight:'bold',
+      color:'#484848',
+      fontStyle:'italic' ,
+      paddingHorizontal : 45,
+      paddingVertical : 15,
+      textAlign:'right'
+    },
+    row2: {
+      //backgroundColor : '#fff',
+      flex : 1,
+      fontSize : 15,
+      fontWeight:'bold',
+      color:'green',
+      textAlign:'right',
+      paddingHorizontal : 30,
+      paddingVertical : 5
+    },
+    row4: {
+      //backgroundColor : '#fff',
+      flex : 1,
+      fontSize : 15,
+      fontWeight:'bold',
+      color:'red',
+      textAlign:'right',
+      paddingHorizontal : 30,
+      paddingVertical : 5
+    },
   });
 
 export default Vendor_dashboard;

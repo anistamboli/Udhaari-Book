@@ -11,13 +11,17 @@ import { StatusBar } from 'expo-status-bar';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation, useIsFocused, useFocusEffect } from '@react-navigation/native';
 
+import InputSpinner from "react-native-input-spinner";
 
 const Add_products = () => {
+  const navigation = useNavigation();
+
   const [search, setSearch] = useState('');
   const [tempKey, setTempKey] = useState(0);
-  const [current, setCurrent] = useState('');
+  const [current, setCurrent] = useState((new Date()).toDateString());
   const [consumers , setConsumers] = useState([]);
   const [totalAmount , setTotalAmount] = useState(0);
+  const [tempTotalAmount , setTempTotalAmount] = useState(0);
   const [currentTotalAmount , setCurrentTotalAmount] = useState(0);
   const [onlyDate, setOnlyDate] = useState('');
   const [onlyTime, setOnlyTime] = useState('');
@@ -25,9 +29,20 @@ const Add_products = () => {
   const [vRMN, setvRMN] = useState();
   const [cRMN, setcRMN] = useState();
   
-  const [inputs, setInputs] = useState([{key: '', id:'', current:'', product: '',quantity: '' ,baseprice: '',total_price: ''}]);
+  const [inputs, setInputs] = useState([]);
   const [filteredConsumers, setFilteredConsumers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAddHandlerClicked, setIsAddHandlerClicked] = useState(false);
+
+  const [arrayKey, setArrayKey] = useState('');
+  const [arrayId, setArrayId] = useState('');
+  const [arrayProduct, setArrayProduct] = useState();
+  const [arrayQuantity, setArrayQuantity] = useState('1');
+  const [arrayBasePrice, setArrayBasePrice] = useState(0);
+  const [arrayTotalPrice, setArrayTotalPrice] = useState(0);
+
+  const [transactionId, setTransactionId] = useState(0);
+
 
 
   async function getValueFor() {
@@ -36,6 +51,9 @@ const Add_products = () => {
     setvRMN(vRMN);
     setcRMN(cRMN);
      
+    var d = new Date();
+    var n = d.getTime();
+    setTransactionId(n);
 
     fetch('http://localhost:5000/Add_products/product')
     .then((response) => response.json())
@@ -55,7 +73,9 @@ const Add_products = () => {
     .then((result) => {
       // console.log("DDDd");
       setTotalAmount(result);
-      console.log(totalAmount);
+      // console.log(totalAmount);
+      ShowCurrentDate();
+      
     })
     .catch((error) => {
       console.error(error);
@@ -69,6 +89,45 @@ const Add_products = () => {
     }, [])
   );
 
+  //  useEffect(() => {
+  //   getValueFor();
+  // },[]);
+
+
+  const AddRow = () =>{
+    console.log("ADD"+tempKey);
+    const _inputs = [...inputs];  
+    _inputs.push({key: '', id:'', current:'', product: '',quantity:1,baseprice:'',total_price:''});
+    // setInputs(_inputs);  
+    _inputs[tempKey].key = tempKey;                 
+    _inputs[tempKey].id = arrayId;                      
+    _inputs[tempKey].product = arrayProduct;  
+    _inputs[tempKey].baseprice = arrayBasePrice; 
+    _inputs[tempKey].quantity = arrayQuantity;
+    _inputs[tempKey].total_price = _inputs[tempKey].baseprice *_inputs[tempKey].quantity; 
+    setInputs(_inputs);
+                      
+
+    // const _inputs = [...inputs];
+    // _inputs.push({key: '', id:'', current:'', product: '',quantity:1,baseprice:'',total_price:''});
+    // setInputs(_inputs);
+
+    console.log("AFTER ADD"+tempKey);
+    console.log(_inputs);
+
+
+    var tempTotalAmount = totalAmount + _inputs[tempKey].total_price;
+    setTotalAmount(tempTotalAmount);
+    setCurrentTotalAmount(currentTotalAmount+_inputs[tempKey].total_price);
+
+
+    var changeTempKey = tempKey+1;
+    console.log(changeTempKey);
+    setTempKey(changeTempKey);
+    console.log('TempKey'+tempKey);
+    setSearch('');
+    setArrayQuantity('1');
+  }
 
 
   const searchFilterFunction = (text) => {
@@ -88,25 +147,21 @@ const Add_products = () => {
 
 
   const addHandler = async (vRMN,cRMN) => {   
-
-    if(inputs[tempKey].product==''){
-      //alert('Enter The Product');
+    if(arrayProduct==''){
       ToastAndroid.showWithGravity(
         "Enter the product",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER,
-       
-      );
-    }
-    else if(inputs[tempKey].quantity==''){
-      //alert('Enter The Quantity');
-      ToastAndroid.showWithGravity(
-        "Enter the quantity",
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,       
       );
     }
-    else if(!isNaN(inputs[tempKey].quantity) && Number(inputs[tempKey].quantity)<0.1){
+    else if(arrayQuantity==''){
+      ToastAndroid.showWithGravity(
+        "Enter valid quantity",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,       
+      );
+    }
+    else if(!isNaN(arrayQuantity) && Number(arrayQuantity)<0.1){
       ToastAndroid.showWithGravity(
         "Invalid Quantity",
         ToastAndroid.SHORT,
@@ -114,42 +169,32 @@ const Add_products = () => {
       );
     }
     else{
-      const _inputs = [...inputs];
-      _inputs[tempKey].total_price = inputs[tempKey].baseprice*Number(inputs[tempKey].quantity);
-      _inputs[tempKey].key   = tempKey;
-      _inputs[tempKey].current = current;
-      setInputs(_inputs);  
-      var total=totalAmount+inputs[tempKey].total_price;  
-      console.log(total);
-      setTotalAmount(total);
-      console.log(totalAmount);  
-      setCurrentTotalAmount(currentTotalAmount+inputs[tempKey].total_price);
-      console.log(totalAmount);  
-      _inputs.push({key: '', id:'', current:'', product: '',quantity:'',baseprice:'',total_price:''});
-      setInputs(_inputs);
-      setSearch('');
-      console.log(_inputs);
-      setTempKey(tempKey+1);
-      console.log(tempKey);
-      try{      
-        console.log("total" + total);
-        const body = {product_id:inputs[tempKey].id, quantity:Number(inputs[tempKey].quantity), date_purchase:onlyDate, time_purchase:onlyTime, total_amount:Number(total), total_price:Number(inputs[tempKey].total_price)};
-        const response = await fetch('http://localhost:5000/Add_products/'+vRMN+'/'+cRMN, {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/JSON'},
-            body: JSON.stringify(body)      
-        });
-        const result = await response.json();
-        // alert(result.message);
-      }
-      catch(err){
-        console.error(err.message);
-      }  
+      console.log('BP'+arrayBasePrice);
+      console.log('Q'+arrayQuantity);
+      var tempTotalPrice = arrayBasePrice*arrayQuantity
+      console.log(tempTotalPrice);
+      setArrayTotalPrice(tempTotalPrice);
+      console.log('dwwew'+arrayTotalPrice);
+      AddRow();
+      setIsAddHandlerClicked(true);
     }
   }
 
+
+  const deleteHandler = key => {  
+    console.log('bDeletekey'+key);
+    console.log('bDeletetempkey'+tempKey);
+    const values  = [...inputs];
+    setTotalAmount(totalAmount-values[key].total_price);
+    setCurrentTotalAmount(currentTotalAmount-values[key].total_price);
+    values.splice(values.findIndex(_inputs => _inputs.key === key), 1);
+    setInputs(values);
+    console.log(inputs.length);
+    console.log('aDeletekey'+key);
+    console.log('aDeletetempkey'+tempKey);
+    setTempKey(inputs.length-1);
+  }
+  
   
   const inputHandler = (quantity)=>{
     if(isNaN(quantity)){
@@ -159,19 +204,8 @@ const Add_products = () => {
         ToastAndroid.CENTER,       
       );
     }
-    // else if(!isNaN(quantity) && Number(quantity)<0.1){
-    //   ToastAndroid.showWithGravity(
-    //     "Invalid Quantity",
-    //     ToastAndroid.SHORT,
-    //     ToastAndroid.CENTER,       
-    //   );
-    // }
     else{
-      const _inputs = [...inputs];
-      _inputs[tempKey].quantity = quantity;
-      _inputs[tempKey].total_price = inputs[tempKey].baseprice*inputs[tempKey].quantity;
-      _inputs[tempKey].key   = tempKey;
-      setInputs(_inputs);    
+      setArrayQuantity(quantity);
     }  
   }
 
@@ -180,6 +214,58 @@ const Add_products = () => {
   //   GetProductDetails();
   //   GetTotalAmount();    
   // } , []);
+
+
+
+  const addToRecords = async () =>{    
+    console.log(transactionId);
+    console.log(onlyDate);
+    console.log(onlyTime);
+    try{      
+      const body = {id:transactionId, type:'purchase', transaction_amount:currentTotalAmount, transaction_date:onlyDate, transaction_time:onlyTime};
+      const response = await fetch('http://localhost:5000/Add_products/transaction/'+vRMN+'/'+cRMN, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/JSON'
+        },
+        body: JSON.stringify(body)      
+      });
+      const result = await response.json();
+      if(result.success==true){
+        console.log('TRUEEEEEEEE');
+        var i;
+        for(i=0;i<inputs.length;i++){
+          const body = {product_id:inputs[i].id, quantity:Number(inputs[i].quantity), date_purchase:onlyDate, time_purchase:onlyTime, total_price:Number(inputs[i].total_price),tr_id:transactionId,total_amount:Number(totalAmount)};
+          const response = await fetch('http://localhost:5000/Add_products/'+vRMN+'/'+cRMN, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/JSON'
+            },
+            body: JSON.stringify(body)      
+          });
+          const result = await response.json();
+          // console.log(result);
+        }
+        ToastAndroid.showWithGravity(
+          "Bill Added Successfully",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,       
+        );
+        inputs.splice(0, inputs.length);
+        console.log(inputs);
+        setIsAddHandlerClicked(false);
+      }
+      else{
+        console.log('Falseeeeeee');
+      }   
+     
+    }
+    catch(err){
+      console.error(err.message);
+    }  
+  }
 
 
   const ShowCurrentDate = ()=>{
@@ -198,122 +284,163 @@ const Add_products = () => {
     console.log(onlyTime);
     var dataset = date + '/' + month + '/' + year+'\n'+hours+':'+min+':'+sec;
     setCurrent(dataset); 
-    console.log(current);
+    console.log(current);   
   }
 
 
   return (
     <View style={styles.container}>
-      <View style = {{flexDirection:'row', width:'100%',marginTop:'2%'}}> 
-      <View style={{width:'72%',flexDirection:'column', alignItems:'center',paddingHorizontal:'2%'}}>
-        <SearchBar 
-          inputStyle={{width:'100%', backgroundColor:'white', borderRadius: 25}}
-          containerStyle={{width:'100%', backgroundColor: 'white',  borderRadius: 40}}
-          inputContainerStyle={{width:'90%', backgroundColor: 'white', borderRadius: 40, height:35,}}
-          backgroundColor = {'white'}
-          placeholder="Search Product"
-          searchIcon = {false}
-          lightTheme = {true}
-          cancelIcon = {true}
-          backgroundColor = 'white'
-          onChangeText={(text) => searchFilterFunction(text)}
-          onClear={(text) => searchFilterFunction('')}
-          value={search}                     
-        />
-        {isLoading?
-          <View style={styles.listWrapper}>
-            <FlatList 
-            data = {filteredConsumers}
-            renderItem = {({ item }) => {
-              return(
-                <View>
-                {  
-                  <Text style = {{fontSize:16, paddingVertical:1}} onPress = {() => {
-                    ShowCurrentDate();
-                    const _inputs = [...inputs];                  
-                    _inputs[tempKey].id = item.id;                      
-                    _inputs[tempKey].product = item.name;  
-                    _inputs[tempKey].baseprice = item.base_price;                              
-                    setInputs(_inputs);
-                    _inputs[tempKey].key = tempKey;
-                    console.log(tempKey);
-                    setSearch(item.name);
-                    setIsLoading(false);
-                  }}>                
-                    {item.name}   ₹ {item.base_price}
-                  </Text>
-                }                
-                </View>
-              )
-            }}/>
-          </View>
-        :<Text></Text>}
+      <View style = {{flexDirection:'row', width:'100%',marginTop:'2%'}}>       
+        <View style={{width:'50%',flexDirection:'column', alignItems:'center',paddingHorizontal:'2%'}}>
+          <SearchBar 
+            inputStyle={{width:'100%', backgroundColor:'white', borderRadius: 25}}
+            containerStyle={{width:'100%', backgroundColor: 'white',  borderRadius: 40}}
+            inputContainerStyle={{width:'90%', backgroundColor: 'white', borderRadius: 40, height:35,}}
+            backgroundColor = {'white'}
+            placeholder="Search Product"
+            searchIcon = {false}
+            lightTheme = {true}
+            cancelIcon = {true}
+            backgroundColor = 'white'
+            onChangeText={(text) => searchFilterFunction(text)}
+            onClear={(text) => searchFilterFunction('')}
+            value={search}                     
+          />
+          {isLoading?            
+            <View style={styles.listWrapper}>
+              <FlatList 
+              data = {filteredConsumers}
+              renderItem = {({ item }) => {
+                return(
+                  <View>
+                  {  
+                    <Text style = {{fontSize:16, paddingVertical:1}} onPress = {() => {
+                      ShowCurrentDate();               
+                      setArrayId(item.id);
+                      setArrayProduct(item.name);
+                      setArrayBasePrice(item.base_price);
+                      console.log(tempKey);
+                      setSearch(item.name);
+                      setIsLoading(false);
+                    }}>                
+                      {item.name}   ₹ {item.base_price}
+                    </Text>
+                  }                
+                  </View>
+                )
+              }}/>
+            </View>
+          :<Text></Text>}
         </View>
-
-          <TextInput  
+        <TextInput  
           style={{height:45, marginTop:'1%',backgroundColor:'white', borderWidth:0.25, borderRadius:3 ,width:'15%'}}
-          placeholder={"  Qty"} 
+          placeholder={" Qty"} 
           keyboardType='numeric' 
-          onChangeText = {quantity => inputHandler(quantity)}
-          value = {inputs[tempKey].quantity}/> 
-
-        <View style={{width:'10%', marginTop:'2%', paddingLeft:'2%' }}>
+          value = {arrayQuantity}
+          onChangeText = {quantity => inputHandler(Number(quantity))}
+        /> 
+        <View style={{width:'10%', marginTop:'1%', paddingLeft:'2%' }}>
           <Button title="+" onPress={()=>addHandler(vRMN, cRMN)} />
         </View> 
+        <View style= {{width:'25%', marginTop:'1%'}}>
+          <Text style={{fontSize:14, textAlign:'right', color:'blue'}} >View All Products</Text>
+          <Text style={{fontSize:14, textAlign:'right', color:'blue'}} >+ New Product</Text> 
+          <Text style={{fontSize:15, fontWeight:'bold', textAlign:'right'}}>{current}</Text>           
+        </View>    
       </View>
-
       <View style = {{width:'100%', marginTop:'3%', height:40,backgroundColor:'skyblue', flexDirection:'row', paddingHorizontal:'2%', paddingTop:'2%', borderRadius:5, borderEndColor:'blue', borderWidth:0.5}}>
+        <View style= {{width:'40%'}}>
+          <Text style={{fontSize:15, fontWeight:'bold',}} >Product </Text>
+        </View>
+        <View style= {{width:'15%'}}>
+          <Text  style={{fontSize:15, fontWeight:'bold',alignSelf:'flex-end'}}>BP</Text>
+        </View>
         <View style= {{width:'20%'}}>
-          <Text style={{fontSize:15, fontWeight:'bold'}}>Date</Text>
+          <Text style={{fontSize:15, fontWeight:'bold',alignSelf:'center'}}>Qty</Text>
         </View>
-        <View style= {{width:'41%'}}>
-          <Text style={{fontSize:15, fontWeight:'bold',}} >   Product </Text>
+        <View style= {{width:'15%'}}>
+          <Text style={{fontSize:15, fontWeight:'bold',alignSelf:'flex-end'}}>Tot </Text>
         </View>
-        <View style= {{width:'13%'}}>
-          <Text  style={{fontSize:15, fontWeight:'bold'}}>BP</Text>
-        </View>
-        <View style= {{width:'13%'}}>
-          <Text style={{fontSize:15, fontWeight:'bold'}} >Qty</Text>
-        </View>
-        <View style= {{width:'13%'}}>
-          <Text style={{fontSize:15, fontWeight:'bold'}} >Tot </Text>
+        <View style= {{width:'10%'}}>
+          <Text style={{fontSize:15, fontWeight:'bold',alignSelf:'flex-end'}}>Del</Text>
         </View>
       </View>
-
-      <ScrollView  vertical >          
-      {inputs.map((input, key)=>(
-      <View style = {{width:'100%', marginTop:'0.5%',paddingTop:'2%',paddingLeft:'2%', height:50,backgroundColor:'white', flexDirection:'row', borderRadius:5}}>
-        <View style= {{width:'20%'}}>
-          <Text >{inputs[key].current}</Text>
-        </View>
-        <View style= {{width:'41%'}}>
-          <Text >   {inputs[key].product} </Text>
-        </View>
-        <View style= {{width:'13%'}}>
-          <Text >{inputs[key].baseprice}</Text>
-        </View>
-        <View style= {{width:'13%'}}>
-          <Text >{inputs[key].quantity}</Text>
-        </View>
-        <View style= {{width:'13%'}}>
-          <Text >{inputs[key].total_price}</Text>
-        </View>
-      </View>   
-      )
-      )}
-      </ScrollView>
+      <ScrollView  vertical >   
+        {isAddHandlerClicked
+        ?inputs.map((input, key=0) =>
+          (        
+            <View style = {{width:'100%', marginTop:'0.5%',paddingTop:'2%',paddingLeft:'2%', height:50,backgroundColor:'white', flexDirection:'row', borderRadius:5}}>
+              <View style= {{width:'40%'}}>
+                {console.log("MAAAp"+key)}
+                <Text >{inputs[key].product}</Text>
+              </View>
+              <View style= {{width:'15%'}}>
+                <Text style= {{textAlign:'right'}}>{inputs[key].baseprice}</Text>
+              </View>
+              <View style={{width:'20%', marginTop:'0%', paddingLeft:'0%' }}>
+                <InputSpinner
+                  style={{width:'100%', height:5}}
+                  max={100}
+                  min={0}
+                  rounded={false}
+                  showBorder={true}
+                  fontSize={14}
+                    // background={'transparent'}
+                    // color={'#3e525f'}
+                  width={100}
+                  height={35}
+                  type={'real'}
+                  step={1}
+                  colorMax={"#f04048"}
+                  colorMin={"#40c5f4"}
+                  value={inputs[key].quantity}
+                  onChange={quantity=>{  
+                    console.log('GGHVHJGKJGKJGJK'+key); 
+                    console.log('inputs[key].quantity'+inputs[key].quantity); 
+                    if(quantity===0){
+                      console.log('dfdfd');
+                      console.log('quantity'+quantity); 
+                       deleteHandler(key);
+                    }
+                    else if(quantity>inputs[key].quantity){
+                      setTotalAmount(totalAmount+inputs[key].baseprice);
+                      setCurrentTotalAmount(currentTotalAmount+inputs[key].baseprice);
+                    }
+                    else{
+                      setTotalAmount(totalAmount-inputs[key].baseprice);
+                      setCurrentTotalAmount(currentTotalAmount-inputs[key].baseprice);
+                    }
+                    inputs[key].quantity = Number(quantity);  
+                    inputs[key].total_price = inputs[key].baseprice *inputs[key].quantity; 
+                    setInputs(inputs);
+                    console.log('After inputs[key].quantity'+inputs[key].quantity); 
+                    var tempTotalAmount = totalAmount + inputs[key].total_price;
+                    setTempTotalAmount(tempTotalAmount);
+                  }
+                }/>
+              </View> 
+              <View style= {{width:'15%'}}>
+                <Text style= {{textAlign:'right'}}>{inputs[key].total_price}</Text>
+              </View>
+              <View style= {{width:'10%'}}>
+                <Text style={{fontSize:15, fontWeight:'bold',alignSelf:'flex-end', color:'red'}} onPress = {()=> deleteHandler(key)}>X</Text>
+              </View>
+            </View>         
+          )
+        )
+        :<Text></Text>}
+      </ScrollView>      
       <View style={{flexDirection:'row', width:'100%',alignContent:'center',}}>
         <View style = {styles.TotalAmountText}> 
           <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}}>Total Udhaari</Text>
           <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}}>₹ {totalAmount}</Text>
         </View>
         <View style = {styles.CurrentTotalAmountText}> 
-          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}}>Current Total</Text>
-          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}}>₹ {currentTotalAmount}</Text>
+          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}} onPress={addToRecords}>Add Current Bill</Text>
+          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}} onPress={addToRecords}>₹ {currentTotalAmount}</Text>
         </View>
       </View>
-  </View>
-
+    </View>
   );
 }
 

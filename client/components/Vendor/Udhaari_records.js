@@ -3,6 +3,7 @@ import 'react-native-gesture-handler';
 import { Button, View, Text, StyleSheet, TouchableOpacity, Image, Alert,ScrollView} from 'react-native';
 import React, {useEffect, useState, useCallback} from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import {Picker} from '@react-native-picker/picker';
 
 import axios from 'axios';
 
@@ -10,69 +11,70 @@ import axios from 'axios';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation, useIsFocused, useFocusEffect } from '@react-navigation/native';
+import { color } from 'react-native-reanimated';
 
 export default function Udhaari_records() {
   // const val = route.params.mob;
   // console.log(route.params);
   // console.log(val);
 
+  const navigation = useNavigation();
+
   const [vRMN, setvRMN] = useState();
   const [cRMN, setcRMN] = useState();
+  const [bal, setBal] = useState();
 
-  const [allPaymentRec, setAllPaymentRec] = useState([]);
-  const [allPurchaseRec, setAllPurchaseRec] = useState([]);
+  const [allTransaction, setAllTransaction] = useState([]);
     
   const d1= new Date('2021-01-01');
   const d2= new Date();
   const [sDate, setStart] = useState(d1);
   const [eDate, setEnd] = useState(d2);
 
+  // const createDate=()=>{
+  //   // console.log( year, month)
+  //   var totDays= (new Date(year, month, 0)).getDate()
+  //   setStart(new Date(String(year+'-'+month+'-01')))
+  //   setEnd(new Date(String(year+'-'+month+'-'+totDays)))
+  // }
+
+  const [month, setMonth] = useState('May');
+  const [year, setYear] = useState('2021');
 
   const [accDetails, setAccDetails] = useState();
 
-  const [flag, setflag] = useState('purchase');
+  const [flag, setflag] = useState('all');
+
+  async function SaveTransactionID(value) {
+    await SecureStore.setItemAsync('transactionID', value);
+  }
 
   async function getValueFor() {
     let vRMN = await SecureStore.getItemAsync('vendorContact');
     let cRMN = await SecureStore.getItemAsync('consumerContact');
     setvRMN(vRMN);
     setcRMN(cRMN);
-    
-    // console.log(vRMN,cRMN)
-    // const cRMN=12;
-    // console.log(result,cc)
-    const response = await axios.get('http://localhost:5000/Purchase_history', {params:{
+   
+    const response_all = axios.get('http://localhost:5000/Transaction_history', {params:{
       vRMN, cRMN }})
-      .then((response)=> {
-        setAllPurchaseRec(response.data)  
-        // console.log("First Call :",response.data)
+      .then((response_all)=> {
+        setAllTransaction(response_all.data)           
       })  
       .catch((error)=>{
         console.log(error)
       })
-    // console.log(vRMN);
-    const response_acc = await axios.get('http://localhost:5000/Account_details/Udhaari_rec', {params:{
+
+    const response_acc = axios.get('http://localhost:5000/Account_details/Udhaari_rec', {params:{
       vRMN,cRMN}})
       .then((response_acc)=> {
        setAccDetails(response_acc.data)
+       setBal(response_acc.data.balance)
         setStart(new Date(response_acc.data.start_date))
       })
       .catch((error)=>{
         console.log(error)
       })
-      const response_pay =  await axios.get('http://localhost:5000/Payment_history', {params:{
-      vRMN, cRMN }})
-      .then((response_pay)=> {
-        // console.log(response.data)
-        // const allPayments= response.data
-        // console.log(allPayments)
-        // console.log(typeof(response.data[0].transaction_date))
-        setAllPaymentRec(response_pay.data)
-              
-      })  
-      .catch((error)=>{
-        console.log(error)
-      })
+
       
   }
 
@@ -87,80 +89,18 @@ export default function Udhaari_records() {
   //   getValueFor();  
   //   },[]);  
 
-
-  const PurchaseRec = async (vRMN,cRMN) => {
-
-    const response =  await axios.get('http://localhost:5000/Purchase_history', {params:{
+  const AllTransaction = async (vRMN,cRMN) => {
+    const response =  await axios.get('http://localhost:5000/Transaction_history', {params:{
       vRMN, cRMN }})
       .then((response)=> {
-        // console.log(response.data)
-        // const allPayments= response.data
-        // console.log(allPayments)
-        // console.log(typeof(response.data[0].transaction_date))
-        setAllPurchaseRec(response.data)
-        // console.log(allPurchaseRec)
-      })  
-      .catch((error)=>{
-        console.log(error)
-      })  
-  }
 
-  // PurchaseRec(vRMN,cRMN);
-
-  const PayRec = async (vRMN,cRMN) => {
-    const response =  await axios.get('http://localhost:5000/Payment_history', {params:{
-      vRMN, cRMN }})
-      .then((response)=> {
-        // console.log(response.data)
-        // const allPayments= response.data
-        // console.log(allPayments)
-        // console.log(typeof(response.data[0].transaction_date))
-        setAllPaymentRec(response.data)
+        setAllTransaction(response.data)
               
       })  
       .catch((error)=>{
         console.log(error)
       })  
   }
-
-  
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  
-    const showDatePicker = () => {
-      setDatePickerVisibility(true);
-    };
-  
-    const hideDatePicker = () => {
-      setDatePickerVisibility(false);
-    };
-  
-    const handleConfirm = (date) => {
-      setStart(date);
-      // console.log(typeof(date))
-      hideDatePicker();
-      setDatePickerVisibility(false);
-      // console.log("A date has been picked: ", date.toDateString());    
-    };
-  
-    const [isDatePickerVisible1, setDatePickerVisibility1] = useState(false);
-
-    const showDatePicker1 = () => {
-      setDatePickerVisibility1(true);
-    };
-  
-    const hideDatePicker1 = () => {
-      setDatePickerVisibility1(false);
-    };
-  
-    const handleConfirm1 = (date) => {
-      setEnd(date);
-      // console.log(typeof(date))
-      hideDatePicker();
-      setDatePickerVisibility1(false);
-      // console.log("A date has been picked by 1: ", date.toDateString());      
-    };
-  
-
 
 
   const setRecords = (value) => {
@@ -170,98 +110,122 @@ export default function Udhaari_records() {
       <View style= {styles.container}>
         
         <View style={{flexDirection:'row',width:'100%'}}>
-            <View style={{width:'50%'}}>
+            <View style={{width:'34%'}}>
               <TouchableOpacity  
-                  style={flag=='purchase'?styles.button_click:styles.button} 
-                  onPress={() =>setflag('purchase') & PurchaseRec(vRMN, cRMN) & setStart(new Date(accDetails.start_date))}>
-                    <Text style={flag=='purchase'?styles.text1:styles.text}>Purchase History</Text>
+                  style={flag=='all'?styles.button_click:styles.button} 
+                  onPress={() =>setflag('all') & AllTransaction(vRMN, cRMN) & setStart(new Date(accDetails.start_date))}>
+                    <Text style={flag=='all'?styles.text1:styles.text}>All</Text>
               </TouchableOpacity>
             </View>
-            <View style={{width:'50%'}}>
+            <View style={{width:'33%'}}>
+              <TouchableOpacity  
+                  style={flag=='purchase'?styles.button_click:styles.button} 
+                  onPress={() =>setflag('purchase')  & setStart(new Date(accDetails.start_date))}>
+                    <Text style={flag=='purchase'?styles.text1:styles.text}>Purchase</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{width:'33%'}}>
               <TouchableOpacity 
                   style={flag=='payment'?styles.button_click:styles.button} 
-                  onPress={() =>setflag('payment') & PayRec(vRMN, cRMN) & setStart(new Date(accDetails.start_date))}>
-                      <Text style={flag=='payment'?styles.text1:styles.text}>Payment History</Text>
+                  onPress={() =>setflag('payment') & setStart(new Date(accDetails.start_date))}>
+                      <Text style={flag=='payment'?styles.text1:styles.text}>Payment</Text>
               </TouchableOpacity>
               </View>
         </View> 
 
         {
-          (flag=='payment' )? 
+          (flag=='all' )? 
            
-          <View style={{marginTop:'1%', width:'100%', height:'100%'}}>
-            <View style={{width:'100%', flexDirection:'row', marginBottom:'2%', marginTop:'2%'}}>
-            <View style={{width:'30%', marginHorizontal:'10%'}}>
-              <View style={{width:'60%', marginHorizontal:'20%' }}>
-              <Button color='#109dcc' title="From" onPress={showDatePicker} />
-                <DateTimePickerModal
-                  isVisible={isDatePickerVisible}
-                  mode="date"
-                  onConfirm={handleConfirm}                
-                  onCancel={hideDatePicker}
-                  maximumDate={d2}
-                />
-                </View>
-              <Text style={{textAlign:'center', marginTop:'2%', fontWeight:'bold'}}>{sDate.toDateString('en-US')}</Text>
+          <View style={{marginTop:'2%', width:'100%', height:'100%'}}>
+            <View>
+            <View style={{ flexDirection:'row', marginBottom:'2%'}}>
+              <Picker 
+              style={{width:'30%', height:25, borderWidth:1, color:'black', marginLeft:'2%', }} 
+              selectedValue={month}
+              itemStyle={{ fontStyle:'italic', backgroundColor:'blue'}}
+              
+              onValueChange={ (itemValue)=> {setMonth(itemValue) 
+                  var totDays= (new Date(year, itemValue, 0)).getDate()
+                  setStart(new Date(String(year+'-'+itemValue+'-01')))
+                  setEnd(new Date(String(year+'-'+itemValue+'-'+totDays)))}}
+                >
+                <Picker.Item label='Month'  />
+                <Picker.Item label='Jan' value='01' />
+                <Picker.Item label='Feb' value='02' />
+                <Picker.Item label='Mar' value='03' />
+                <Picker.Item label='Apr' value='04' />
+                <Picker.Item label='May' value='05' />
+                <Picker.Item label='Jun' value='06' />
+                <Picker.Item label='Jul' value='07' />
+                <Picker.Item label='Aug' value='08' />
+                <Picker.Item label='Sep' value='09' />
+                <Picker.Item label='Oct' value='10' />
+                <Picker.Item label='Nov' value='11' />
+                <Picker.Item label='Dec' value='12' />
+              </Picker>
+
+              <Picker 
+              style={{width:'27%', height:25, borderWidth:1, color:'black'}} 
+              selectedValue={year}
+              onValueChange={ (itemValue)=>{ setYear(itemValue)
+                  var totDays= (new Date(itemValue, month, 0)).getDate()
+                  setStart(new Date(String(itemValue+'-'+month+'-01')))
+                  setEnd(new Date(String(itemValue+'-'+month+'-'+totDays)))} }
+                >
+                <Picker.Item label='2021' value='2021' />
+                <Picker.Item label='2020' value='2020' />
+                <Picker.Item label='2019' value='2019' />
+                <Picker.Item label='2018' value='2018' />
+                <Picker.Item label='2017' value='2017' />
+                <Picker.Item label='2016' value='2016' />
+                <Picker.Item label='2015' value='2015' />
+              </Picker>
+              
+              <View style={{width:'40%', flexDirection:'column',}}>
+                <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>Udhaari </Text>
+                <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>₹ {bal}.00</Text>
+              </View> 
             </View>
-            <View style={{width:'30%', marginHorizontal:'10%'}}>
-              <View style={{width:'60%', marginHorizontal:'20%'}}>
-              <Button color='#109dcc' title="To" onPress={showDatePicker1} />
-                <DateTimePickerModal
-                  isVisible={isDatePickerVisible1}
-                  mode="date"
-                  onConfirm={handleConfirm1}
-                  onCancel={hideDatePicker1}
-                  minimumDate={sDate}
-                  maximumDate={d2}
-                />
-                </View>
-              <Text style={{textAlign:'center', marginTop:'2%', fontWeight:'bold'}}>{eDate.toDateString()}</Text>
-            </View> 
-          </View> 
-          <View>
-            <ScrollView vertical style={{height:'80%', marginHorizontal:'2%', borderWidth:1, borderColor:'#5caff2', backgroundColor:'white'}} showsVerticalScrollIndicator={false}
+            
+
+          
+         
+            <ScrollView vertical style={{height:'84%',  borderColor:'#5caff2', backgroundColor:'#EAF2F4'}} showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             
-            {allPaymentRec.map((item,index) => {
+            {allTransaction.map((item,index) => {
               if(new Date(item.transaction_date)>=sDate && new Date(item.transaction_date)<=eDate)
               {
               return(
-              <View style= {{flexDirection :'column', width:'100%',height: 100,justifyContent: 'center', alignItems:'center', borderWidth:0.5}} key={index}>
-                <View style= {{flexDirection :'row', width:'100%',justifyContent: 'center'}}>
-                  <View style= {{ width:'50%',justifyContent: 'center', alignItems:'flex-start', paddingLeft:'2%'}}>
-                      <Text style={{fontWeight:'bold'}}>T-Id : {item.id}</Text>
+              <TouchableOpacity style= {{flexDirection :'column', width:'96%', marginHorizontal:'2%',height: 90,backgroundColor:'white', justifyContent: 'center', alignItems:'center', borderWidth:0.5, borderRadius:10, marginBottom:'2%' }} key={index}  onPress={()=>{ item.type=='payment'? SaveTransactionID(item.id) && navigation.navigate('Payment Details'): SaveTransactionID(item.id) && navigation.navigate('Purchase Bill')}}>
+                <View style= {{flexDirection :'row', width:'100%',justifyContent: 'center', marginBottom:'3%'}}>
+                  <View style= {{ flexDirection:'row', width:'60%', alignItems:'flex-start', paddingLeft:'2%'}}>
+                      <Text style={{fontWeight:'bold'}}>T-Id : </Text>
+                      <Text>{item.id}</Text>
                   </View>
-                  <View style= {{ width:'50%',justifyContent: 'center', alignItems: 'flex-end',paddingRight:'2%'}}>
-                    <Text style={{fontWeight:'bold'}}>{new Date(item.transaction_date).toDateString()}</Text>
-                    {/* <Text style={{fontWeight:'bold'}}> {item.transaction_time}</Text> */}
+
+                  {(item.type=='purchase')?
+                  <View style= {{ width:'40%',justifyContent: 'center', alignItems: 'flex-end',paddingRight:'2%'}}>
+                    <Text style={{fontWeight:'bold', fontSize:15,fontStyle:'italic', color:'blue'}}>{item.type}</Text>
                   </View>
+                  :
+                  <View style= {{ width:'40%',justifyContent: 'center', alignItems: 'flex-end',paddingRight:'2%'}}>
+                    <Text style={{fontWeight:'bold', fontSize:15,fontStyle:'italic', color:'green'}}>{item.type}</Text>
+                  </View>
+                  }
+                  
                 </View >
                 <View style= {{flexDirection :'row', width:'100%',justifyContent: 'center', alignItems:'flex-start'}}>
-                  <View style= {{ width:'50%',justifyContent: 'center' ,paddingLeft:'2%'}}>
-                      <Text>Total Amount</Text>
+                  <View style= {{ width:'70%',flexDirection:'row' ,paddingLeft:'2%'}}>
+                      <Text style={{fontWeight:'bold'}}>Date: </Text>
+                      <Text>{(new Date(item.transaction_date)).toDateString()}</Text>
                   </View>
-                  <View style= {{ width:'50%',justifyContent: 'center',paddingRight:'2%',alignItems: 'flex-end'}}>
-                    <Text>₹ {item.total_amount}</Text>
-                  </View>
-                </View >
-                <View style= {{flexDirection :'row', width:'100%',justifyContent: 'center', alignItems:'flex-start'}}>
-                  <View style= {{ width:'50%',justifyContent: 'center' ,paddingLeft:'2%'}}>
-                      <Text>Paid Amount</Text>
-                  </View>
-                  <View style= {{ width:'50%',justifyContent: 'center',paddingRight:'2%',alignItems: 'flex-end'}}>
-                    <Text>₹ {item.payed_amount}</Text>
+                  <View style= {{ width:'30%',justifyContent: 'center',paddingRight:'2%',alignItems: 'flex-end'}}>
+                    <Text>₹ {item.transaction_amount}.00</Text>
                   </View>
                 </View >
-                <View style= {{flexDirection :'row', width:'100%',justifyContent: 'center', alignItems: 'flex-start'}}>
-                  <View style= {{ width:'50%',justifyContent: 'center',paddingLeft:'2%'}}>
-                      <Text>Carry-forward Amount</Text>
-                  </View>
-                  <View style= {{ width:'50%',justifyContent: 'center',paddingRight:'2%',alignItems: 'flex-end'}}>
-                    <Text>₹ {item.remaining_amount}</Text>
-                  </View>
-                </View >
-              </View>
+                
+              </TouchableOpacity>
               )
               }
             })}
@@ -271,95 +235,200 @@ export default function Udhaari_records() {
         </View>
 
         :
-          
-        <View style={{marginTop:'1%', width:'100%', height:'100%'}}>
-          <View style={{width:'100%', flexDirection:'row', marginBottom:'2%', marginTop:'2%'}}>
-            <View style={{width:'30%', marginHorizontal:'10%'}}>
-              <View style={{width:'60%', marginHorizontal:'20%'}}>
-              <Button color='#109dcc' title="From" onPress={showDatePicker} />
-                <DateTimePickerModal
-                  isVisible={isDatePickerVisible}
-                  mode="date"
-                  onConfirm={handleConfirm}                
-                  onCancel={hideDatePicker}
-                  maximumDate={d2}
-                />
-                </View>
-              <Text style={{textAlign:'center', marginTop:'2%', fontWeight:'bold'}}>{sDate.toDateString()}</Text>
+        
+          (flag=='payment')?
+          <View style={{ width:'100%', height:'100%'}}>
+            <View style={{width:'100%', flexDirection:'row', marginBottom:'2%', marginTop:'2%'}}>
+            <View style={{ flexDirection:'row',}}>
+              <Picker 
+              style={{width:'27%', height:25, borderWidth:1, color:'black', alignItems: 'center', marginLeft:'2%'}} 
+              selectedValue={month}
+              
+              onValueChange={ (itemValue)=> {setMonth(itemValue) 
+                  var totDays= (new Date(year, itemValue, 0)).getDate()
+                  setStart(new Date(String(year+'-'+itemValue+'-01')))
+                  setEnd(new Date(String(year+'-'+itemValue+'-'+totDays)))}}
+                >
+                <Picker.Item label='Mnth'  />
+                <Picker.Item label='Jan' value='01' />
+                <Picker.Item label='Feb' value='02' />
+                <Picker.Item label='Mar' value='03' />
+                <Picker.Item label='Apr' value='04' />
+                <Picker.Item label='May' value='05' />
+                <Picker.Item label='Jun' value='06' />
+                <Picker.Item label='Jul' value='07' />
+                <Picker.Item label='Aug' value='08' />
+                <Picker.Item label='Sep' value='09' />
+                <Picker.Item label='Oct' value='10' />
+                <Picker.Item label='Nov' value='11' />
+                <Picker.Item label='Dec' value='12' />
+              </Picker>
+
+              <Picker 
+              style={{width:'26%', height:25, borderWidth:1, color:'black'}} 
+              selectedValue={year}
+              onValueChange={ (itemValue)=>{ setYear(itemValue)
+                  var totDays= (new Date(itemValue, month, 0)).getDate()
+                  setStart(new Date(String(itemValue+'-'+month+'-01')))
+                  setEnd(new Date(String(itemValue+'-'+month+'-'+totDays)))} }
+                >
+                <Picker.Item label='2021' value='2021' />
+                <Picker.Item label='2020' value='2020' />
+                <Picker.Item label='2019' value='2019' />
+                <Picker.Item label='2018' value='2018' />
+                <Picker.Item label='2017' value='2017' />
+                <Picker.Item label='2016' value='2016' />
+                <Picker.Item label='2015' value='2015' />
+              </Picker>
+              
+              <View style={{width:'44%', flexDirection:'column',}}>
+                <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>Udhaari </Text>
+                <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>₹ {bal}.00</Text>
+              </View> 
             </View>
-            <View style={{width:'30%', marginHorizontal:'10%'}}>
-             <View style={{width:'60%', marginHorizontal:'20%'}}>
-              <Button title="To" color='#109dcc' onPress={showDatePicker1} />
-                <DateTimePickerModal
-                  isVisible={isDatePickerVisible1}
-                  mode="date"
-                  onConfirm={handleConfirm1}
-                  onCancel={hideDatePicker1}
-                  minimumDate={sDate}
-                  maximumDate={d2}
-                />
-                </View>
-              <Text style={{textAlign:'center', marginTop:'2%', fontWeight:'bold'}}>{eDate.toDateString()}</Text>
-            </View> 
+            
           </View> 
-          <View style={{width:'98%', height:'100%', marginTop:'1%', marginHorizontal:'1%', borderWidth:1,borderRadius:5, borderColor:'#5caff2'}}>
-            <View style= {{width:'100%', flexDirection:'row', height:'7%', backgroundColor:'skyblue',justifyContent: 'center', alignItems:'center', borderWidth:1, borderColor:'#0c88ed'}}>
-              <View style= {{width:'30%', justifyContent: 'center', alignItems:'flex-start', paddingLeft: '1%'}}>
-                <Text style={{fontWeight:'bold'}}>Date</Text>
-              </View>
-              <View style= {{width:'25%', justifyContent: 'center', alignItems:'center'}}>
-                <Text style={{fontWeight:'bold'}}>Product</Text>
-              </View>
-              <View style={{width:'15%', justifyContent: 'center', alignItems:'center'}}>
-                <Text style={{fontWeight:'bold'}}>Qty</Text>
-              </View>
-              <View style={{width:'15%', justifyContent: 'center', alignItems:'center'}}>
-                <Text style={{fontWeight:'bold'}}>Price</Text>
-              </View>
-              <View style={{width:'15%', justifyContent: 'center', alignItems:'flex-end', paddingRight:'2%'}}>
-                <Text style={{fontWeight:'bold'}}>Tot</Text>
-              </View>
-            </View>
-  
           <View>
-            <ScrollView vertical style={{height:'72%', marginBottom:'1%',borderWidth:0.5, backgroundColor:'white'}} showsVerticalScrollIndicator={false}
+            <ScrollView vertical style={{height:'84%',  borderColor:'#5caff2', backgroundColor:'#EAF2F4'}} showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
-      
-            {allPurchaseRec.map((item, index) => {
-              if(new Date(item.date_purchase)>=sDate && new Date(item.date_purchase)<=eDate)
+            
+            {allTransaction.map((item,index) => {
+              if(new Date(item.transaction_date)>=sDate && new Date(item.transaction_date)<=eDate && item.type=='payment')
               {
               return(
-                <View style= {{ width:'100%', flexDirection:'row', height: 80,justifyContent: 'center', alignItems:'center', borderWidth:0.5}} key={index} >
-                  <View style= {{width:'30%', flexDirection:'column',justifyContent: 'center', alignItems:'flex-start', paddingLeft:'2%'}}>
-                    <View>
-                      <Text>{new Date(item.date_purchase).toDateString()}</Text>
-                    </View>
-                    <View>
-                      <Text>{item.time_purchase}</Text>
-                    </View>
+              <View  key={index}>
+               
+               <TouchableOpacity style= {{flexDirection :'column', width:'96%', marginHorizontal:'2%',height: 90,backgroundColor:'white', justifyContent: 'center', alignItems:'center', borderWidth:0.5, borderRadius:10, marginBottom:'1%' , marginTop:'1%'}} key={index} onPress={()=>{SaveTransactionID(item.id) && navigation.navigate('Payment Details')}}>
+                <View style= {{flexDirection :'row', width:'100%',justifyContent: 'center', marginBottom:'3%'}}>
+                  <View style= {{ flexDirection:'row', width:'60%', alignItems:'flex-start', paddingLeft:'2%'}}>
+                      <Text style={{fontWeight:'bold'}}>T-Id : </Text>
+                      <Text>{item.id}</Text>
+                  </View>        
+                  <View style= {{ width:'40%',justifyContent: 'center', alignItems: 'flex-end',paddingRight:'2%'}}>
+                    <Text style={{fontWeight:'bold', fontSize:15,fontStyle:'italic', color:'black'}}>Paid Amount</Text>
+                  </View>  
+                </View >
+                <View style= {{flexDirection :'row', width:'100%',justifyContent: 'center', alignItems:'flex-start'}}>
+                  <View style= {{ width:'70%',flexDirection:'row' ,paddingLeft:'2%'}}>
+                      <Text style={{fontWeight:'bold'}}>Date: </Text>
+                      <Text>{(new Date(item.transaction_date)).toDateString()}</Text>
                   </View>
-                  <View style= {{width:'25%', justifyContent: 'center', alignItems:'center'}}>
-                    <Text>{item.name}</Text>
+                  <View style= {{ width:'30%',justifyContent: 'center',paddingRight:'2%',alignItems: 'flex-end'}}>
+                    <Text>₹ {item.transaction_amount}.00</Text>
                   </View>
-                  <View style={{width:'15%', justifyContent: 'center', alignItems:'center'}}>
-                    <Text>{item.quantity}</Text>
-                  </View>
-                  <View style={{width:'15%', justifyContent: 'center', alignItems:'center'}}>
-                    <Text>{item.base_price}</Text>
-                  </View>
-                  <View style={{width:'15%', alignItems: 'flex-end', paddingRight:'2%'}}>
-                    <Text>{item.total_price}</Text>
-                  </View>
+                </View >
+                
+              </TouchableOpacity>
+               
 
-                </View>
-              )}
+              </View>
+              )
+              }
             })}
-
+                  
             </ScrollView>
           </View>
         </View>
+        :
+
+        <View style={{ width:'100%', height:'100%'}}>
+
+          <View style={{width:'100%', flexDirection:'row', marginBottom:'2%', marginTop:'2%'}}>
+            <View style={{ flexDirection:'row',}}>
+              <Picker 
+              style={{width:'27%', height:25, borderWidth:1, color:'black', alignItems: 'center', marginLeft:'2%'}} 
+              selectedValue={month}
+              
+              onValueChange={ (itemValue)=> {setMonth(itemValue) 
+                  var totDays= (new Date(year, itemValue, 0)).getDate()
+                  setStart(new Date(String(year+'-'+itemValue+'-01')))
+                  setEnd(new Date(String(year+'-'+itemValue+'-'+totDays)))}}
+                >
+                <Picker.Item label='Mnth'  />
+                <Picker.Item label='Jan' value='01' />
+                <Picker.Item label='Feb' value='02' />
+                <Picker.Item label='Mar' value='03' />
+                <Picker.Item label='Apr' value='04' />
+                <Picker.Item label='May' value='05' />
+                <Picker.Item label='Jun' value='06' />
+                <Picker.Item label='Jul' value='07' />
+                <Picker.Item label='Aug' value='08' />
+                <Picker.Item label='Sep' value='09' />
+                <Picker.Item label='Oct' value='10' />
+                <Picker.Item label='Nov' value='11' />
+                <Picker.Item label='Dec' value='12' />
+              </Picker>
+
+              <Picker 
+              style={{width:'26%', height:25, borderWidth:1, color:'black'}} 
+              selectedValue={year}
+              onValueChange={ (itemValue)=>{ setYear(itemValue)
+                  var totDays= (new Date(itemValue, month, 0)).getDate()
+                  setStart(new Date(String(itemValue+'-'+month+'-01')))
+                  setEnd(new Date(String(itemValue+'-'+month+'-'+totDays)))} }
+                >
+                <Picker.Item label='2021' value='2021' />
+                <Picker.Item label='2020' value='2020' />
+                <Picker.Item label='2019' value='2019' />
+                <Picker.Item label='2018' value='2018' />
+                <Picker.Item label='2017' value='2017' />
+                <Picker.Item label='2016' value='2016' />
+                <Picker.Item label='2015' value='2015' />
+              </Picker>
+              
+              <View style={{width:'44%', flexDirection:'column',}}>
+                <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>Udhaari </Text>
+                <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>₹ {bal}.00</Text>
+              </View> 
+            </View>
+            
+          </View> 
+
+          <View style={{width:'100%', height:'84%', marginTop:'1%',borderRadius:5, borderColor:'#5caff2'}}>
+
+          <ScrollView vertical style={{height:'100%', marginHorizontal:'1%',  borderColor:'#5caff2', backgroundColor:'#EAF2F4'}} showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}>
+            
+            {allTransaction.map((item,index) => {
+              if(new Date(item.transaction_date)>=sDate && new Date(item.transaction_date)<=eDate && item.type=='purchase')
+              {
+              return(
+              <View  key={index}>
+               
+               <TouchableOpacity style= {{flexDirection :'column', width:'98%', marginHorizontal:'1%',height: 90,backgroundColor:'white', justifyContent: 'center', alignItems:'center', borderWidth:0.5, borderRadius:10, marginBottom:'2%' }} key={index} onPress={()=>{SaveTransactionID(item.id) && navigation.navigate('Purchase Bill')}}>
+                <View style= {{flexDirection :'row', width:'100%',justifyContent: 'center', marginBottom:'3%'}}>
+                  <View style= {{ flexDirection:'row', width:'60%', alignItems:'flex-start', paddingLeft:'2%'}}>
+                      <Text style={{fontWeight:'bold'}}>T-Id : </Text>
+                      <Text>{item.id}</Text>
+                  </View>        
+                  <View style= {{ width:'40%',justifyContent: 'center', alignItems: 'flex-end',paddingRight:'2%'}}>
+                    <Text style={{fontWeight:'bold', fontSize:15,fontStyle:'italic', color:'black'}}>Bill Amount</Text>
+                  </View>  
+                </View >
+                <View style= {{flexDirection :'row', width:'100%',justifyContent: 'center', alignItems:'flex-start'}}>
+                  <View style= {{ width:'70%',flexDirection:'row' ,paddingLeft:'2%'}}>
+                      <Text style={{fontWeight:'bold'}}>Date: </Text>
+                      <Text>{(new Date(item.transaction_date)).toDateString()}</Text>
+                  </View>
+                  <View style= {{ width:'30%',justifyContent: 'center',paddingRight:'2%',alignItems: 'flex-end'}}>
+                    <Text>₹ {item.transaction_amount}.00</Text>
+                  </View>
+                </View >
+                
+              </TouchableOpacity>
+
+              </View>
+              )
+              }
+            })}
+                  
+            </ScrollView>
+
         </View>
+        </View>
+
         }
+          
 
       </View>
     );

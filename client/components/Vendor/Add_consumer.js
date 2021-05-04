@@ -264,6 +264,9 @@ const Add_consumer = () => {
         <TouchableOpacity style={styles.Btn} onPress={() => {onPressConsumer(vRMN)}}>
           <Text style={styles.txt}>Add Consumer</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.register_button}>
+          <Text style={styles.textstyle1} onPress={()=>{navigation.navigate('Vendor Dashboard')}}>Back to Dashboard...</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -312,7 +315,7 @@ const styles = StyleSheet.create({
    
   Btn: {
     padding: '4%',
-    marginTop:'50%',
+    marginTop:'40%',
     borderRadius: 5,
     width: '70%',
     backgroundColor: '#f55864'
@@ -335,6 +338,23 @@ const styles = StyleSheet.create({
     fontSize : 15,
     // paddingHorizontal : 45,
     // paddingVertical : 15
+  },
+
+  textstyle1: {
+    color: '#109dcc',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 16
+  },
+
+  
+  register_button: {
+    marginTop: '5%',   
+    height: 30,
+    fontSize:16,
+    fontWeight:'bold',
+    flexDirection:'row',
+     justifyContent:'center'
   },
 
   datebuttons:{
