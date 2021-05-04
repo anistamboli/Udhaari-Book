@@ -55,11 +55,10 @@ const Add_products = () => {
     let vRMN = await SecureStore.getItemAsync('vendorContact');
     let cRMN = await SecureStore.getItemAsync('consumerContact');
     setvRMN(vRMN);
-    setcRMN(cRMN);
-     
-    var d = new Date();
-    var n = d.getTime();
-    setTransactionId(n);
+    setcRMN(cRMN);  
+
+    setProduct('');
+    setBasePrice('');
 
     fetch('http://localhost:5000/Add_products/product')
     .then((response) => response.json())
@@ -287,6 +286,9 @@ const Add_products = () => {
     console.log(transactionId);
     console.log(onlyDate);
     console.log(onlyTime);
+    var d = new Date();
+    var n = d.getTime();
+    setTransactionId(n);
     try{      
       const body = {id:transactionId, type:'purchase', transaction_amount:currentTotalAmount, transaction_date:onlyDate, transaction_time:onlyTime};
       const response = await fetch('http://localhost:5000/Add_products/transaction/'+vRMN+'/'+cRMN, {
