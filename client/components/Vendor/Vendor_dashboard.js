@@ -169,7 +169,7 @@ const Vendor_dashboard = () =>{
         </View>         
         <View style={styles.MainContainer}>
           <TouchableOpacity activeOpacity={1.5} onPress = {() => SampleFunction() } style={styles.TouchableOpacityStyle} >
-            <Image source={{uri : 'https://reactnativecode.com/wp-content/uploads/2017/11/Floating_Button.png'}} style={styles.FloatingButtonStyle}/>
+            <Image source={require('../../assets/floating.png')} style={styles.FloatingButtonStyle}/>
           </TouchableOpacity>
         </View>
     </SafeAreaView>

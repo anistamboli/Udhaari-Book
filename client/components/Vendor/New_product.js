@@ -32,6 +32,9 @@ const New_product = () => {
         // setvRMN(vRMN);
         // setcRMN(cRMN);
 
+    setProduct('');
+    setBasePrice('');
+
      fetch('http://localhost:5000/Add_products/product')
     .then((response) => response.json())
     .then((result) => {
@@ -41,8 +44,8 @@ const New_product = () => {
     .catch((error) => {
       console.error(error);
     });
-
     }
+
     useEffect(() => {
       getValueFor()
     }, []);
