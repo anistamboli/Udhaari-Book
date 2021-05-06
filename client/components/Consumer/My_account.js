@@ -51,7 +51,7 @@ const My_account = () => {
     const pymnt = axios.get('http://localhost:5000/Payment_history', {params:{
       vRMN, cRMN }})
       .then((pymnt)=> {
-        setRecentPayment(pymnt.data[0].payed_amount)           
+        setRecentPayment(pymnt.data[0].transaction_amount)           
       })  
       .catch((error)=>{
         console.log(error)
@@ -222,7 +222,7 @@ const My_account = () => {
                   <View style={{width:'50%', alignItems:'flex-end'}}>
                     {recentPayment===undefined || recentPayment===0 || recentPayment===null? 
                     <Text>No Payments Yet</Text>:
-                    <Text>₹ {recentPayment}.00</Text>
+                    <Text>₹ {(recentPayment).toFixed(2)}</Text>
                     }                   
                   </View> 
                 </View>
@@ -230,8 +230,8 @@ const My_account = () => {
                   <View style={{width:'50%'}}>
                     <Text style={{fontWeight:'bold'}}>Total Due Amount</Text>
                   </View>
-                  <View style={{width:'50%', alignItems:'flex-end'}}>
-                    <Text>₹ {item.balance}.00</Text>
+                  <View style={{width:'50%', alignItems:'flex-end', }}>
+                    <Text style={{fontWeight:'bold', fontSize:15}}>₹ {(item.balance).toFixed(2)}</Text>
                   </View>
                 </View>
                 <View style={{flexDirection:'row', width:'100%',marginTop:'5%'}}>
@@ -239,7 +239,7 @@ const My_account = () => {
                     <Text style={{fontWeight:'bold'}}>Partial  Due Amount</Text>
                   </View>
                   <View style={{width:'50%', alignItems:'flex-end'}}>
-                    <Text>₹ {item.balance*item.threshold}.00</Text>
+                    <Text>₹ {(item.balance*item.threshold).toFixed(2)}</Text>
                   </View>
                 </View>
               </View>

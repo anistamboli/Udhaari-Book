@@ -142,7 +142,7 @@ const Consumer_dashboard = () =>{
                   SaveVendorContact(item.contact) 
                   navigation.navigate('Consumer_navTab', {screen : 'My Udhaari'})
                 }}>
-                  ₹ {item.balance}.00
+                  ₹ {(item.balance).toFixed(2)}
                 </Text>
                 </TouchableOpacity>
               </View>
@@ -198,7 +198,7 @@ const Consumer_dashboard = () =>{
       flexWrap : 'wrap',
       borderBottomWidth : 0.5,
       paddingVertical:'2%',
-      backgroundColor:'#ffebea'
+      backgroundColor:'#ffeaee'
     },
     listWrapper1 : {
       flexDirection : 'row',

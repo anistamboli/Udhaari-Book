@@ -150,7 +150,7 @@ const Vendor_dashboard = () =>{
                   SaveConsumerContact(item.consumer_contact) 
                   navigation.navigate('Vendor_navTab', {screen : 'Account Details'})
                 }}>
-                  ₹ {item.balance}.00
+                  ₹ {(item.balance).toFixed(2)}
                 </Text>
                 :
                 <Text style = {styles.row4}
@@ -158,7 +158,7 @@ const Vendor_dashboard = () =>{
                   SaveConsumerContact(item.consumer_contact) 
                   navigation.navigate('Vendor_navTab', {screen : 'Account Details'})
                 }}>
-                  ₹ {item.balance}.00
+                  ₹ {(item.balance).toFixed(2)}
                 </Text>
                 }
                 </TouchableOpacity>
@@ -169,7 +169,7 @@ const Vendor_dashboard = () =>{
         </View>         
         <View style={styles.MainContainer}>
           <TouchableOpacity activeOpacity={1.5} onPress = {() => SampleFunction() } style={styles.TouchableOpacityStyle} >
-            <Image source={{uri : 'https://reactnativecode.com/wp-content/uploads/2017/11/Floating_Button.png'}} style={styles.FloatingButtonStyle}/>
+            <Image source={require('../../assets/floating.png')} style={styles.FloatingButtonStyle}/>
           </TouchableOpacity>
         </View>
     </SafeAreaView>

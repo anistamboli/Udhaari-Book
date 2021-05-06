@@ -49,14 +49,16 @@ const Add_products = () => {
 
   const [transactionId, setTransactionId] = useState(0);
 
-
-
   async function getValueFor() {
     let vRMN = await SecureStore.getItemAsync('vendorContact');
     let cRMN = await SecureStore.getItemAsync('consumerContact');
     setvRMN(vRMN);
     setcRMN(cRMN);  
 
+    var d = new Date();
+    var n = d.getTime();
+    setTransactionId(n);
+  
     setProduct('');
     setBasePrice('');
 
@@ -286,9 +288,7 @@ const Add_products = () => {
     console.log(transactionId);
     console.log(onlyDate);
     console.log(onlyTime);
-    var d = new Date();
-    var n = d.getTime();
-    setTransactionId(n);
+
     try{      
       const body = {id:transactionId, type:'purchase', transaction_amount:currentTotalAmount, transaction_date:onlyDate, transaction_time:onlyTime};
       const response = await fetch('http://localhost:5000/Add_products/transaction/'+vRMN+'/'+cRMN, {
@@ -324,6 +324,7 @@ const Add_products = () => {
         inputs.splice(0, inputs.length);
         // console.log(inputs);
         setIsAddHandlerClicked(false);
+        setCurrentTotalAmount(0)
       }
       else{
         console.log('Falseeeeeee');
@@ -484,7 +485,7 @@ const Add_products = () => {
                 <Text >{inputs[key].product}</Text>
               </View>
               <View style= {{width:'15%'}}>
-                <Text style= {{textAlign:'right'}}>{inputs[key].baseprice}.0</Text>
+                <Text style= {{textAlign:'right'}}>{(inputs[key].baseprice).toFixed(1)}</Text>
               </View>
               <View style={{width:'22%', marginTop:'0%', paddingLeft:'2%', alignItems:'flex-end' }}>
                 <InputSpinner
@@ -529,7 +530,7 @@ const Add_products = () => {
                 }/>
               </View> 
               <View style= {{width:'15%'}}>
-                <Text style= {{textAlign:'right'}}>{inputs[key].total_price}.0</Text>
+                <Text style= {{textAlign:'right'}}>{(inputs[key].total_price).toFixed(1)}</Text>
               </View>
               <View style= {{width:'10%'}}>
                 <Text style={{fontSize:15, fontWeight:'bold',alignSelf:'flex-end',paddingRight:'20%', color:'red'}} onPress = {()=> deleteHandler(key)}>X</Text>
@@ -542,11 +543,11 @@ const Add_products = () => {
       <View style={{flexDirection:'row', width:'100%',alignContent:'center',}}>
         <View style = {styles.TotalAmountText}> 
           <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}}>Total Udhaari</Text>
-          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}}>₹ {totalAmount}.00</Text>
+          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}}>₹ {(totalAmount).toFixed(2)}</Text>
         </View>
         <View style = {styles.CurrentTotalAmountText}> 
           <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}} onPress={addToRecords}>Add Current Bill</Text>
-          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}} onPress={addToRecords}>₹ {currentTotalAmount}.00</Text>
+          <Text style={{color:'black', fontWeight:'bold', textAlign:'center'}} onPress={addToRecords}>₹ {(currentTotalAmount).toFixed(2)}</Text>
         </View>
       </View>
     </View>
@@ -595,7 +596,7 @@ const styles = StyleSheet.create({
     // height:'10%',
     marginBottom:'5%',
     // marginRight:'4%',
-    backgroundColor: 'skyblue'
+    backgroundColor: '#EAF2F4'
   },
 
   CurrentTotalAmountText :{

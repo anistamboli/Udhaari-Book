@@ -31,6 +31,8 @@ const New_product = () => {
         // let cRMN = await SecureStore.getItemAsync('consumerContact');
         // setvRMN(vRMN);
         // setcRMN(cRMN);
+    setProduct('');
+    setBasePrice('');
 
      fetch('http://localhost:5000/Add_products/product')
     .then((response) => response.json())
@@ -43,15 +45,15 @@ const New_product = () => {
     });
 
     }
-    useEffect(() => {
-      getValueFor()
-    }, []);
+    // useEffect(() => {
+    //   getValueFor()
+    // }, []);
     
-    // useFocusEffect(
-    //   useCallback(() => {
-    //     getValueFor();  
-    //   }, [])
-    // );
+    useFocusEffect(
+      useCallback(() => {
+        getValueFor();  
+      }, [])
+    );
     
 
 
@@ -147,7 +149,7 @@ const New_product = () => {
                   {item.name} 
                 </Text>
                 <Text style = {styles.row2}>
-                ₹ {item.base_price}.00
+                ₹ {(item.base_price).toFixed(2)}
                 </Text>
             </View>
             )

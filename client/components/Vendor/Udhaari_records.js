@@ -183,7 +183,7 @@ export default function Udhaari_records() {
               
               <View style={{width:'40%', flexDirection:'column',}}>
                 <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>Udhaari </Text>
-                <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>₹ {bal}.00</Text>
+                <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>₹ {(bal)}.00</Text>
               </View> 
             </View>
             
@@ -221,7 +221,7 @@ export default function Udhaari_records() {
                       <Text>{(new Date(item.transaction_date)).toDateString()}</Text>
                   </View>
                   <View style= {{ width:'30%',justifyContent: 'center',paddingRight:'2%',alignItems: 'flex-end'}}>
-                    <Text>₹ {item.transaction_amount}.00</Text>
+                    <Text>₹ {(item.transaction_amount).toFixed(2)}</Text>
                   </View>
                 </View >
                 
@@ -283,7 +283,7 @@ export default function Udhaari_records() {
               
               <View style={{width:'40%', flexDirection:'column',}}>
                 <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>Udhaari </Text>
-                <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>₹ {bal}.00</Text>
+                <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>₹ {(bal).toFixed(2)}</Text>
               </View> 
             </View>
             
@@ -314,7 +314,7 @@ export default function Udhaari_records() {
                       <Text>{(new Date(item.transaction_date)).toDateString()}</Text>
                   </View>
                   <View style= {{ width:'30%',justifyContent: 'center',paddingRight:'2%',alignItems: 'flex-end'}}>
-                    <Text>₹ {item.transaction_amount}.00</Text>
+                    <Text>₹ {(item.transaction_amount).toFixed(2)}</Text>
                   </View>
                 </View >
                 
@@ -378,7 +378,7 @@ export default function Udhaari_records() {
               
               <View style={{width:'40%', flexDirection:'column',}}>
                 <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>Udhaari </Text>
-                <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>₹ {bal}.00</Text>
+                <Text style={{ fontWeight:'bold', width:'100%', textAlign:'right', paddingHorizontal:'5%', fontSize:14}}>₹ {(bal).toFixed(2)}</Text>
               </View> 
             </View>
             
@@ -411,7 +411,7 @@ export default function Udhaari_records() {
                       <Text>{(new Date(item.transaction_date)).toDateString()}</Text>
                   </View>
                   <View style= {{ width:'30%',justifyContent: 'center',paddingRight:'2%',alignItems: 'flex-end'}}>
-                    <Text>₹ {item.transaction_amount}.00</Text>
+                    <Text>₹ {(item.transaction_amount).toFixed(2)}</Text>
                   </View>
                 </View >
                 

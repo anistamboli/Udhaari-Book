@@ -265,7 +265,7 @@ const Add_consumer = () => {
           <Text style={styles.txt}>Add Consumer</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.register_button}>
-          <Text style={styles.textstyle1} onPress={()=>{navigation.navigate('Vendor Dashboard')}}>Back to Dashboard...</Text>
+          <Text style={styles.textstyle1} onPress={()=>{navigation.navigate('Vendor Dashboard')}}>Back to Home Screen...</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

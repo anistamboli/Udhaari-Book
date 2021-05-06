@@ -16,7 +16,8 @@ export default function Make_payment() {
   const [isLoading, setLoading] = useState(true);
   
   const [current, setCurrent] = useState(new Date());
-  const [newDate , setNewDate] = useState('');
+  const [newDate , setNewDate] = useState(new Date());
+  // setNewDate(current)
   const [amount , setAmount] = useState('');
   const [threshold , setthreshold] = useState('');
   const [vRMN, setvRMN] = useState();
@@ -89,9 +90,7 @@ export default function Make_payment() {
     setDefaultDate(date.toDateString());
     // alert(date);
     
-    var result = new Date(date);
-    result.setDate(result.getDate() + 30);
-    setNewDate(result); 
+    
     // alert("Result"+result);
     hideDatePicker();
 
@@ -108,8 +107,24 @@ export default function Make_payment() {
    const updatedata = async (remain) => {
     
     try {
-     
-      const body= {due_date :newDate, balance : Number(remain) , billing_start_date : current}
+    //  alert('aaya');
+    var date = current.getDate();
+    var month = current.getMonth() + 1;
+    var year = current.getFullYear();
+    // console.log(current)
+    // var resul = new Date(current);
+    // resul.setDate(resul.getDate() + 30);
+    // setNewDate(resul); 
+    var totDays= (new Date(year, month, 0)).getDate()
+    var d = new Date()
+    d.setDate(current.getDate()+totDays)
+    setNewDate(d)
+    // console.log('nDate',newDate)
+
+      var tempOnlyDate = year + '-' + month + '-' + date;
+      // console.log('current', tempOnlyDate)
+      // console.log('due', newDate)
+      const body= {due_date :d, balance : Number(remain) , billing_start_date : onlyDate}
       const response = await fetch('http://localhost:5000/updatedata/'+vRMN+'/'+cRMN,{
         method : 'PUT',
         headers: {
@@ -120,7 +135,7 @@ export default function Make_payment() {
       );
       
       const result = await response.json();
-     // alert(result);
+    //  alert(result);
      ToastAndroid.showWithGravity(
       result,
       ToastAndroid.SHORT,
@@ -204,6 +219,7 @@ export default function Make_payment() {
         try{      
           // alert('In try')
           // alert(current.toLocaleDateString());
+          // console.log('tr date', onlyDate)
           const body = {id:transactionId, type:'payment', transaction_amount:updatedAmount, transaction_date:onlyDate, transaction_time:onlyTime};
           const response = await fetch('http://localhost:5000/Add_products/transaction/'+vRMN+'/'+cRMN, {
             method: 'POST',
@@ -220,6 +236,7 @@ export default function Make_payment() {
             var month = current.getMonth() + 1;
             var year = current.getFullYear();
             var tempOnlyDate = year + '-' + month + '-' + date;
+            console.log('ch data date', tempOnlyDate)
             const body = {consumer_contact : cRMN , vendor_contact : vRMN ,payed_amount : updatedAmount , remaining_amount : remain , transaction_date : tempOnlyDate , total_amount :  threshold[0].balance, transaction_time: (new Date()).toLocaleTimeString(), tr_id:transactionId}
             const response = await fetch('http://localhost:5000/changedata',{
               method : 'POST',
@@ -260,11 +277,11 @@ export default function Make_payment() {
               <View style={{ justifyContent: 'center', padding:'5%', alignItems: 'center',borderRadius:30,backgroundColor:'white',  flexDirection: 'column',width:'92%',marginHorizontal:'4%',height:'100%', flex: 1}}>
                 <View style={{flexDirection:'row',width: '100%', marginTop:'5%'}}>
                   <Text style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Total Due Amount</Text>
-                  <Text style={{textAlign:'right', width:'50%'}}>₹ {item.balance}</Text>                                           
+                  <Text style={{textAlign:'right', width:'50%'}}>₹ {(item.balance).toFixed(2)}</Text>                                           
                 </View>
                 <View style={{flexDirection:'row',width: '100%', marginTop:'5%'}}>
                   <Text style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Minimum/Partial Due Amount</Text>
-                  <Text style={{textAlign:'right', width:'50%'}}>₹ {item.balance*item.threshold}</Text>                                           
+                  <Text style={{textAlign:'right', width:'50%'}}>₹ {(item.balance*item.threshold).toFixed(2)}</Text>                                           
                 </View>                 
                 <View style={{flexDirection:'row',width: '100%', marginTop:'5%'}}>
                   <Text style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Paying Date</Text> 
@@ -290,7 +307,7 @@ export default function Make_payment() {
                 </View>
                 <View style={{flexDirection:'row',width: '100%', marginTop:'5%', marginBottom:'5%'}}>
                   <Text style={{alignItems:'flex-start', width:'50%', fontWeight:"bold"}}>Remaining Amount</Text> 
-                  <Text style={{textAlign:'right', width:'50%'}}>₹ {item.balance - Number(amount)}</Text>                                           
+                  <Text style={{textAlign:'right', width:'50%'}}>₹ {(item.balance - Number(amount)).toFixed(2)}</Text>                                           
                 </View>
               </View>
             )

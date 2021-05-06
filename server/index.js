@@ -489,7 +489,8 @@ app.get( '/Payment_history', async(req,res) => {
     try{
         const vRMN = req.query.vRMN;
         const cRMN = req.query.cRMN;
-        const transactions = await pool.query('SELECT id, transaction_time, transaction_date, total_amount, payed_amount, remaining_amount FROM payment_history WHERE ( vendor_contact= $1 and consumer_contact= $2) order by transaction_date desc, transaction_time desc' , [vRMN, cRMN]); 
+        const type = 'payment';
+        const transactions = await pool.query('SELECT id, type,  transaction_amount FROM transaction_history WHERE ( vendor_contact= $1 and consumer_contact= $2 and type=$3) order by id desc' , [vRMN, cRMN, type]); 
         res.json(transactions.rows);
         // console.log(transactions.rows)
     }
@@ -562,7 +563,7 @@ app.get('/threshold/:vRMN/:cRMN', async(req,res) => {
 
 app.post("/changedata" , async(req,res) => {
     try {
-
+           
             console.log(req.body);
             const { consumer_contact , vendor_contact,total_amount , payed_amount , remaining_amount , transaction_date, transaction_time, tr_id} = req.body;
             // console.log(req.body);
