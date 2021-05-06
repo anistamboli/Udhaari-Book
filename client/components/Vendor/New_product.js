@@ -34,6 +34,9 @@ const New_product = () => {
     setProduct('');
     setBasePrice('');
 
+    setProduct('');
+    setBasePrice('');
+
      fetch('http://localhost:5000/Add_products/product')
     .then((response) => response.json())
     .then((result) => {
@@ -43,11 +46,17 @@ const New_product = () => {
     .catch((error) => {
       console.error(error);
     });
-
     }
+<<<<<<< HEAD
     // useEffect(() => {
     //   getValueFor()
     // }, []);
+=======
+
+    useEffect(() => {
+      getValueFor()
+    }, []);
+>>>>>>> c166f3ede7e4fe36dd07bbe2c524c0d3af4d5276
     
     useFocusEffect(
       useCallback(() => {
