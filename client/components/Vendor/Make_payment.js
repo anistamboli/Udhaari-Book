@@ -36,6 +36,7 @@ export default function Make_payment() {
     setcRMN(cRMN); 
     setAmount(''); 
     var d = new Date();
+    setCurrent(d)
     var n = d.getTime();
     setTransactionId(n);
     ShowCurrentDate();
@@ -124,7 +125,7 @@ export default function Make_payment() {
       var tempOnlyDate = year + '-' + month + '-' + date;
       // console.log('current', tempOnlyDate)
       // console.log('due', newDate)
-      const body= {due_date :d, balance : Number(remain) , billing_start_date : onlyDate}
+      const body= {due_date :d, balance : Number(remain) , billing_start_date : current}
       const response = await fetch('http://localhost:5000/updatedata/'+vRMN+'/'+cRMN,{
         method : 'PUT',
         headers: {
@@ -220,7 +221,7 @@ export default function Make_payment() {
           // alert('In try')
           // alert(current.toLocaleDateString());
           // console.log('tr date', onlyDate)
-          const body = {id:transactionId, type:'payment', transaction_amount:updatedAmount, transaction_date:onlyDate, transaction_time:onlyTime};
+          const body = {id:transactionId, type:'payment', transaction_amount:updatedAmount, transaction_date:current, transaction_time:onlyTime};
           const response = await fetch('http://localhost:5000/Add_products/transaction/'+vRMN+'/'+cRMN, {
             method: 'POST',
             headers: {
