@@ -70,6 +70,28 @@ const New_product = () => {
         setModalVisible(!isModalVisible);
       };
     
+      const searchFilterFunction = (text) => {
+        if (text) {
+          const newData = consumers.filter(function (item) {
+            var itemData;
+            if(isNaN(text)){
+              itemData = item.name
+              ? item.name.toUpperCase()
+              : ''.toUpperCase();
+            }
+                 
+            const textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+          });
+          setFilteredConsumers(newData);
+          setSearch(text);
+        }
+        else {
+          setFilteredConsumers(consumers);
+          setSearch(text);
+            }
+            
+      }
       const onPressDelete = async () => {
     
         setModalVisible(!isModalVisible);
