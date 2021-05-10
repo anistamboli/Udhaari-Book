@@ -1,6 +1,6 @@
 const express= require("express");
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 const cors = require('cors');
 const pool = require('./database/db');
 
@@ -604,7 +604,7 @@ app.put("/updatedata/:vRMN/:cRMN" , async(req,res) => {
 app.get('/Add_products/product', async(req,res) => {
     try{
         console.log(req.body);
-        const allproduct = await pool.query('SELECT * from product');
+        const allproduct = await pool.query('SELECT * from product order by name');
         console.log(allproduct.rows);
         res.json(allproduct.rows);
        // console.log(res.json);

@@ -38,7 +38,7 @@ export default function Udhaari_records() {
   //   setEnd(new Date(String(year+'-'+month+'-'+totDays)))
   // }
 
-  const [month, setMonth] = useState('May');
+  const [month, setMonth] = useState('04');
   const [year, setYear] = useState('2021');
 
   const [accDetails, setAccDetails] = useState();
@@ -113,21 +113,21 @@ export default function Udhaari_records() {
             <View style={{width:'34%'}}>
               <TouchableOpacity  
                   style={flag=='all'?styles.button_click:styles.button} 
-                  onPress={() =>setflag('all') & AllTransaction(vRMN, cRMN) & setStart(new Date(accDetails.start_date))}>
+                  onPress={() =>setflag('all') }>
                     <Text style={flag=='all'?styles.text1:styles.text}>All</Text>
               </TouchableOpacity>
             </View>
             <View style={{width:'33%'}}>
               <TouchableOpacity  
                   style={flag=='purchase'?styles.button_click:styles.button} 
-                  onPress={() =>setflag('purchase')  & setStart(new Date(accDetails.start_date))}>
+                  onPress={() =>setflag('purchase') }>
                     <Text style={flag=='purchase'?styles.text1:styles.text}>Purchase</Text>
               </TouchableOpacity>
             </View>
             <View style={{width:'33%'}}>
               <TouchableOpacity 
                   style={flag=='payment'?styles.button_click:styles.button} 
-                  onPress={() =>setflag('payment') & setStart(new Date(accDetails.start_date))}>
+                  onPress={() =>setflag('payment') }>
                       <Text style={flag=='payment'?styles.text1:styles.text}>Payment</Text>
               </TouchableOpacity>
               </View>

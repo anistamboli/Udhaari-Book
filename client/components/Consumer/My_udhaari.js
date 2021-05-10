@@ -106,21 +106,21 @@ export default function My_udhaari() {
           <View style={{width:'34%'}}>
             <TouchableOpacity  
                 style={flag=='all'?styles.button_click:styles.button} 
-                onPress={() =>setflag('all') & AllTransaction(vRMN, cRMN) & setStart(new Date(accDetails.start_date))}>
+                onPress={() =>setflag('all') & AllTransaction(vRMN, cRMN) }>
                   <Text style={flag=='all'?styles.text1:styles.text}>All</Text>
             </TouchableOpacity>
           </View>
           <View style={{width:'33%'}}>
             <TouchableOpacity  
                 style={flag=='purchase'?styles.button_click:styles.button} 
-                onPress={() =>setflag('purchase')  & setStart(new Date(accDetails.start_date))}>
+                onPress={() =>setflag('purchase') }>
                   <Text style={flag=='purchase'?styles.text1:styles.text}>Purchase</Text>
             </TouchableOpacity>
           </View>
           <View style={{width:'33%'}}>
             <TouchableOpacity 
                 style={flag=='payment'?styles.button_click:styles.button} 
-                onPress={() =>setflag('payment') & setStart(new Date(accDetails.start_date))}>
+                onPress={() =>setflag('payment') }>
                     <Text style={flag=='payment'?styles.text1:styles.text}>Payment</Text>
             </TouchableOpacity>
             </View>
