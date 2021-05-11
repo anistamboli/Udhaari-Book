@@ -3,7 +3,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 const cors = require('cors');
 const path = require("path");
-const pool = require('./database/db');
+const pool = require('./db');
 
 //middleware
 app.use(cors());
