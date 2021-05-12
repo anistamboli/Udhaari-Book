@@ -40,7 +40,7 @@ const My_account = () => {
     setcRMN(cRMN);
     // const cRMN=12;
     const response = {}
-    await fetch('/My_account/' + vRMN + '/' + cRMN)
+    await fetch('http://localhost:5000/My_account/' + vRMN + '/' + cRMN)
       .then((response) => response.json())
       .then((result) => {
         setselectedVendor(result)
@@ -50,7 +50,7 @@ const My_account = () => {
       .catch((error) => console.error(error))
       .finally(() => setLoading(false))
 
-    const pymnt = axios.get('/Payment_history', {
+    const pymnt = axios.get('http://localhost:5000/Payment_history', {
       params: {
         vRMN, cRMN
       }

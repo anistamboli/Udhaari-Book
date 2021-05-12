@@ -115,7 +115,7 @@ const Consumer_register = () => {
     else {
       try {
         const body = { contact: Number(rmn), name: consumerName, address: address, password: password };
-        const response = await fetch('/Consumer_register', {
+        const response = await fetch('http://localhost:5000/Consumer_register', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',

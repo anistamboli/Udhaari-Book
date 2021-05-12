@@ -43,7 +43,7 @@ const Account_details = () => {
     setcRMN(cRMN);
     // const cRMN=12;
     const response = {}
-    await fetch('/Account_details/' + vRMN + '/' + cRMN)
+    await fetch('http://localhost:5000/Account_details/' + vRMN + '/' + cRMN)
       .then((response) => response.json())
       .then((result) => {
         setSelectedConsumer(result);
@@ -98,7 +98,7 @@ const Account_details = () => {
             // alert(selectedConsumer[0].contact);
             // var cRMN=selectedConsumer[0].contact;
             // alert(typeof(cRMN));
-            const response = await fetch('/Account_details/' + vRMN + '/' + cRMN, { method: 'DELETE' });
+            const response = await fetch('http://localhost:5000/Account_details/' + vRMN + '/' + cRMN, { method: 'DELETE' });
             const result = await response.json()
             if (result.success === true) {
               navigation.navigate('Vendor Dashboard')
@@ -169,7 +169,7 @@ const Account_details = () => {
       if (tempName != name) {
         try {
           const body = { updatingValue: tempName };
-          const response = await fetch('/Account_details/' + vRMN + '/' + cRMN, {
+          const response = await fetch('http://localhost:5000/Account_details/' + vRMN + '/' + cRMN, {
             method: 'PUT',
             headers: {
               'Accept': 'application/json',
@@ -191,7 +191,7 @@ const Account_details = () => {
       if (tempThreshold != threshold) {
         try {
           const body = { updatingValue: Number(tempThreshold) };
-          const response = await fetch('/Account_details/' + vRMN + '/' + cRMN, {
+          const response = await fetch('http://localhost:5000/Account_details/' + vRMN + '/' + cRMN, {
             method: 'PUT',
             headers: {
               'Accept': 'application/json',

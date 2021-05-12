@@ -62,7 +62,7 @@ const Add_products = () => {
     setProduct('');
     setBasePrice('');
 
-    fetch('/Add_products/product')
+    fetch('http://localhost:5000/Add_products/product')
       .then((response) => response.json())
       .then((result) => {
         setConsumers(result);
@@ -75,7 +75,7 @@ const Add_products = () => {
     // console.log("TOTAL CLIENT");
     // var vRMN = 1;
     // var cRMN = 12;
-    fetch('/Add_products/total_amount/' + vRMN + '/' + cRMN)
+    fetch('http://localhost:5000/Add_products/total_amount/' + vRMN + '/' + cRMN)
       .then((response) => response.json())
       .then((result) => {
         // console.log("DDDd");
@@ -186,7 +186,7 @@ const Add_products = () => {
 
       try {
         const body = { name: product, base_price: baseprice };
-        const response = await fetch('/Add_products/new_product', {
+        const response = await fetch('http://localhost:5000/Add_products/new_product', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -291,7 +291,7 @@ const Add_products = () => {
 
     try {
       const body = { id: transactionId, type: 'purchase', transaction_amount: currentTotalAmount, transaction_date: onlyDate, transaction_time: onlyTime };
-      const response = await fetch('/Add_products/transaction/' + vRMN + '/' + cRMN, {
+      const response = await fetch('http://localhost:5000/Add_products/transaction/' + vRMN + '/' + cRMN, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -305,7 +305,7 @@ const Add_products = () => {
         var i;
         for (i = 0; i < inputs.length; i++) {
           const body = { product_id: inputs[i].id, quantity: Number(inputs[i].quantity), date_purchase: onlyDate, time_purchase: onlyTime, total_price: Number(inputs[i].total_price), tr_id: transactionId, total_amount: Number(totalAmount) };
-          const response = await fetch('/Add_products/' + vRMN + '/' + cRMN, {
+          const response = await fetch('http://localhost:5000/Add_products/' + vRMN + '/' + cRMN, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',

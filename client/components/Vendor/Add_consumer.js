@@ -44,7 +44,7 @@ const Add_consumer = () => {
     setTempDue('Due Date');
     setDue('');
     setSearch('');
-    fetch('/contact')
+    fetch('http://localhost:5000/contact')
       .then((response) => response.json())
       .then((result) => {
         setConsumers(result);
@@ -151,7 +151,7 @@ const Add_consumer = () => {
     else {
       try {
         const body = { vendor_contact: vRMN, consumer_contact: Number(search), threshold: Number(threshold), start_date: start, due_date: due, balance: 0, billing_start_date: start, consumer_name: user };
-        const response = await fetch('/Add_consumer', {
+        const response = await fetch('http://localhost:5000/Add_consumer', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',

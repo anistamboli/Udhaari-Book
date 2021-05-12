@@ -76,7 +76,7 @@ export default function Consumer_login() {
 
     else {
       // console.log(contact)
-      const response = await axios.get('/Consumer_login', {
+      const response = await axios.get('http://localhost:5000/Consumer_login', {
         params: {
           contact
         }

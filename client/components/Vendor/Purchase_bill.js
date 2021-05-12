@@ -26,7 +26,7 @@ export default function Purchase_bill() {
     setTrID(trID);
     console.log(trID)
 
-    const response1 = await axios.get('/Purchase_bill', {
+    const response1 = await axios.get('http://localhost:5000/Purchase_bill', {
       params: {
         trID
       }
@@ -38,7 +38,7 @@ export default function Purchase_bill() {
         console.log(error)
       })
 
-    const response = await axios.get('/Purchase_history', {
+    const response = await axios.get('http://localhost:5000/Purchase_history', {
       params: {
         trID
       }

@@ -41,7 +41,7 @@ export default function Make_payment() {
     setTransactionId(n);
     ShowCurrentDate();
     setDefaultDate((new Date()).toDateString());
-    fetch('/threshold/' + vRMN + '/' + cRMN)
+    fetch('http://localhost:5000/threshold/' + vRMN + '/' + cRMN)
       .then((response1) => response1.json())
       .then((result1) => setthreshold(result1))
       .catch((error) => console.error(error))
@@ -126,7 +126,7 @@ export default function Make_payment() {
       // console.log('current', tempOnlyDate)
       // console.log('due', newDate)
       const body = { due_date: d, balance: Number(remain), billing_start_date: current }
-      const response = await fetch('/updatedata/' + vRMN + '/' + cRMN, {
+      const response = await fetch('http://localhost:5000/updatedata/' + vRMN + '/' + cRMN, {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',
@@ -223,7 +223,7 @@ export default function Make_payment() {
         // alert(current.toLocaleDateString());
         // console.log('tr date', onlyDate)
         const body = { id: transactionId, type: 'payment', transaction_amount: updatedAmount, transaction_date: current, transaction_time: onlyTime };
-        const response = await fetch('/Add_products/transaction/' + vRMN + '/' + cRMN, {
+        const response = await fetch('http://localhost:5000/Add_products/transaction/' + vRMN + '/' + cRMN, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -240,7 +240,7 @@ export default function Make_payment() {
           var tempOnlyDate = year + '-' + month + '-' + date;
           console.log('ch data date', tempOnlyDate)
           const body = { consumer_contact: cRMN, vendor_contact: vRMN, payed_amount: updatedAmount, remaining_amount: remain, transaction_date: tempOnlyDate, total_amount: threshold[0].balance, transaction_time: (new Date()).toLocaleTimeString(), tr_id: transactionId }
-          const response = await fetch('/changedata', {
+          const response = await fetch('http://localhost:5000/changedata', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',

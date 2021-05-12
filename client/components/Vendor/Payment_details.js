@@ -24,7 +24,7 @@ export default function Payment_details() {
     let trID = await SecureStore.getItemAsync('transactionID');
     setTrID(trID);
 
-    const response = await axios.get('/Payment_details', {
+    const response = await axios.get('http://localhost:5000/Payment_details', {
       params: {
         trID
       }
