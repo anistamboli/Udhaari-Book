@@ -5,6 +5,7 @@ const cors = require('cors');
 const path = require("path");
 const pool = require('./db');
 
+// console.log(process.env.PORT)
 //middleware
 app.use(cors());
 app.use(express.json());
@@ -502,7 +503,7 @@ app.get('/Payment_history', async (req, res) => {
         const type = 'payment';
         const transactions = await pool.query('SELECT id, type,  transaction_amount FROM transaction_history WHERE ( vendor_contact= $1 and consumer_contact= $2 and type=$3) order by id desc', [vRMN, cRMN, type]);
         res.json(transactions.rows);
-        // console.log(transactions.rows)
+        // console.log('payment hist: ', transactions.rows)
     }
     catch (err) {
         console.log(err.message);

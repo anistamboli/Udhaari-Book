@@ -88,7 +88,7 @@ const Consumer_dashboard = () => {
           {/* <Image source={back_button} style={styles.back_button} /> */}
           <AntDesign name="home" size={39} color="black" />
         </TouchableOpacity>
-        <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 25, color: 'rgb(88, 149, 164)', width: '70%' }}>अब उधारी ले, विश्वास से!</Text>
+        <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 25, color: '#109dcc', width: '70%' }}>अब उधारी ले, विश्वास से!</Text>
         <TouchableOpacity activeOpacity={1.5} onPress={() => { navigation.navigate('Consumer Login'); }} style={{ width: '15%', paddingRight: '4%', alignItems: 'flex-end' }}>
           {/* <Image source={logout_button} style={styles.logout_button} /> */}
           <AntDesign name="logout" size={32} color="black" />
@@ -103,7 +103,7 @@ const Consumer_dashboard = () => {
           placeholderTextColor='black'
           platform='lightTheme'
           fontSize={16}
-          placeholder="          Shop Name or Contact "
+          placeholder="Shop Name or Registered Mobile Number"
           onChangeText={(text) => searchFilterFunction(text)}
           onClear={(text) => searchFilterFunction('')}
           value={search}
@@ -119,7 +119,8 @@ const Consumer_dashboard = () => {
           data={filteredVendors}
           renderItem={({ item }) => {
             return (
-              <View style={[((new Date(item.due_date)).getTime() + 5 * 24 * 60 * 60 * 1000) > today.getTime() ? styles.listWrapper : styles.listWrapper2]}>
+              // <View style ={[((new Date(item.due_date)).getTime()+5*24*60*60*1000) > today.getTime()? styles.listWrapper:styles.listWrapper2]}>
+              <View style={styles.listWrapper}>
                 <TouchableOpacity style={{ flexDirection: 'column', alignItems: 'flex-start', width: '60%', paddingHorizontal: '5%', }}>
                   <Text style={styles.row}
                     onPress={() => {
@@ -136,14 +137,25 @@ const Consumer_dashboard = () => {
                     {item.contact}
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ width: '40%', paddingLeft: '3%' }}>
-                  <Text style={styles.row3}
-                    onPress={() => {
-                      SaveVendorContact(item.contact)
-                      navigation.navigate('Consumer_navTab', { screen: 'My Udhaari' })
-                    }}>
-                    ₹ {(item.balance).toFixed(2)}
-                  </Text>
+                {/* <TouchableOpacity style={{width:'40%', paddingLeft:'3%'}}> */}
+                <TouchableOpacity style={{ width: '40%', paddingLeft: '3%', }}>
+                  {((new Date(item.due_date)).getTime() + 5 * 24 * 60 * 60 * 1000) > today.getTime() ?
+                    <Text style={styles.row4}
+                      onPress={() => {
+                        SaveVendorContact(item.contact)
+                        navigation.navigate('Consumer_navTab', { screen: 'My Udhaari' })
+                      }}>
+                      ₹ {(item.balance).toFixed(2)}
+                    </Text>
+                    :
+                    <Text style={styles.row5}
+                      onPress={() => {
+                        SaveVendorContact(item.contact)
+                        navigation.navigate('Consumer_navTab', { screen: 'My Udhaari' })
+                      }}>
+                      ₹ {(item.balance).toFixed(2)}
+                    </Text>
+                  }
                 </TouchableOpacity>
               </View>
             )
@@ -189,7 +201,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     borderBottomWidth: 0.5,
     paddingVertical: '2%',
-    backgroundColor: '#e5f8e5'
+    // backgroundColor:'#e5f8e5'
   },
   listWrapper2: {
     flexDirection: 'row',
@@ -250,7 +262,27 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     paddingHorizontal: 45,
     paddingVertical: 15,
-  }
+  },
+  row4: {
+    //backgroundColor : '#fff',
+    flex: 1,
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: 'green',
+    textAlign: 'right',
+    paddingHorizontal: 30,
+    paddingVertical: 5
+  },
+  row5: {
+    //backgroundColor : '#fff',
+    flex: 1,
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: 'red',
+    textAlign: 'right',
+    paddingHorizontal: 30,
+    paddingVertical: 5
+  },
 
 
 });

@@ -179,7 +179,7 @@ const Add_consumer = () => {
 
 
   return (
-    <SafeAreaView style={{ height: '100%', width: '100%' }}>
+    <SafeAreaView style={{ height: '100%', width: '100%', backgroundColor: '#edf7fc' }}>
       <View style={styles.container}>
         <Text style={{ color: 'black', fontSize: 23, fontWeight: 'bold', paddingBottom: '7%' }}>Add New Udhaari</Text>
         <StatusBar style='auto' />

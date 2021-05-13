@@ -58,12 +58,13 @@ const Account_details = () => {
       .catch((error) => console.error(error))
       .finally(() => setLoading(false))
 
-    const pymnt = axios.get('/Payment_history', {
+    const pymnt = axios.get('http://localhost:5000/Payment_history', {
       params: {
         vRMN, cRMN
       }
     })
       .then((pymnt) => {
+        console.log('recent pay: ', pymnt.data[0].transaction_amount)
         setRecentPayment(pymnt.data[0].transaction_amount)
       })
       .catch((error) => {
@@ -297,7 +298,7 @@ const Account_details = () => {
                     <View style={{ width: '50%', alignItems: 'flex-end' }}>
                       {recentPayment === undefined || recentPayment === 0 || recentPayment === null ?
                         <Text>No Payments Yet</Text> :
-                        <Text>₹ {(recentPayment).toFixed(2)}</Text>
+                        <Text>₹ {(recentPayment)}</Text>
                       }
                     </View>
                   </View>
@@ -321,7 +322,7 @@ const Account_details = () => {
               )
             }} />
           <View style={{ flexDirection: 'row', width: '100%', marginBottom: '8%' }}>
-            <View style={{ width: '50%', justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ width: '50%', justifyContent: 'center', alignItems: 'center', }}>
               <TouchableOpacity activeOpacity={2} style={styles.saveChangesButton}>
                 <Text style={styles.saveChangesText} onPress={EditNameThreshold}>Save Changes</Text>
               </TouchableOpacity>

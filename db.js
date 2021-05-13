@@ -21,12 +21,16 @@ require('dotenv').config();
 
 const devConfig = `postgresql://${process.env.PG_USER}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/${process.env.PG_DATABASE}`;
 console.log(devConfig)
-const proConfig = process.env.DATABASE_URL;
+// const proConfig = process.env.DATABASE_URL;
+const proConfig = `postgres://xnrphgoykuojqy:6b9b79ff311856a811bd9801abe32322d8c5f2297f96171916ccd112300c3740@ec2-54-163-97-228.compute-1.amazonaws.com:5432/d5lkbhfch13sij`;
 console.log(proConfig)
-console.log(process.env.NODE_ENV)
+// console.log(process.env.NODE_ENV)
 const pool = new Pool({
-    connectionString:
-        process.env.NODE_ENV === "production" ? proConfig : devConfig,
+    connectionString: proConfig,
+    // process.env.NODE_ENV === "production" ? proConfig : devConfig,
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 module.exports = pool;
