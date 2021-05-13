@@ -31,15 +31,17 @@ export default function Udhaari_records() {
   const [sDate, setStart] = useState(d1);
   const [eDate, setEnd] = useState(d2);
 
+  const tmpMonth = (new Date()).getMonth() + 1;
+  console.log(tmpMonth)
+  const tmpYr = (new Date()).getFullYear();
   // const createDate=()=>{
   //   // console.log( year, month)
   //   var totDays= (new Date(year, month, 0)).getDate()
   //   setStart(new Date(String(year+'-'+month+'-01')))
   //   setEnd(new Date(String(year+'-'+month+'-'+totDays)))
   // }
-
-  const [month, setMonth] = useState('04');
-  const [year, setYear] = useState('2021');
+  const [month, setMonth] = useState(`0${tmpMonth}`)
+  const [year, setYear] = useState(`${tmpYr}`);
 
   const [accDetails, setAccDetails] = useState();
 

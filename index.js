@@ -19,7 +19,6 @@ if (process.env.NODE_ENV === "production") {
 // console.log(__dirname);
 // console.log(path.join(__dirname, "client"));
 
-
 app.post('/Vendor_register', async (req, res) => {
     try {
         const { contact, name, shop_name, shop_address, password } = req.body;
@@ -503,7 +502,7 @@ app.get('/Payment_history', async (req, res) => {
         const type = 'payment';
         const transactions = await pool.query('SELECT id, type,  transaction_amount FROM transaction_history WHERE ( vendor_contact= $1 and consumer_contact= $2 and type=$3) order by id desc', [vRMN, cRMN, type]);
         res.json(transactions.rows);
-        // console.log('payment hist: ', transactions.rows)
+        // console.log(transactions.rows)
     }
     catch (err) {
         console.log(err.message);
@@ -654,6 +653,9 @@ app.post('/Add_products/new_product', async (req, res) => {
         console.log(err.message);
     }
 })
+
+
+
 
 
 app.listen(port, () => {

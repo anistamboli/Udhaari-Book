@@ -42,7 +42,7 @@ const Add_products = () => {
 
   const [arrayKey, setArrayKey] = useState('');
   const [arrayId, setArrayId] = useState('');
-  const [arrayProduct, setArrayProduct] = useState();
+  const [arrayProduct, setArrayProduct] = useState('');
   const [arrayQuantity, setArrayQuantity] = useState('1');
   const [arrayBasePrice, setArrayBasePrice] = useState(0);
   const [arrayTotalPrice, setArrayTotalPrice] = useState(0);
@@ -102,7 +102,7 @@ const Add_products = () => {
 
 
   const AddRow = () => {
-    console.log("ADD" + tempKey);
+    // console.log("ADD" + tempKey);
     const _inputs = [...inputs];
     _inputs.push({ key: '', id: '', current: '', product: '', quantity: 1, baseprice: '', total_price: '' });
     // setInputs(_inputs);  
@@ -129,9 +129,9 @@ const Add_products = () => {
 
 
     var changeTempKey = tempKey + 1;
-    console.log(changeTempKey);
+    // console.log(changeTempKey);
     setTempKey(changeTempKey);
-    console.log('TempKey' + tempKey);
+    // console.log('TempKey' + tempKey);
     setSearch('');
     setArrayQuantity('1');
   }
@@ -216,14 +216,14 @@ const Add_products = () => {
   const addHandler = async (vRMN, cRMN) => {
     if (arrayProduct == '') {
       ToastAndroid.showWithGravity(
-        "Enter the product",
+        "Please Enter the product",
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
     }
     else if (arrayQuantity == '') {
       ToastAndroid.showWithGravity(
-        "Enter valid quantity",
+        "Please Enter valid quantity",
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
@@ -236,12 +236,12 @@ const Add_products = () => {
       );
     }
     else {
-      console.log('BP' + arrayBasePrice);
-      console.log('Q' + arrayQuantity);
+      // console.log('BP' + arrayBasePrice);
+      // console.log('Q' + arrayQuantity);
       var tempTotalPrice = arrayBasePrice * arrayQuantity
-      console.log(tempTotalPrice);
+      // console.log(tempTotalPrice);
       setArrayTotalPrice(tempTotalPrice);
-      console.log('dwwew' + arrayTotalPrice);
+      // console.log('dwwew' + arrayTotalPrice);
       AddRow();
       setIsAddHandlerClicked(true);
     }
@@ -249,16 +249,16 @@ const Add_products = () => {
 
 
   const deleteHandler = key => {
-    console.log('bDeletekey' + key);
-    console.log('bDeletetempkey' + tempKey);
+    // console.log('bDeletekey' + key);
+    // console.log('bDeletetempkey' + tempKey);
     const values = [...inputs];
     setTotalAmount(totalAmount - values[key].total_price);
     setCurrentTotalAmount(currentTotalAmount - values[key].total_price);
     values.splice(values.findIndex(_inputs => _inputs.key === key), 1);
     setInputs(values);
-    console.log(inputs.length);
-    console.log('aDeletekey' + key);
-    console.log('aDeletetempkey' + tempKey);
+    // console.log(inputs.length);
+    // console.log('aDeletekey' + key);
+    // console.log('aDeletetempkey' + tempKey);
     setTempKey(inputs.length - 1);
   }
 
@@ -266,7 +266,7 @@ const Add_products = () => {
   const inputHandler = (quantity) => {
     if (isNaN(quantity)) {
       ToastAndroid.showWithGravity(
-        "Invalid Quantity",
+        "Please Enter A Valid Quantity",
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
@@ -285,54 +285,62 @@ const Add_products = () => {
 
 
   const addToRecords = async () => {
-    console.log(transactionId);
-    console.log(onlyDate);
-    console.log(onlyTime);
-
-    try {
-      const body = { id: transactionId, type: 'purchase', transaction_amount: currentTotalAmount, transaction_date: onlyDate, transaction_time: onlyTime };
-      const response = await fetch('http://localhost:5000/Add_products/transaction/' + vRMN + '/' + cRMN, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/JSON'
-        },
-        body: JSON.stringify(body)
-      });
-      const result = await response.json();
-      if (result.success == true) {
-        console.log('TRUEEEEEEEE');
-        var i;
-        for (i = 0; i < inputs.length; i++) {
-          const body = { product_id: inputs[i].id, quantity: Number(inputs[i].quantity), date_purchase: onlyDate, time_purchase: onlyTime, total_price: Number(inputs[i].total_price), tr_id: transactionId, total_amount: Number(totalAmount) };
-          const response = await fetch('http://localhost:5000/Add_products/' + vRMN + '/' + cRMN, {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/JSON'
-            },
-            body: JSON.stringify(body)
-          });
-          const result = await response.json();
-          // console.log(result);
-        }
-        ToastAndroid.showWithGravity(
-          "Bill Added Successfully",
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-        );
-        inputs.splice(0, inputs.length);
-        // console.log(inputs);
-        setIsAddHandlerClicked(false);
-        setCurrentTotalAmount(0)
-      }
-      else {
-        console.log('Falseeeeeee');
-      }
-
+    if (currentTotalAmount == 0) {
+      ToastAndroid.showWithGravity(
+        "Please Enter Atleast One Product to Add Bill",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
     }
-    catch (err) {
-      console.error(err.message);
+    // console.log(transactionId);
+    // console.log(onlyDate);
+    // console.log(onlyTime);
+    else {
+      try {
+        const body = { id: transactionId, type: 'purchase', transaction_amount: currentTotalAmount, transaction_date: onlyDate, transaction_time: onlyTime };
+        const response = await fetch('http://localhost:5000/Add_products/transaction/' + vRMN + '/' + cRMN, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/JSON'
+          },
+          body: JSON.stringify(body)
+        });
+        const result = await response.json();
+        if (result.success == true) {
+          console.log('TRUEEEEEEEE');
+          var i;
+          for (i = 0; i < inputs.length; i++) {
+            const body = { product_id: inputs[i].id, quantity: Number(inputs[i].quantity), date_purchase: onlyDate, time_purchase: onlyTime, total_price: Number(inputs[i].total_price), tr_id: transactionId, total_amount: Number(totalAmount) };
+            const response = await fetch('http://localhost:5000/Add_products/' + vRMN + '/' + cRMN, {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/JSON'
+              },
+              body: JSON.stringify(body)
+            });
+            const result = await response.json();
+            // console.log(result);
+          }
+          ToastAndroid.showWithGravity(
+            "Bill Added Successfully",
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+          inputs.splice(0, inputs.length);
+          // console.log(inputs);
+          setIsAddHandlerClicked(false);
+          setCurrentTotalAmount(0)
+        }
+        else {
+          console.log('Falseeeeeee');
+        }
+
+      }
+      catch (err) {
+        console.error(err.message);
+      }
     }
   }
 
@@ -342,7 +350,7 @@ const Add_products = () => {
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
-    var tempOnlyDate = date + '-' + month + '-' + year;
+    var tempOnlyDate = year + '-' + month + '-' + date;
     setOnlyDate(tempOnlyDate);
     // console.log(onlyDate);
     var hours = new Date().getHours();
@@ -361,14 +369,14 @@ const Add_products = () => {
     <View style={styles.container}>
       <View style={{ width: '100%', flexDirection: 'row', marginTop: '1%', paddingHorizontal: '3%' }}>
         <TouchableOpacity style={{ width: '50%' }} onPress={() => { navigation.navigate('New Product') }}>
-          <Text style={{ fontSize: 14, width: '100%', textAlign: 'left', color: 'blue' }} >View All Products</Text>
+          <Text style={{ fontSize: 14, width: '100%', textAlign: 'left', fontWeight: 'bold' }} >View All Products</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={{ width: '50%' }} onPress={toggleModal}>
-          <Text style={{ fontSize: 14, width: '100%', textAlign: 'right', color: 'blue' }} >Add New Product</Text>
+          <Text style={{ fontSize: 14, width: '100%', textAlign: 'right', fontWeight: 'bold' }} >+ New Product</Text>
         </TouchableOpacity>
       </View>
-      <Modal isVisible={isModalVisible} transparent={true} backgroundColor="#EAF2F4" height='90%' alignItems="center" >
+      <Modal isVisible={isModalVisible} transparent={true} height='90%' alignItems="center" >
         <View style={{ justifyContent: 'center', padding: '5%', alignItems: 'center', borderRadius: 30, backgroundColor: 'white', height: 400, width: '95%', flexDirection: 'column', flex: 0 }}>
           <Text style={{ fontWeight: 'bold', fontSize: 17 }}>ADD NEW PRODUCT</Text>
           <View style={{ flexDirection: 'row', width: '100%', marginTop: '10%' }}>
@@ -386,7 +394,7 @@ const Add_products = () => {
               textAlign='right'
               keyboardType='numeric'
               style={{ width: '50%' }}
-              placeholder='base price'
+              placeholder='Base Price'
               onChangeText={(baseprice) => setBasePrice(baseprice)}
               value={baseprice} />
           </View>
@@ -409,7 +417,7 @@ const Add_products = () => {
             containerStyle={{ width: '100%', backgroundColor: 'white', borderRadius: 40 }}
             inputContainerStyle={{ width: '90%', backgroundColor: 'white', borderRadius: 40, height: 30, }}
             backgroundColor={'white'}
-            placeholder="Search Product"
+            placeholder="Enter Product"
             searchIcon={false}
             lightTheme={true}
             cancelIcon={true}
@@ -456,20 +464,20 @@ const Add_products = () => {
         </View>
       </View>
 
-      <Text style={{ fontSize: 15, width: '100%', fontWeight: 'bold', textAlign: 'right', }}>{onlyDate}</Text>
+      <Text style={{ fontSize: 15, width: '100%', fontWeight: 'bold', textAlign: 'right', }}>{(new Date()).toDateString()}</Text>
 
       <View style={{ width: '100%', marginTop: '1%', height: 40, backgroundColor: 'skyblue', flexDirection: 'row', paddingHorizontal: '2%', paddingTop: '2%', borderRadius: 5, borderEndColor: 'blue', borderWidth: 0.5 }}>
         <View style={{ width: '38%' }}>
           <Text style={{ fontSize: 15, fontWeight: 'bold', }} > Product </Text>
         </View>
         <View style={{ width: '15%' }}>
-          <Text style={{ fontSize: 15, fontWeight: 'bold', alignSelf: 'flex-end' }}>BP</Text>
+          <Text style={{ fontSize: 15, fontWeight: 'bold', alignSelf: 'flex-end' }}>Price</Text>
         </View>
         <View style={{ width: '22%' }}>
           <Text style={{ fontSize: 15, fontWeight: 'bold', alignSelf: 'center' }}>   Qty</Text>
         </View>
         <View style={{ width: '15%' }}>
-          <Text style={{ fontSize: 15, fontWeight: 'bold', alignSelf: 'flex-end' }}>Tot </Text>
+          <Text style={{ fontSize: 15, fontWeight: 'bold', alignSelf: 'flex-end' }}>Total</Text>
         </View>
         <View style={{ width: '10%' }}>
           <Text style={{ fontSize: 15, fontWeight: 'bold', alignSelf: 'flex-end' }}></Text>
@@ -507,7 +515,7 @@ const Add_products = () => {
                   onChange={quantity => {
                     console.log('GGHVHJGKJGKJGJK' + key);
                     console.log('inputs[key].quantity' + inputs[key].quantity);
-                    if (quantity === 0) {
+                    if (quantity == 0) {
                       console.log('dfdfd');
                       console.log('quantity' + quantity);
                       deleteHandler(key);
@@ -540,14 +548,14 @@ const Add_products = () => {
           )
           : <Text></Text>}
       </ScrollView>
-      <View style={{ flexDirection: 'row', width: '100%', alignContent: 'center', }}>
+      <View style={{ flexDirection: 'row', width: '100%', alignContent: 'center', paddingTop: '2%' }}>
         <View style={styles.TotalAmountText}>
           <Text style={{ color: 'black', fontWeight: 'bold', textAlign: 'center' }}>Total Udhaari</Text>
           <Text style={{ color: 'black', fontWeight: 'bold', textAlign: 'center' }}>₹ {(totalAmount).toFixed(2)}</Text>
         </View>
         <View style={styles.CurrentTotalAmountText}>
-          <Text style={{ color: 'black', fontWeight: 'bold', textAlign: 'center' }} onPress={addToRecords}>Add Current Bill</Text>
-          <Text style={{ color: 'black', fontWeight: 'bold', textAlign: 'center' }} onPress={addToRecords}>₹ {(currentTotalAmount).toFixed(2)}</Text>
+          <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }} onPress={addToRecords}>Add Current Bill</Text>
+          <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }} onPress={addToRecords}>₹ {(currentTotalAmount).toFixed(2)}</Text>
         </View>
       </View>
     </View>
@@ -561,7 +569,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     flex: 1,
-    padding: '2%',
+    padding: '1%',
     backgroundColor: '#EAF2F4',
   },
 
@@ -604,13 +612,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignSelf: 'flex-start',
     padding: '2%',
-    // borderRadius: 10,
+    borderRadius: 10,
     marginHorizontal: '5%',
 
     // height:'10%',
-    marginBottom: '5%',
+    marginBottom: '2%',
     // marginLeft:'4%',
-    backgroundColor: 'skyblue'
+    backgroundColor: '#f55864'
   }
 
   // MainContainer:{

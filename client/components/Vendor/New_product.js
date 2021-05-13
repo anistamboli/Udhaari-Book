@@ -158,7 +158,7 @@ const New_product = () => {
             placeholderTextColor='black'
             platform='lightTheme'
             fontSize={15}
-            placeholder="Enter Product Name....."
+            placeholder="Product Name"
             onChangeText={(text) => searchFilterFunction(text)}
             onClear={(text) => searchFilterFunction('')}
             value={search}
@@ -167,7 +167,7 @@ const New_product = () => {
         </View>
         <View style={styles.body}>
           <View style={styles.listWrapper1}>
-            <Text style={styles.row1}>Product Name </Text>
+            <Text style={styles.row1}>Product</Text>
             <Text style={styles.row3}>Base Price</Text>
           </View>
           <FlatList
@@ -200,7 +200,7 @@ const New_product = () => {
       </View>
 
       <View>
-        <Modal isVisible={isModalVisible} transparent={true} backgroundColor="#EAF2F4" height='90%' alignItems="center" >
+        <Modal isVisible={isModalVisible} transparent={true} height='90%' alignItems="center" >
           <View style={{ justifyContent: 'center', padding: '5%', alignItems: 'center', borderRadius: 30, backgroundColor: 'white', height: 400, width: '95%', flexDirection: 'column', flex: 0 }}>
             <Text style={{ fontWeight: 'bold', fontSize: 17 }}>ADD NEW PRODUCT</Text>
             <View style={{ flexDirection: 'row', width: '100%', marginTop: '10%' }}>
@@ -218,7 +218,7 @@ const New_product = () => {
                 textAlign='right'
                 keyboardType='numeric'
                 style={{ width: '50%' }}
-                placeholder='base price'
+                placeholder='Base Price'
                 onChangeText={(baseprice) => setBasePrice(baseprice)}
                 value={baseprice} />
             </View>

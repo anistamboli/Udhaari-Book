@@ -64,7 +64,6 @@ const Account_details = () => {
       }
     })
       .then((pymnt) => {
-        console.log('recent pay: ', pymnt.data[0].transaction_amount)
         setRecentPayment(pymnt.data[0].transaction_amount)
       })
       .catch((error) => {
@@ -298,7 +297,7 @@ const Account_details = () => {
                     <View style={{ width: '50%', alignItems: 'flex-end' }}>
                       {recentPayment === undefined || recentPayment === 0 || recentPayment === null ?
                         <Text>No Payments Yet</Text> :
-                        <Text>₹ {(recentPayment)}</Text>
+                        <Text>₹ {(recentPayment).toFixed(2)}</Text>
                       }
                     </View>
                   </View>
@@ -315,14 +314,14 @@ const Account_details = () => {
                       <Text style={{ fontWeight: 'bold' }}>Partial  Due Amount</Text>
                     </View>
                     <View style={{ width: '50%', alignItems: 'flex-end' }}>
-                      <Text>₹ {(item.balance * item.threshold).toFixed(2)}</Text>
+                      <Text style={{ fontWeight: 'bold', fontSize: 15 }}>₹ {(item.balance * item.threshold).toFixed(2)}</Text>
                     </View>
                   </View>
                 </View>
               )
             }} />
           <View style={{ flexDirection: 'row', width: '100%', marginBottom: '8%' }}>
-            <View style={{ width: '50%', justifyContent: 'center', alignItems: 'center', }}>
+            <View style={{ width: '50%', justifyContent: 'center', alignItems: 'center' }}>
               <TouchableOpacity activeOpacity={2} style={styles.saveChangesButton}>
                 <Text style={styles.saveChangesText} onPress={EditNameThreshold}>Save Changes</Text>
               </TouchableOpacity>
@@ -344,7 +343,7 @@ const styles = StyleSheet.create({
   saveChangesButton: {
     alignSelf: 'center',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     width: '90%',
     backgroundColor: '#f55864'
   },

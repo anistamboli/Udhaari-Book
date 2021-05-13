@@ -30,9 +30,12 @@ export default function My_udhaari() {
   const [sDate, setStart] = useState(d1);
   const [eDate, setEnd] = useState(d2);
 
+  const tmpMonth = (new Date()).getMonth() + 1;
+  console.log(tmpMonth)
+  const tmpYr = (new Date()).getFullYear();
 
-  const [month, setMonth] = useState('May');
-  const [year, setYear] = useState('2021');
+  const [month, setMonth] = useState(`0${tmpMonth}`)
+  const [year, setYear] = useState(`${tmpYr}`);
 
   const [accDetails, setAccDetails] = useState();
 
