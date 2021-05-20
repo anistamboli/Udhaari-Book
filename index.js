@@ -10,14 +10,18 @@ const pool = require('./db');
 app.use(cors());
 app.use(express.json());
 
-if (process.env.NODE_ENV === "production") {
-    //server static content
-    //npm run build
-    app.use(express.static(path.join(__dirname, "client")));
-}
+// if (process.env.NODE_ENV === "production") {
+//     //server static content
+//     //npm run build
+//     app.use(express.static(path.join(__dirname, "client")));
+// }
 
 // console.log(__dirname);
 // console.log(path.join(__dirname, "client"));
+
+app.get('/test', function (req, res) {
+    res.status(200).json({ message: 'yepp Tango...' });
+});
 
 app.post('/Vendor_register', async (req, res) => {
     try {

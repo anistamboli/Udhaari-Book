@@ -9,7 +9,7 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 
-import herokuURL from '../../src/herokuURL';
+// import herokuURL from '../../src/herokuURL';
 
 export default function Vendor_login() {
   const [contact, setContact] = useState('');
@@ -84,7 +84,7 @@ export default function Vendor_login() {
 
     else {
       // console.log(contact)
-      const response = await axios.get('http://localhost:5000/Vendor_login', {
+      const response = await axios.get('https://udhaari.herokuapp.com/Vendor_login', {
         params: {
           contact
         }
