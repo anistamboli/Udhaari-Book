@@ -58,6 +58,7 @@ app.get('/Vendor_login', async (req, res) => {
 
         const password = await pool.query('SELECT password FROM vendor WHERE contact = $1', [contact]);
         res.json(password.rows[0]);
+        // res.status(200).json({ message: password.rows });
         // console.log(password.rows[0]);
     }
     catch (err) {

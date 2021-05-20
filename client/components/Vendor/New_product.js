@@ -37,7 +37,7 @@ const New_product = () => {
     setProduct('');
     setBasePrice('');
 
-    fetch('http://localhost:5000/Add_products/product')
+    fetch('https://udhaari.herokuapp.com/Add_products/product')
       .then((response) => response.json())
       .then((result) => {
         setConsumers(result);
@@ -120,7 +120,7 @@ const New_product = () => {
 
       try {
         const body = { name: product, base_price: baseprice };
-        const response = await fetch('http://localhost:5000/Add_products/new_product', {
+        const response = await fetch('https://udhaari.herokuapp.com/Add_products/new_product', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',

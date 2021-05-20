@@ -51,7 +51,7 @@ export default function My_udhaari() {
     setvRMN(vRMN);
     setcRMN(cRMN);
 
-    const response_all = axios.get('http://localhost:5000/Transaction_history', {
+    const response_all = axios.get('https://udhaari.herokuapp.com/Transaction_history', {
       params: {
         vRMN, cRMN
       }
@@ -63,7 +63,7 @@ export default function My_udhaari() {
         console.log(error)
       })
 
-    const response_acc = axios.get('http://localhost:5000/Account_details/Udhaari_rec', {
+    const response_acc = axios.get('https://udhaari.herokuapp.com/Account_details/Udhaari_rec', {
       params: {
         vRMN, cRMN
       }
@@ -91,7 +91,7 @@ export default function My_udhaari() {
   );
 
   const AllTransaction = async (vRMN, cRMN) => {
-    const response = await axios.get('http://localhost:5000/Transaction_history', {
+    const response = await axios.get('https://udhaari.herokuapp.com/Transaction_history', {
       params: {
         vRMN, cRMN
       }

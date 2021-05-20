@@ -136,7 +136,7 @@ const Vendor_register = () => {
     else {
       try {
         const body = { contact: Number(rmn), name: vendorName, shop_name: shopName, shop_address: shopAddress, password: password };
-        const response = await fetch('http://localhost:5000/Vendor_register', {
+        const response = await fetch('https://udhaari.herokuapp.com/Vendor_register', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',

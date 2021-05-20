@@ -30,7 +30,7 @@ const Consumer_dashboard = () => {
     let cRMN = await SecureStore.getItemAsync('consumerMob');
     setcRMN(cRMN);
     // const cRMN=12;
-    fetch('http://localhost:5000/Consumer_dashboard/' + cRMN)
+    fetch('https://udhaari.herokuapp.com/Consumer_dashboard/' + cRMN)
       .then((response) => response.json())
       .then((result) => {
         setVendors(result);

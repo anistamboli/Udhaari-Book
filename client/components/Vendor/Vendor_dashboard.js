@@ -37,7 +37,7 @@ const Vendor_dashboard = () => {
     setvRMN(vRMN);
     // const cRMN=12;
 
-    fetch('http://localhost:5000/Vendor_dashboard/' + vRMN)
+    fetch('https://udhaari.herokuapp.com/Vendor_dashboard/' + vRMN)
       .then((response) => response.json())
       .then((result) => {
         setConsumers(result);
