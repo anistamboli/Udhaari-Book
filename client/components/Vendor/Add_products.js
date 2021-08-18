@@ -369,11 +369,11 @@ const Add_products = () => {
     <View style={styles.container}>
       <View style={{ width: '100%', flexDirection: 'row', marginTop: '1%', paddingHorizontal: '3%' }}>
         <TouchableOpacity style={{ width: '50%' }} onPress={() => { navigation.navigate('New Product') }}>
-          <Text style={{ fontSize: 14, width: '100%', textAlign: 'left', fontWeight: 'bold' }} >View All Products</Text>
+          <Text style={{ fontSize: 14, width: '100%', textAlign: 'left', fontWeight: 'bold', color: 'blue'}} >View All Products</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={{ width: '50%' }} onPress={toggleModal}>
-          <Text style={{ fontSize: 14, width: '100%', textAlign: 'right', fontWeight: 'bold' }} >+ New Product</Text>
+          <Text style={{ fontSize: 14, width: '100%', textAlign: 'right', fontWeight: 'bold', color: 'blue'}} >+ New Product</Text>
         </TouchableOpacity>
       </View>
       <Modal isVisible={isModalVisible} transparent={true} height='90%' alignItems="center" >
