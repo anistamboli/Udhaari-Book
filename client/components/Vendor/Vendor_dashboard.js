@@ -95,7 +95,7 @@ const Vendor_dashboard = () => {
           {/* <Image source={back_button} style={styles.back_button} /> */}
           <AntDesign name="home" size={39} color="black" />
         </TouchableOpacity>
-        <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 25, color: 'rgb(88, 149, 164)', width: '70%' }}>अब उधारी ले, विश्वास से!</Text>
+        <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 25, color: '#109dcc', width: '70%' }}>अब उधारी ले, विश्वास से!</Text>
         <TouchableOpacity activeOpacity={1.5} onPress={() => { navigation.navigate('Vendor Login'); }} style={{ width: '15%', paddingRight: '4%', alignItems: 'flex-end' }}>
           {/* <Image source={logout_button} style={styles.logout_button} /> */}
           <AntDesign name="logout" size={32} color="black" />
